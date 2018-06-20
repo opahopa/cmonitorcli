@@ -1,0 +1,921 @@
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+DEBUG|--- request header ---
+DEBUG|GET /ws/monitor/test@test.com/hopa-XPS-13-9350/ HTTP/1.1
+Upgrade: websocket
+Connection: Upgrade
+Host: 127.0.0.1:8000
+Origin: http://127.0.0.1:8000
+Sec-WebSocket-Key: 3hSRhBNyqGTUchOpwoMVNg==
+Sec-WebSocket-Version: 13
+
+
+DEBUG|-----------------------
+DEBUG|--- response header ---
+DEBUG|HTTP/1.1 101 Switching Protocols
+DEBUG|Server: Daphne
+DEBUG|Upgrade: WebSocket
+DEBUG|Connection: Upgrade
+DEBUG|Sec-WebSocket-Accept: LV6Jw3M7QMY6REjJRNcQUKmZoTg=
+DEBUG|-----------------------
+DEBUG|send: b'\x81\x9a\xcc\xf8z\xdb\xb7\xda\x17\xbe\xbf\x8b\x1b\xbc\xa9\xda@\xfb\xee\xb0\x1f\xb7\xa0\x97Z\xaf\xa4\x9d\x08\xbe\xee\x85'
+DEBUG|send: b'\x8a\x84\xdc\x80(\xe4\x99\xc5\\\x94'
+DEBUG|send: b'\x8a\x84/\x90\xe4\xadF\xa8\x87\xe8'
+DEBUG|send: b'\x8a\x84OO\xd2H$&\x9f\x7f'
+DEBUG|send: b'\x8a\x84\xd8\xf3!\x93\x81\x99j\xc6'
+DEBUG|send: b'\x8a\x84~r\xfd\xc7*+\x9f\x8c'
+DEBUG|send: b'\x8a\x84c\x10a\xc5*t\x03\x8d'
+DEBUG|send: b"\x8a\x84\x7f\xa6\xf2\x92'\xe8\xc1\xfc"
+DEBUG|send: b'\x8a\x84F\\#=\x1f\x1deR'
+DEBUG|send: b'\x8a\x84\xfc\xc5\x88\xaa\x9a\xf0\xb0\xfb'
+DEBUG|send: b'\x8a\x84\xea<\x0e[\x98\tl#'
+DEBUG|send: b'\x8a\x84\x0bA\t\xe7ov^\xb1'
+DEBUG|send: b'\x8a\x84s?\xa0\xb2\x1c\x10\xf1\x82'
+DEBUG|send: b'\x8a\x84V8\x99\xef \x01\xb6\xab'
+DEBUG|send: b'\x8a\x84<Bjb\x13)Z\x18'
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+ERROR|Connection is already closed.
+INFO|<websocket._app.WebSocketApp object at 0x7ff1354d04e0>
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+ERROR|Connection is already closed.
+INFO|### closed ###
+ERROR|error from callback <bound method WsClient.on_close of <services.socket_client.WsClient object at 0x7fc2c1efcf28>>: name 'i' is not defined
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|Connection is already closed.
+INFO|### closed ###
+ERROR|Connection is already closed.
+INFO|### closed ###
+ERROR|Connection is already closed.
+INFO|### closed ###
+ERROR|
+INFO|### closed ###
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|None
+INFO|received message: {"py/object": "cmonitorserv.models.message.Message", "command": {"py/reduce": [{"py/type": "cmonitorserv.models.message.MessageCommands"}, {"py/tuple": ["STATUS_ALL"]}, null, null, null]}, "type": {"py/reduce": [{"py/type": "cmonitorserv.models.message.MessageTypes"}, {"py/tuple": ["CONTROL"]}, null, null, null]}}
+INFO|None
+ERROR|
+INFO|### closed ###
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+INFO|None
+INFO|received message: {"py/object": "cmonitorserv.models.message.Message", "command": {"py/reduce": [{"py/type": "cmonitorserv.models.message.MessageCommands"}, {"py/tuple": ["STATUS_ALL"]}, null, null, null]}, "type": {"py/reduce": [{"py/type": "cmonitorserv.models.message.MessageTypes"}, {"py/tuple": ["CONTROL"]}, null, null, null]}}
+INFO|{'py/object': 'cmonitorserv.models.message.Message', 'command': {'py/reduce': [{'py/type': 'cmonitorserv.models.message.MessageCommands'}, {'py/tuple': ['STATUS_ALL']}, None, None, None]}, 'type': {'py/reduce': [{'py/type': 'cmonitorserv.models.message.MessageTypes'}, {'py/tuple': ['CONTROL']}, None, None, None]}}
+INFO|None
+ERROR|
+INFO|### closed ###
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+INFO|None
+INFO|received message: {"py/object": "cmonitorserv.models.message.Message", "command": {"py/reduce": [{"py/type": "cmonitorserv.models.message.MessageCommands"}, {"py/tuple": ["STATUS_ALL"]}, null, null, null]}, "type": {"py/reduce": [{"py/type": "cmonitorserv.models.message.MessageTypes"}, {"py/tuple": ["CONTROL"]}, null, null, null]}}
+INFO|{'py/object': 'cmonitorserv.models.message.Message', 'command': {'py/reduce': [{'py/type': 'cmonitorserv.models.message.MessageCommands'}, {'py/tuple': ['STATUS_ALL']}, None, None, None]}, 'type': {'py/reduce': [{'py/type': 'cmonitorserv.models.message.MessageTypes'}, {'py/tuple': ['CONTROL']}, None, None, None]}}
+INFO|None
+ERROR|
+INFO|### closed ###
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+INFO|None
+INFO|received message: {"py/object": "cmonitorserv.models.message.Message", "command": {"py/reduce": [{"py/type": "cmonitorserv.models.message.MessageCommands"}, {"py/tuple": ["STATUS_ALL"]}, null, null, null]}, "type": {"py/reduce": [{"py/type": "cmonitorserv.models.message.MessageTypes"}, {"py/tuple": ["CONTROL"]}, null, null, null]}}
+INFO|{'py/object': 'cmonitorserv.models.message.Message', 'command': {'py/reduce': [{'py/type': 'cmonitorserv.models.message.MessageCommands'}, {'py/tuple': ['STATUS_ALL']}, None, None, None]}, 'type': {'py/reduce': [{'py/type': 'cmonitorserv.models.message.MessageTypes'}, {'py/tuple': ['CONTROL']}, None, None, None]}}
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+INFO|None
+INFO|received message: {"command": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageCommands"}, "_name_": "REQUEST_STATUS_ALL", "_value_": "STATUS_ALL"}, "type": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageTypes"}, "_name_": "CONTROL", "_value_": "CONTROL"}}
+INFO|{'command': {'__objclass__': {'py/type': 'cmonitorserv.models.message.MessageCommands'}, '_name_': 'REQUEST_STATUS_ALL', '_value_': 'STATUS_ALL'}, 'type': {'__objclass__': {'py/type': 'cmonitorserv.models.message.MessageTypes'}, '_name_': 'CONTROL', '_value_': 'CONTROL'}}
+INFO|None
+ERROR|
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+INFO|None
+INFO|received message: {"command": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageCommands"}, "_name_": "REQUEST_STATUS_ALL", "_value_": "STATUS_ALL"}, "type": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageTypes"}, "_name_": "CONTROL", "_value_": "CONTROL"}}
+INFO|{'command': {'__objclass__': {'py/type': 'cmonitorserv.models.message.MessageCommands'}, '_name_': 'REQUEST_STATUS_ALL', '_value_': 'STATUS_ALL'}, 'type': {'__objclass__': {'py/type': 'cmonitorserv.models.message.MessageTypes'}, '_name_': 'CONTROL', '_value_': 'CONTROL'}}
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+INFO|None
+INFO|received message: {"command": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageCommands"}, "_name_": "REQUEST_STATUS_ALL", "_value_": "STATUS_ALL"}, "type": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageTypes"}, "_name_": "CONTROL", "_value_": "CONTROL"}}
+INFO|{'command': {'__objclass__': {'py/type': 'cmonitorserv.models.message.MessageCommands'}, '_name_': 'REQUEST_STATUS_ALL', '_value_': 'STATUS_ALL'}, 'type': {'__objclass__': {'py/type': 'cmonitorserv.models.message.MessageTypes'}, '_name_': 'CONTROL', '_value_': 'CONTROL'}}
+INFO|None
+ERROR|
+INFO|### closed ###
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+INFO|None
+INFO|received message: {"command": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageCommands"}, "_name_": "REQUEST_STATUS_ALL", "_value_": "STATUS_ALL"}, "type": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageTypes"}, "_name_": "CONTROL", "_value_": "CONTROL"}}
+INFO|{'command': {'__objclass__': {'py/type': 'cmonitorserv.models.message.MessageCommands'}, '_name_': 'REQUEST_STATUS_ALL', '_value_': 'STATUS_ALL'}, 'type': {'__objclass__': {'py/type': 'cmonitorserv.models.message.MessageTypes'}, '_name_': 'CONTROL', '_value_': 'CONTROL'}}
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+INFO|None
+INFO|received message: {"command": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageCommands"}, "_name_": "REQUEST_STATUS_ALL", "_value_": "STATUS_ALL"}, "type": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageTypes"}, "_name_": "CONTROL", "_value_": "CONTROL"}}
+INFO|{'command': {'__objclass__': {'py/type': 'cmonitorserv.models.message.MessageCommands'}, '_name_': 'REQUEST_STATUS_ALL', '_value_': 'STATUS_ALL'}, 'type': {'__objclass__': {'py/type': 'cmonitorserv.models.message.MessageTypes'}, '_name_': 'CONTROL', '_value_': 'CONTROL'}}
+INFO|None
+ERROR|
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+INFO|None
+INFO|received message: {"command": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageCommands"}, "_name_": "REQUEST_STATUS_ALL", "_value_": "STATUS_ALL"}, "type": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageTypes"}, "_name_": "CONTROL", "_value_": "CONTROL"}}
+INFO|{'command': {'__objclass__': {'py/type': 'cmonitorserv.models.message.MessageCommands'}, '_name_': 'REQUEST_STATUS_ALL', '_value_': 'STATUS_ALL'}, 'type': {'__objclass__': {'py/type': 'cmonitorserv.models.message.MessageTypes'}, '_name_': 'CONTROL', '_value_': 'CONTROL'}}
+INFO|None
+ERROR|
+INFO|### closed ###
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+INFO|None
+INFO|received message: {"command": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageCommands"}, "_name_": "REQUEST_STATUS_ALL", "_value_": "STATUS_ALL"}, "type": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageTypes"}, "_name_": "CONTROL", "_value_": "CONTROL"}}
+INFO|{'command': {'__objclass__': {'py/type': 'cmonitorserv.models.message.MessageCommands'}, '_name_': 'REQUEST_STATUS_ALL', '_value_': 'STATUS_ALL'}, 'type': {'__objclass__': {'py/type': 'cmonitorserv.models.message.MessageTypes'}, '_name_': 'CONTROL', '_value_': 'CONTROL'}}
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+INFO|None
+INFO|received message: {"command": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageCommands"}, "_name_": "REQUEST_STATUS_ALL", "_value_": "STATUS_ALL"}, "type": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageTypes"}, "_name_": "CONTROL", "_value_": "CONTROL"}}
+INFO|{'command': {'__objclass__': {'py/type': 'cmonitorserv.models.message.MessageCommands'}, '_name_': 'REQUEST_STATUS_ALL', '_value_': 'STATUS_ALL'}, 'type': {'__objclass__': {'py/type': 'cmonitorserv.models.message.MessageTypes'}, '_name_': 'CONTROL', '_value_': 'CONTROL'}}
+INFO|None
+INFO|received message: {"command": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageCommands"}, "_name_": "REQUEST_STATUS_ALL", "_value_": "STATUS_ALL"}, "type": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageTypes"}, "_name_": "CONTROL", "_value_": "CONTROL"}}
+INFO|{'command': {'__objclass__': {'py/type': 'cmonitorserv.models.message.MessageCommands'}, '_name_': 'REQUEST_STATUS_ALL', '_value_': 'STATUS_ALL'}, 'type': {'__objclass__': {'py/type': 'cmonitorserv.models.message.MessageTypes'}, '_name_': 'CONTROL', '_value_': 'CONTROL'}}
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+INFO|None
+INFO|received message: {"py/object": "cmonitorserv.models.message.Message", "command": {"py/reduce": [{"py/type": "cmonitorserv.models.message.MessageCommands"}, {"py/tuple": ["STATUS_ALL"]}, null, null, null]}, "type": {"py/reduce": [{"py/type": "cmonitorserv.models.message.MessageTypes"}, {"py/tuple": ["CONTROL"]}, null, null, null]}}
+INFO|{'py/object': 'cmonitorserv.models.message.Message', 'command': {'py/reduce': [{'py/type': 'cmonitorserv.models.message.MessageCommands'}, {'py/tuple': ['STATUS_ALL']}, None, None, None]}, 'type': {'py/reduce': [{'py/type': 'cmonitorserv.models.message.MessageTypes'}, {'py/tuple': ['CONTROL']}, None, None, None]}}
+INFO|None
+ERROR|
+INFO|### closed ###
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+INFO|None
+INFO|received message: {"py/object": "cmonitorserv.models.message.Message", "command": {"py/reduce": [{"py/type": "cmonitorserv.models.message.MessageCommands"}, {"py/tuple": ["STATUS_ALL"]}, null, null, null]}, "type": {"py/reduce": [{"py/type": "cmonitorserv.models.message.MessageTypes"}, {"py/tuple": ["CONTROL"]}, null, null, null]}}
+INFO|{'py/object': 'cmonitorserv.models.message.Message', 'command': {'py/reduce': [{'py/type': 'cmonitorserv.models.message.MessageCommands'}, {'py/tuple': ['STATUS_ALL']}, None, None, None]}, 'type': {'py/reduce': [{'py/type': 'cmonitorserv.models.message.MessageTypes'}, {'py/tuple': ['CONTROL']}, None, None, None]}}
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+INFO|None
+INFO|received message: {"command": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageCommands"}, "_name_": "REQUEST_STATUS_ALL", "_value_": "STATUS_ALL"}, "type": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageTypes"}, "_name_": "CONTROL", "_value_": "CONTROL"}}
+INFO|{'command': {'__objclass__': {'py/type': 'cmonitorserv.models.message.MessageCommands'}, '_name_': 'REQUEST_STATUS_ALL', '_value_': 'STATUS_ALL'}, 'type': {'__objclass__': {'py/type': 'cmonitorserv.models.message.MessageTypes'}, '_name_': 'CONTROL', '_value_': 'CONTROL'}}
+INFO|None
+ERROR|
+INFO|### closed ###
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+INFO|None
+INFO|received message: {"command": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageCommands"}, "_name_": "REQUEST_STATUS_ALL", "_value_": "STATUS_ALL"}, "type": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageTypes"}, "_name_": "CONTROL", "_value_": "CONTROL"}}
+INFO|{'command': {'__objclass__': {'py/type': 'cmonitorserv.models.message.MessageCommands'}, '_name_': 'REQUEST_STATUS_ALL', '_value_': 'STATUS_ALL'}, 'type': {'__objclass__': {'py/type': 'cmonitorserv.models.message.MessageTypes'}, '_name_': 'CONTROL', '_value_': 'CONTROL'}}
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+INFO|None
+INFO|received message: {"command": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageCommands"}, "_name_": "REQUEST_STATUS_ALL", "_value_": "STATUS_ALL"}, "type": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageTypes"}, "_name_": "CONTROL", "_value_": "CONTROL"}}
+INFO|{'command': {'__objclass__': {'py/type': 'cmonitorserv.models.message.MessageCommands'}, '_name_': 'REQUEST_STATUS_ALL', '_value_': 'STATUS_ALL'}, 'type': {'__objclass__': {'py/type': 'cmonitorserv.models.message.MessageTypes'}, '_name_': 'CONTROL', '_value_': 'CONTROL'}}
+INFO|None
+ERROR|
+INFO|### closed ###
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+INFO|None
+INFO|received message: {"command": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageCommands"}, "_name_": "REQUEST_STATUS_ALL", "_value_": "STATUS_ALL"}, "type": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageTypes"}, "_name_": "CONTROL", "_value_": "CONTROL"}}
+INFO|{'command': {'__objclass__': {'py/type': 'cmonitorserv.models.message.MessageCommands'}, '_name_': 'REQUEST_STATUS_ALL', '_value_': 'STATUS_ALL'}, 'type': {'__objclass__': {'py/type': 'cmonitorserv.models.message.MessageTypes'}, '_name_': 'CONTROL', '_value_': 'CONTROL'}}
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+INFO|None
+ERROR|
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+INFO|None
+ERROR|
+INFO|### closed ###
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+ERROR|<traceback object at 0x7f1a0cde5a08>
+INFO|None
+ERROR|
+INFO|### closed ###
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+ERROR|string indices must be integers
+ERROR|error from callback <bound method WsClient.on_message of <services.socket_client.WsClient object at 0x7fe20c699160>>: 'traceback' object has no attribute 'print_exc'
+ERROR|
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+ERROR|string indices must be integers
+ERROR|error from callback <bound method WsClient.on_message of <services.socket_client.WsClient object at 0x7fe20c699160>>: 'traceback' object has no attribute 'print_exc'
+ERROR|
+INFO|### closed ###
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+ERROR|None
+INFO|None
+ERROR|
+INFO|### closed ###
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+ERROR|string indices must be integers
+INFO|None
+ERROR|
+INFO|### closed ###
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+ERROR|string indices must be integers
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+ERROR|string indices must be integers
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+ERROR|string indices must be integers
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+ERROR|string indices must be integers
+INFO|None
+INFO|received message: {"command": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageCommands"}, "_name_": "REQUEST_STATUS_ALL", "_value_": "STATUS_ALL"}, "type": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageTypes"}, "_name_": "CONTROL", "_value_": "CONTROL"}}
+INFO|{'command': {'__objclass__': {'py/type': 'cmonitorserv.models.message.MessageCommands'}, '_name_': 'REQUEST_STATUS_ALL', '_value_': 'STATUS_ALL'}, 'type': {'__objclass__': {'py/type': 'cmonitorserv.models.message.MessageTypes'}, '_name_': 'CONTROL', '_value_': 'CONTROL'}}
+ERROR|string indices must be integers
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+ERROR|string indices must be integers
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+ERROR|string indices must be integers
+INFO|None
+INFO|received message: {"command": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageCommands"}, "_name_": "REQUEST_STATUS_ALL", "_value_": "STATUS_ALL"}, "type": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageTypes"}, "_name_": "CONTROL", "_value_": "CONTROL"}}
+INFO|{'command': {'__objclass__': {'py/type': 'cmonitorserv.models.message.MessageCommands'}, '_name_': 'REQUEST_STATUS_ALL', '_value_': 'STATUS_ALL'}, 'type': {'__objclass__': {'py/type': 'cmonitorserv.models.message.MessageTypes'}, '_name_': 'CONTROL', '_value_': 'CONTROL'}}
+ERROR|string indices must be integers
+INFO|None
+INFO|received message: {"command": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageCommands"}, "_name_": "REQUEST_STATUS_ALL", "_value_": "STATUS_ALL"}, "type": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageTypes"}, "_name_": "CONTROL", "_value_": "CONTROL"}}
+INFO|{'command': {'__objclass__': {'py/type': 'cmonitorserv.models.message.MessageCommands'}, '_name_': 'REQUEST_STATUS_ALL', '_value_': 'STATUS_ALL'}, 'type': {'__objclass__': {'py/type': 'cmonitorserv.models.message.MessageTypes'}, '_name_': 'CONTROL', '_value_': 'CONTROL'}}
+ERROR|string indices must be integers
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+ERROR|string indices must be integers
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+ERROR|string indices must be integers
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|{'message': 'Hello there'}
+ERROR|string indices must be integers
+INFO|None
+ERROR|
+INFO|### closed ###
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|<class 'str'>
+INFO|{'message': 'Hello there'}
+ERROR|string indices must be integers
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|<class 'str'>
+INFO|{'message': 'Hello there'}
+ERROR|string indices must be integers
+INFO|None
+INFO|received message: {"command": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageCommands"}, "_name_": "STATUS_ALL", "_value_": "STATUS_ALL"}, "type": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageTypes"}, "_name_": "CONTROL", "_value_": "CONTROL"}}
+INFO|<class 'str'>
+INFO|{'command': {'__objclass__': {'py/type': 'cmonitorserv.models.message.MessageCommands'}, '_name_': 'STATUS_ALL', '_value_': 'STATUS_ALL'}, 'type': {'__objclass__': {'py/type': 'cmonitorserv.models.message.MessageTypes'}, '_name_': 'CONTROL', '_value_': 'CONTROL'}}
+ERROR|string indices must be integers
+INFO|None
+ERROR|
+INFO|### closed ###
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|<class 'str'>
+INFO|None
+ERROR|string indices must be integers
+INFO|None
+INFO|received message: {"command": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageCommands"}, "_name_": "STATUS_ALL", "_value_": "STATUS_ALL"}, "type": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageTypes"}, "_name_": "CONTROL", "_value_": "CONTROL"}}
+INFO|<class 'str'>
+INFO|None
+ERROR|string indices must be integers
+INFO|None
+ERROR|
+INFO|### closed ###
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|name '_jsonpickle_to_json' is not defined
+INFO|None
+ERROR|
+INFO|### closed ###
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|None
+ERROR|string indices must be integers
+INFO|None
+INFO|received message: {"command": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageCommands"}, "_name_": "STATUS_ALL", "_value_": "STATUS_ALL"}, "type": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageTypes"}, "_name_": "CONTROL", "_value_": "CONTROL"}}
+ERROR|must be str, not dict
+INFO|None
+ERROR|
+INFO|### closed ###
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+INFO|None
+ERROR|string indices must be integers
+INFO|None
+INFO|received message: {"command": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageCommands"}, "_name_": "STATUS_ALL", "_value_": "STATUS_ALL"}, "type": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageTypes"}, "_name_": "CONTROL", "_value_": "CONTROL"}}
+INFO|None
+ERROR|string indices must be integers
+INFO|None
+ERROR|
+INFO|### closed ###
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|items() takes no arguments (1 given)
+INFO|None
+INFO|received message: {"command": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageCommands"}, "_name_": "STATUS_ALL", "_value_": "STATUS_ALL"}, "type": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageTypes"}, "_name_": "CONTROL", "_value_": "CONTROL"}}
+ERROR|items() takes no arguments (1 given)
+INFO|None
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|'str' object doesn't support item deletion
+INFO|None
+INFO|received message: {"command": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageCommands"}, "_name_": "STATUS_ALL", "_value_": "STATUS_ALL"}, "type": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageTypes"}, "_name_": "CONTROL", "_value_": "CONTROL"}}
+ERROR|0
+INFO|None
+ERROR|
+INFO|### closed ###
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|'__objclass__'
+INFO|None
+INFO|received message: {"command": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageCommands"}, "_name_": "STATUS_ALL", "_value_": "STATUS_ALL"}, "type": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageTypes"}, "_name_": "CONTROL", "_value_": "CONTROL"}}
+ERROR|'__objclass__'
+INFO|None
+ERROR|
+INFO|### closed ###
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|'__objclass__'
+INFO|None
+INFO|received message: {"command": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageCommands"}, "_name_": "STATUS_ALL", "_value_": "STATUS_ALL"}, "type": {"__objclass__": {"py/type": "cmonitorserv.models.message.MessageTypes"}, "_name_": "CONTROL", "_value_": "CONTROL"}}
+ERROR|'__objclass__'
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|'__objclass__'
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+ERROR|[Errno 111] Connection refused
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|'__objclass__'
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|'__objclass__'
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|'__objclass__'
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|'__objclass__'
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|'__objclass__'
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|'__objclass__'
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|'__objclass__'
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|'__objclass__'
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|'__objclass__'
+INFO|None
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|'__objclass__'
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|'__objclass__'
+INFO|None
+INFO|received message: {"type": "CONTROL", "command": "STATUS_ALL"}
+ERROR|'__objclass__'
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|'__objclass__'
+INFO|None
+ERROR|
+INFO|### closed ###
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|string indices must be integers
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|string indices must be integers
+INFO|None
+INFO|received message: {"type": "CONTROL", "command": "STATUS_ALL"}
+ERROR|string indices must be integers
+INFO|None
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|string indices must be integers
+INFO|None
+ERROR|
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|string indices must be integers
+INFO|None
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|string indices must be integers
+INFO|None
+INFO|received message: {"type": "CONTROL", "command": "STATUS_ALL"}
+ERROR|string indices must be integers
+INFO|None
+ERROR|
+INFO|### closed ###
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|string indices must be integers
+INFO|None
+INFO|received message: {"type": "CONTROL", "command": "STATUS_ALL"}
+ERROR|string indices must be integers
+INFO|None
+ERROR|
+INFO|### closed ###
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|string indices must be integers
+INFO|None
+INFO|received message: {"type": "CONTROL", "command": "STATUS_ALL"}
+ERROR|string indices must be integers
+INFO|None
+ERROR|
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|string indices must be integers
+INFO|None
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|string indices must be integers
+INFO|None
+INFO|received message: {"type": "CONTROL", "command": "STATUS_ALL"}
+ERROR|string indices must be integers
+INFO|None
+ERROR|
+INFO|### closed ###
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|string indices must be integers
+INFO|None
+INFO|received message: {"type": "CONTROL", "command": "STATUS_ALL"}
+ERROR|string indices must be integers
+INFO|None
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|'type'
+INFO|None
+INFO|received message: {"type": "CONTROL", "command": "STATUS_ALL"}
+ERROR|'status'
+INFO|None
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|'type'
+INFO|None
+INFO|received message: {"type": "CONTROL", "command": "STATUS_ALL"}
+ERROR|'status'
+INFO|None
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|'type'
+INFO|None
+INFO|received message: {"type": "CONTROL", "command": "STATUS_ALL"}
+ERROR|'status'
+INFO|None
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|'type'
+INFO|None
+INFO|received message: {"type": "CONTROL", "command": "STATUS_ALL"}
+ERROR|'status'
+INFO|None
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|'type'
+INFO|None
+INFO|received message: {"type": "CONTROL", "command": "STATUS_ALL"}
+ERROR|'status'
+INFO|None
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|'type'
+INFO|None
+INFO|received message: {"type": "CONTROL", "command": "STATUS_ALL"}
+INFO|<models.message.Message object at 0x7f91c87e30b8>
+ERROR|Connection is already closed.
+INFO|### closed ###
+INFO|connected
+INFO|received message: {"message": "Hello there"}
+ERROR|'type'
+INFO|None
+ERROR|
+INFO|### closed ###
+INFO|0
+INFO|● winbind.service - LSB: start Winbind daemon
+   Loaded: loaded (/etc/init.d/winbind; bad; vendor preset: enabled)
+   Active: active (running) since Tue 2018-06-19 14:09:10 -04; 7h ago
+     Docs: man:systemd-sysv-generator(8)
+   CGroup: /system.slice/winbind.service
+           ├─1393 /usr/sbin/winbindd
+           ├─1404 /usr/sbin/winbindd
+           ├─1529 /usr/sbin/winbindd
+           └─1530 /usr/sbin/winbindd
+
+Jun 19 14:09:10 hopa-XPS-13-9350 systemd[1]: Starting LSB: start Winbind daemon...
+Jun 19 14:09:10 hopa-XPS-13-9350 winbind[1215]:  * Starting the Winbind daemon winbind
+Jun 19 14:09:10 hopa-XPS-13-9350 winbind[1215]:    ...done.
+Jun 19 14:09:10 hopa-XPS-13-9350 systemd[1]: Started LSB: start Winbind daemon.
+
+INFO|
+INFO|None
+INFO|0
+INFO|● whoopsie.service - crash report submission daemon
+   Loaded: loaded (/lib/systemd/system/whoopsie.service; enabled; vendor preset: enabled)
+   Active: active (running) since Tue 2018-06-19 14:09:10 -04; 7h ago
+ Main PID: 1211 (whoopsie)
+   CGroup: /system.slice/whoopsie.service
+           └─1211 /usr/bin/whoopsie -f
+
+Jun 19 14:09:18 hopa-XPS-13-9350 whoopsie[1211]: [14:09:18] Found usable connection: /org/freedesktop/NetworkManager/ActiveConnection/1
+Jun 19 14:09:19 hopa-XPS-13-9350 whoopsie[1211]: [14:09:19] online
+Jun 19 18:39:20 hopa-XPS-13-9350 whoopsie[1211]: [18:39:20] offline
+Jun 19 18:39:25 hopa-XPS-13-9350 whoopsie[1211]: [18:39:25] Cannot reach: https://daisy.ubuntu.com
+Jun 19 18:39:25 hopa-XPS-13-9350 whoopsie[1211]: [18:39:25] Cannot reach: https://daisy.ubuntu.com
+Jun 19 19:40:37 hopa-XPS-13-9350 whoopsie[1211]: [19:40:37] Cannot reach: https://daisy.ubuntu.com
+Jun 19 19:40:37 hopa-XPS-13-9350 whoopsie[1211]: [19:40:37] The default IPv4 route is: /org/freedesktop/NetworkManager/ActiveConnection/2
+Jun 19 19:40:37 hopa-XPS-13-9350 whoopsie[1211]: [19:40:37] Not a paid data plan: /org/freedesktop/NetworkManager/ActiveConnection/2
+Jun 19 19:40:37 hopa-XPS-13-9350 whoopsie[1211]: [19:40:37] Found usable connection: /org/freedesktop/NetworkManager/ActiveConnection/2
+Jun 19 19:40:38 hopa-XPS-13-9350 whoopsie[1211]: [19:40:38] online
+
+INFO|
+INFO|None
+INFO|● winbind.service - LSB: start Winbind daemon
+   Loaded: loaded (/etc/init.d/winbind; bad; vendor preset: enabled)
+   Active: active (running) since Tue 2018-06-19 14:09:10 -04; 7h ago
+     Docs: man:systemd-sysv-generator(8)
+   CGroup: /system.slice/winbind.service
+           ├─1393 /usr/sbin/winbindd
+           ├─1404 /usr/sbin/winbindd
+           ├─1529 /usr/sbin/winbindd
+           └─1530 /usr/sbin/winbindd
+
+Jun 19 14:09:10 hopa-XPS-13-9350 systemd[1]: Starting LSB: start Winbind daemon...
+Jun 19 14:09:10 hopa-XPS-13-9350 winbind[1215]:  * Starting the Winbind daemon winbind
+Jun 19 14:09:10 hopa-XPS-13-9350 winbind[1215]:    ...done.
+Jun 19 14:09:10 hopa-XPS-13-9350 systemd[1]: Started LSB: start Winbind daemon.
+
+INFO|● winbind.service - LSB: start Winbind daemon
+   Loaded: loaded (/etc/init.d/winbind; bad; vendor preset: enabled)
+   Active: active (running) since Tue 2018-06-19 14:09:10 -04; 7h ago
+     Docs: man:systemd-sysv-generator(8)
+   CGroup: /system.slice/winbind.service
+           ├─1393 /usr/sbin/winbindd
+           ├─1404 /usr/sbin/winbindd
+           ├─1529 /usr/sbin/winbindd
+           └─1530 /usr/sbin/winbindd
+
+Jun 19 14:09:10 hopa-XPS-13-9350 systemd[1]: Starting LSB: start Winbind daemon...
+Jun 19 14:09:10 hopa-XPS-13-9350 winbind[1215]:  * Starting the Winbind daemon winbind
+Jun 19 14:09:10 hopa-XPS-13-9350 winbind[1215]:    ...done.
+Jun 19 14:09:10 hopa-XPS-13-9350 systemd[1]: Started LSB: start Winbind daemon.
+INFO|
+INFO|None
+INFO|● winbind.service - LSB: start Winbind daemon
+   Loaded: loaded (/etc/init.d/winbind; bad; vendor preset: enabled)
+   Active: active (running) since Tue 2018-06-19 14:09:10 -04; 7h ago
+     Docs: man:systemd-sysv-generator(8)
+   CGroup: /system.slice/winbind.service
+           ├─1393 /usr/sbin/winbindd
+           ├─1404 /usr/sbin/winbindd
+           ├─1529 /usr/sbin/winbindd
+           └─1530 /usr/sbin/winbindd
+
+Jun 19 14:09:10 hopa-XPS-13-9350 systemd[1]: Starting LSB: start Winbind daemon...
+Jun 19 14:09:10 hopa-XPS-13-9350 winbind[1215]:  * Starting the Winbind daemon winbind
+Jun 19 14:09:10 hopa-XPS-13-9350 winbind[1215]:    ...done.
+Jun 19 14:09:10 hopa-XPS-13-9350 systemd[1]: Started LSB: start Winbind daemon.
+INFO|0
+INFO|(True, 'Tue 2018-06-19 14:09:10 -04; 7h ago', None)
+INFO|(True, 'Tue 2018-06-19 14:09:10 -04; 8h ago', ['', 'Jun 19 14:09:18 hopa-XPS-13-9350 whoopsie[1211]: [14:09:18] Found usable connection: /org/freedesktop/NetworkManager/ActiveConnection/1', 'Jun 19 14:09:19 hopa-XPS-13-9350 whoopsie[1211]: [14:09:19] online', 'Jun 19 18:39:20 hopa-XPS-13-9350 whoopsie[1211]: [18:39:20] offline', 'Jun 19 18:39:25 hopa-XPS-13-9350 whoopsie[1211]: [18:39:25] Cannot reach: https://daisy.ubuntu.com', 'Jun 19 18:39:25 hopa-XPS-13-9350 whoopsie[1211]: [18:39:25] Cannot reach: https://daisy.ubuntu.com', 'Jun 19 19:40:37 hopa-XPS-13-9350 whoopsie[1211]: [19:40:37] Cannot reach: https://daisy.ubuntu.com', 'Jun 19 19:40:37 hopa-XPS-13-9350 whoopsie[1211]: [19:40:37] The default IPv4 route is: /org/freedesktop/NetworkManager/ActiveConnection/2', 'Jun 19 19:40:37 hopa-XPS-13-9350 whoopsie[1211]: [19:40:37] Not a paid data plan: /org/freedesktop/NetworkManager/ActiveConnection/2', 'Jun 19 19:40:37 hopa-XPS-13-9350 whoopsie[1211]: [19:40:37] Found usable connection: /org/freedesktop/NetworkManager/ActiveConnection/2', 'Jun 19 19:40:38 hopa-XPS-13-9350 whoopsie[1211]: [19:40:38] online'])
+INFO|(True, 'Tue 2018-06-19 14:09:10 -04; 8h ago', '\nJun 19 14:09:18 hopa-XPS-13-9350 whoopsie[1211]: [14:09:18] Found usable connection: /org/freedesktop/NetworkManager/ActiveConnection/1\nJun 19 14:09:19 hopa-XPS-13-9350 whoopsie[1211]: [14:09:19] online\nJun 19 18:39:20 hopa-XPS-13-9350 whoopsie[1211]: [18:39:20] offline\nJun 19 18:39:25 hopa-XPS-13-9350 whoopsie[1211]: [18:39:25] Cannot reach: https://daisy.ubuntu.com\nJun 19 18:39:25 hopa-XPS-13-9350 whoopsie[1211]: [18:39:25] Cannot reach: https://daisy.ubuntu.com\nJun 19 19:40:37 hopa-XPS-13-9350 whoopsie[1211]: [19:40:37] Cannot reach: https://daisy.ubuntu.com\nJun 19 19:40:37 hopa-XPS-13-9350 whoopsie[1211]: [19:40:37] The default IPv4 route is: /org/freedesktop/NetworkManager/ActiveConnection/2\nJun 19 19:40:37 hopa-XPS-13-9350 whoopsie[1211]: [19:40:37] Not a paid data plan: /org/freedesktop/NetworkManager/ActiveConnection/2\nJun 19 19:40:37 hopa-XPS-13-9350 whoopsie[1211]: [19:40:37] Found usable connection: /org/freedesktop/NetworkManager/ActiveConnection/2\nJun 19 19:40:38 hopa-XPS-13-9350 whoopsie[1211]: [19:40:38] online')
+INFO|(True, 'Tue 2018-06-19 14:09:10 -04; 8h ago', '\nJun 19 14:09:18 hopa-XPS-13-9350 whoopsie[1211]: [14:09:18] Found usable connection: /org/freedesktop/NetworkManager/ActiveConnection/1\nJun 19 14:09:19 hopa-XPS-13-9350 whoopsie[1211]: [14:09:19] online\nJun 19 18:39:20 hopa-XPS-13-9350 whoopsie[1211]: [18:39:20] offline\nJun 19 18:39:25 hopa-XPS-13-9350 whoopsie[1211]: [18:39:25] Cannot reach: https://daisy.ubuntu.com\nJun 19 18:39:25 hopa-XPS-13-9350 whoopsie[1211]: [18:39:25] Cannot reach: https://daisy.ubuntu.com\nJun 19 19:40:37 hopa-XPS-13-9350 whoopsie[1211]: [19:40:37] Cannot reach: https://daisy.ubuntu.com\nJun 19 19:40:37 hopa-XPS-13-9350 whoopsie[1211]: [19:40:37] The default IPv4 route is: /org/freedesktop/NetworkManager/ActiveConnection/2\nJun 19 19:40:37 hopa-XPS-13-9350 whoopsie[1211]: [19:40:37] Not a paid data plan: /org/freedesktop/NetworkManager/ActiveConnection/2\nJun 19 19:40:37 hopa-XPS-13-9350 whoopsie[1211]: [19:40:37] Found usable connection: /org/freedesktop/NetworkManager/ActiveConnection/2\nJun 19 19:40:38 hopa-XPS-13-9350 whoopsie[1211]: [19:40:38] online')
+INFO|(True, 'Tue 2018-06-19 14:09:10 -04; 8h ago', '\nJun 19 14:09:18 hopa-XPS-13-9350 whoopsie[1211]: [14:09:18] Found usable connection: /org/freedesktop/NetworkManager/ActiveConnection/1\nJun 19 14:09:19 hopa-XPS-13-9350 whoopsie[1211]: [14:09:19] online\nJun 19 18:39:20 hopa-XPS-13-9350 whoopsie[1211]: [18:39:20] offline\nJun 19 18:39:25 hopa-XPS-13-9350 whoopsie[1211]: [18:39:25] Cannot reach: https://daisy.ubuntu.com\nJun 19 18:39:25 hopa-XPS-13-9350 whoopsie[1211]: [18:39:25] Cannot reach: https://daisy.ubuntu.com\nJun 19 19:40:37 hopa-XPS-13-9350 whoopsie[1211]: [19:40:37] Cannot reach: https://daisy.ubuntu.com\nJun 19 19:40:37 hopa-XPS-13-9350 whoopsie[1211]: [19:40:37] The default IPv4 route is: /org/freedesktop/NetworkManager/ActiveConnection/2\nJun 19 19:40:37 hopa-XPS-13-9350 whoopsie[1211]: [19:40:37] Not a paid data plan: /org/freedesktop/NetworkManager/ActiveConnection/2\nJun 19 19:40:37 hopa-XPS-13-9350 whoopsie[1211]: [19:40:37] Found usable connection: /org/freedesktop/NetworkManager/ActiveConnection/2\nJun 19 19:40:38 hopa-XPS-13-9350 whoopsie[1211]: [19:40:38] online')
+INFO|(True, 'Tue 2018-06-19 14:09:10 -04; 8h ago', '\nJun 19 14:09:18 hopa-XPS-13-9350 whoopsie[1211]: [14:09:18] Found usable connection: /org/freedesktop/NetworkManager/ActiveConnection/1\nJun 19 14:09:19 hopa-XPS-13-9350 whoopsie[1211]: [14:09:19] online\nJun 19 18:39:20 hopa-XPS-13-9350 whoopsie[1211]: [18:39:20] offline\nJun 19 18:39:25 hopa-XPS-13-9350 whoopsie[1211]: [18:39:25] Cannot reach: https://daisy.ubuntu.com\nJun 19 18:39:25 hopa-XPS-13-9350 whoopsie[1211]: [18:39:25] Cannot reach: https://daisy.ubuntu.com\nJun 19 19:40:37 hopa-XPS-13-9350 whoopsie[1211]: [19:40:37] Cannot reach: https://daisy.ubuntu.com\nJun 19 19:40:37 hopa-XPS-13-9350 whoopsie[1211]: [19:40:37] The default IPv4 route is: /org/freedesktop/NetworkManager/ActiveConnection/2\nJun 19 19:40:37 hopa-XPS-13-9350 whoopsie[1211]: [19:40:37] Not a paid data plan: /org/freedesktop/NetworkManager/ActiveConnection/2\nJun 19 19:40:37 hopa-XPS-13-9350 whoopsie[1211]: [19:40:37] Found usable connection: /org/freedesktop/NetworkManager/ActiveConnection/2\nJun 19 19:40:38 hopa-XPS-13-9350 whoopsie[1211]: [19:40:38] online')
+INFO|
+Jun 19 14:09:18 hopa-XPS-13-9350 whoopsie[1211]: [14:09:18] Found usable connection: /org/freedesktop/NetworkManager/ActiveConnection/1
+Jun 19 14:09:19 hopa-XPS-13-9350 whoopsie[1211]: [14:09:19] online
+Jun 19 18:39:20 hopa-XPS-13-9350 whoopsie[1211]: [18:39:20] offline
+Jun 19 18:39:25 hopa-XPS-13-9350 whoopsie[1211]: [18:39:25] Cannot reach: https://daisy.ubuntu.com
+Jun 19 18:39:25 hopa-XPS-13-9350 whoopsie[1211]: [18:39:25] Cannot reach: https://daisy.ubuntu.com
+Jun 19 19:40:37 hopa-XPS-13-9350 whoopsie[1211]: [19:40:37] Cannot reach: https://daisy.ubuntu.com
+Jun 19 19:40:37 hopa-XPS-13-9350 whoopsie[1211]: [19:40:37] The default IPv4 route is: /org/freedesktop/NetworkManager/ActiveConnection/2
+Jun 19 19:40:37 hopa-XPS-13-9350 whoopsie[1211]: [19:40:37] Not a paid data plan: /org/freedesktop/NetworkManager/ActiveConnection/2
+Jun 19 19:40:37 hopa-XPS-13-9350 whoopsie[1211]: [19:40:37] Found usable connection: /org/freedesktop/NetworkManager/ActiveConnection/2
+Jun 19 19:40:38 hopa-XPS-13-9350 whoopsie[1211]: [19:40:38] online
+INFO|Jun 19 14:09:18 hopa-XPS-13-9350 whoopsie[1211]: [14:09:18] Found usable connection: /org/freedesktop/NetworkManager/ActiveConnection/1
+Jun 19 14:09:19 hopa-XPS-13-9350 whoopsie[1211]: [14:09:19] online
+Jun 19 18:39:20 hopa-XPS-13-9350 whoopsie[1211]: [18:39:20] offline
+Jun 19 18:39:25 hopa-XPS-13-9350 whoopsie[1211]: [18:39:25] Cannot reach: https://daisy.ubuntu.com
+Jun 19 18:39:25 hopa-XPS-13-9350 whoopsie[1211]: [18:39:25] Cannot reach: https://daisy.ubuntu.com
+Jun 19 19:40:37 hopa-XPS-13-9350 whoopsie[1211]: [19:40:37] Cannot reach: https://daisy.ubuntu.com
+Jun 19 19:40:37 hopa-XPS-13-9350 whoopsie[1211]: [19:40:37] The default IPv4 route is: /org/freedesktop/NetworkManager/ActiveConnection/2
+Jun 19 19:40:37 hopa-XPS-13-9350 whoopsie[1211]: [19:40:37] Not a paid data plan: /org/freedesktop/NetworkManager/ActiveConnection/2
+Jun 19 19:40:37 hopa-XPS-13-9350 whoopsie[1211]: [19:40:37] Found usable connection: /org/freedesktop/NetworkManager/ActiveConnection/2
+Jun 19 19:40:38 hopa-XPS-13-9350 whoopsie[1211]: [19:40:38] online
