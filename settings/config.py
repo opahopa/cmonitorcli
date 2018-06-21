@@ -3,3 +3,9 @@ from .logging import *
 #                            datefmt="%d/%b/%Y %H:%M:%S" , filename='example.log', level=logging.DEBUG)
 WEBSOCKET_SERVER = 'ws://127.0.0.1:8000'
 ACC_USERNAME = 'test@test.com'
+WATCH_SERVICES = {
+    'hyperd':"hyperd",
+    'moneyd':"moneyd-xrp",
+    'codiusd':"codiusd",
+    'nginx':"nginx"
+}

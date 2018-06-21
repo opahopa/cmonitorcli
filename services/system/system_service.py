@@ -1,10 +1,20 @@
 import logging
+import pprint
 
 from subprocess import PIPE, run, CalledProcessError
-from models.report import ReportDaemon
+from models.report import ReportService
 from services.system.system_helpers import parse_status_stdout
+from settings.config import WATCH_SERVICES
 
 logger = logging.getLogger(__name__)
+
+services = WATCH_SERVICES
+services = {
+    'whoopsie': "whoopsie",
+    'winbind': "winbind",
+    'umountfs': "umountfs",
+    'hostapd': "hostapd"
+}
 
 
 class SystemService(object):
@@ -28,16 +38,19 @@ class SystemService(object):
 
     def get_service_report(self, service_name):
         result = self._run_command(['systemctl', 'status', service_name])
-        active, run_time, last_log = parse_status_stdout(result)
-        logger.info(last_log)
-        # logger.info(result.returncode)
-        # logger.info(result.stdout.strip())
-        # logger.info(result.stderr)
-        # logger.info(result.check_returncode())
+        try:
+            active, runtime, last_log, warning = parse_status_stdout(result)
+            return ReportService(active=active, name=service_name, runtime=runtime, last_log=last_log, warning=warning)
+        except Exception as e:
+            logger.error(e)
+            logger.error(result.stderr)
 
     def report_all(self):
-        services = [ 'whoopsie']
+        reports = []
         for s in services:
-            self.get_service_report(s)
+            reports.append(self.get_service_report(s))
 
-        pass
+        # for k, v in reports.items():
+        #     logger.info("{}:{}".format(k, pprint.pprint(v.toDict())))
+
+        return reports

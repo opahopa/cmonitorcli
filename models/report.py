@@ -14,18 +14,30 @@ class ReportAll(object):
         self.services = services
         self.serv_runtime = serv_runtime
 
-
     def to_json(self):
         pass
 
-class ReportDaemon(object):
 
-    def __init__(self, status, message, runtime):
+class ReportService(object):
+
+    def __init__(self, active, name, last_log=None, runtime=None, warning=None):
         """single service report."""
         self.type = "service"
-        self.status = status
-        self.message = message
+        self.active = active
+        self.name = name
+        self.last_log = last_log
         self.runtime = runtime
+        self.warning = warning
+
+    def toDict(self):
+        return {
+            'type': self.type,
+            'active': self.active,
+            'name': self.name,
+            'last_log': self.last_log,
+            'runtime': self.runtime,
+            'warning': self.warning
+        }
 
     def to_json(self):
         pass
