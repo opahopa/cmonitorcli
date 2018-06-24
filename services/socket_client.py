@@ -20,10 +20,12 @@ class WsClient(object):
     def __enter__(self):
         return self
 
-    def __init__(self, url, func_param, func_onmsg):
+    def __init__(self, url, func_onopen, func_onmsg, func_onclose, func_report):
         self.url = url
-        self.func_param = func_param
+        self.func_onopen = func_onopen
         self.func_onmsg = func_onmsg
+        self.func_onclose = func_onclose
+        self.func_report = func_report
         # self.connect()
 
     def connect(self):
@@ -52,6 +54,7 @@ class WsClient(object):
 
     def on_close(self, ws):
         logger.info("### closed ###")
+        self.func_onclose()
 
         # 5 days with 5 sec interval
         for i in range(0, 86400):
@@ -68,12 +71,12 @@ class WsClient(object):
         :return:
         """
 
-        def run(func_param):
+        def run(func_onopen, ws, func_report):
             logger.info("connected")
             # ws.send(json.dumps({
             #     'message': "Hello there"
             # }))
-            # func_param()
+            func_onopen(ws, func_report)
             # ws.close()
 
-        thread.start_new_thread(run, (self.func_param,))
+        thread.start_new_thread(run, (self.func_onopen, ws, self.func_report, ))

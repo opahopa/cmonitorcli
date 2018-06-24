@@ -7,6 +7,7 @@ from services.system.system_service import SystemService
 from services.db_service import DbService
 from services.utils import rnd_servname
 from services.monitor_service import MonitorService
+from services.scheduler import SchedulerService
 
 logger = logging.getLogger(__name__)
 
@@ -18,10 +19,13 @@ class CmonitorCli(object):
         self.hostname = self._get_hostname()
         self.monitor_service = MonitorService(self.hostname)
 
+        self.scheduler = SchedulerService(self.updater)
+        self.scheduler.run_scheduler()
 
         logger.info("connect to: ws://127.0.0.1:8000/ws/monitor/{}/{}/".format(ACC_USERNAME, self.hostname), )
         self.wsocket = WsClient("{}/ws/monitor/{}/{}/".format(WEBSOCKET_SERVER, ACC_USERNAME, self.hostname),
-                           func_param=self.cron_job, func_onmsg=self.watcher)
+                                func_onopen=self.scheduler.add_update_job, func_onmsg=self.watcher
+                                ,func_onclose=self.scheduler.delete_update_job, func_report=self.updater)
         self.wsocket.connect()
 
     def __enter__(self):
@@ -46,12 +50,15 @@ class CmonitorCli(object):
     """""
     ws: passed through ws initializer method in socket_client.py
     """""
+
     def watcher(self, ws, content):
         result_json = self.monitor_service.watch_message(content)
         if result_json is not None:
             ws.send(result_json)
             logger.info("Send resp: {}".format(result_json))
 
-    def cron_job(self):
-        for i in range(3):
-            time.sleep(3)
+    def updater(self, ws):
+        result_json = self.monitor_service.report_status()
+        if result_json is not None:
+            ws.send(result_json)
+            logger.debug("Sent update: {}".format(result_json))

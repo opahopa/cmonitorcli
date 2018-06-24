@@ -43,7 +43,7 @@ def result_to_json_response(content, type, status, hostname):
     if status is MessageStatus.ERROR:
         return json.dumps(result)
 
-    if type is MessageCommands.STATUS_ALL:
+    if type is MessageCommands.STATUS_ALL or type is MessageCommands.STATUS_CLI_UPDATE:
         for i in range(0, len(content)):
             if isinstance(content[i], ReportService):
                 content[i] = content[i].toDict()

@@ -13,7 +13,9 @@ class MessageStatus(Enum):
 
 
 class MessageCommands(Enum):
-    STATUS_ALL = 'STATUS_ALL'
+    STATUS_ALL = 'STATUS_ALL',
+    STATUS_CLI_DISCONNECT = 'STATUS_CLI_DISCONNECT',
+    STATUS_CLI_UPDATE = 'STATUS_CLI_UPDATE'
 
 
 class Message(object):

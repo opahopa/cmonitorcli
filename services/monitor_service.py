@@ -1,5 +1,6 @@
 import logging
 import sys
+import datetime
 
 sys.path.append("..")
 
@@ -9,6 +10,7 @@ from .message_helpers import parse_message, result_to_json_response
 from models.response import ResponseTypes, ResponseStatus
 
 logger = logging.getLogger(__name__)
+logging.getLogger('apscheduler.executors.default').setLevel(logging.DEBUG)
 
 
 class MonitorService(object):
@@ -40,3 +42,8 @@ class MonitorService(object):
                 return system_service.report_all()
 
         return None
+
+    def report_status(self):
+        with SystemService() as system_service:
+            result = system_service.report_all()
+            return result_to_json_response(result, MessageCommands.STATUS_CLI_UPDATE, ResponseStatus.OK, self.hostname)
