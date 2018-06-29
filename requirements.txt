@@ -2,4 +2,5 @@ jsonpickle==0.9.6
 pkg-resources==0.0.0
 six==1.11.0
 websocket-client==0.48.0
-apscheduler-3.5.1
+apscheduler==3.5.1
+pyinstaller==3.3.1

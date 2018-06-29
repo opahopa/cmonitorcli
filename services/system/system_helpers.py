@@ -1,10 +1,9 @@
 import logging
 
-
 logger = logging.getLogger(__name__)
 
 
-def parse_status_stdout(result):
+def parse_service_report_stdout(result):
     stdout_lines = result.stdout.strip().split('\n')
 
     active = False
@@ -32,3 +31,35 @@ def parse_status_stdout(result):
             warning = result.stderr.split("Warning", 1)[1].strip()
 
     return active, run_time, last_log, warning
+
+
+def parse_hyperctl_list(result):
+    lines = result.stdout.strip().split('\n')
+    active_pods = []
+
+    for i in range(0, len(lines)):
+        if 'POD ID' not in lines[i] and 'POD Name' not in lines[i]:
+            ss = lines[i].split()
+            active_pods.append({
+                'id': ss[0],
+                'name': ss[1],
+                'vm_name': ss[2],
+                'status': ss[3]
+            })
+
+    return active_pods
+
+
+def parse_memory_usage(result):
+    lines = result.stdout.strip().split('\n')
+    memory = {}
+
+    for i in range(0, len(lines)):
+        if 'Mem:' in lines[i]:
+            ss = lines[i].split()
+            memory = {
+                'total': int(ss[1]),
+                'used': int(ss[2])
+            }
+
+    return memory

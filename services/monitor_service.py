@@ -1,13 +1,14 @@
 import logging
 import sys
-import datetime
+import datetime, time
 
 sys.path.append("..")
 
 from models.message import MessageCommands, MessageTypes
 from services.system.system_service import SystemService
-from .message_helpers import parse_message, result_to_json_response
-from models.response import ResponseTypes, ResponseStatus
+from services.db_service import DbService
+from .message_helpers import parse_message, result_to_json_response, calcDialyIncome
+from models.response import ResponseStatus
 
 logger = logging.getLogger(__name__)
 logging.getLogger('apscheduler.executors.default').setLevel(logging.DEBUG)
@@ -29,21 +30,28 @@ class MonitorService(object):
 
     def execute_command_wrapper(self, msg):
         try:
-            result = self._execute_command(msg)
-            return result_to_json_response(result, msg.command, ResponseStatus.OK, self.hostname)
+            system, codius = self._execute_command(msg)
+            return result_to_json_response(system, codius, msg.command, ResponseStatus.OK, self.hostname)
         except Exception as e:
             logger.error("Error on command: {} :{}".format(msg.command.name, e))
-            return result_to_json_response(self._execute_command(msg), msg.command, ResponseStatus.ERROR, self.hostname)
+            system, codius = self._execute_command(msg)
+            return result_to_json_response(system, codius, msg.command, ResponseStatus.ERROR, self.hostname)
 
 
     def _execute_command(self, msg):
         if msg.command is MessageCommands.STATUS_ALL:
             with SystemService() as system_service:
-                return system_service.report_all()
+                system = system_service.report_system_services()
+                codius = system_service.report_codius()
+                return system, codius
 
         return None
 
     def report_status(self):
         with SystemService() as system_service:
-            result = system_service.report_all()
-            return result_to_json_response(result, MessageCommands.STATUS_CLI_UPDATE, ResponseStatus.OK, self.hostname)
+            system = system_service.report_system_services()
+            codius = system_service.report_codius()
+            with DbService() as db_service:
+                logger.info(calcDialyIncome(db_service.get_pods_in24hours()))
+                # db_service.write_pods_status(codius['pods'])
+            return result_to_json_response(system, codius, MessageCommands.STATUS_CLI_UPDATE, ResponseStatus.OK, self.hostname)
