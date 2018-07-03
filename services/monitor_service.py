@@ -1,13 +1,10 @@
 import logging
-import sys
-import datetime, time
-
-sys.path.append("..")
+import os
 
 from models.message import MessageCommands, MessageTypes
 from services.system.system_service import SystemService
 from services.db_service import DbService
-from .message_helpers import parse_message, result_to_json_response, calcDialyIncome
+from .message_helpers import parse_message, result_to_json_response, calc_dialy_income
 from models.response import ResponseStatus
 
 logger = logging.getLogger(__name__)
@@ -24,26 +21,23 @@ class MonitorService(object):
 
         try:
             if msg.type is MessageTypes.CONTROL:
-                return self.execute_command_wrapper(msg)
+                return self._execute_command(msg)
         except AttributeError:
             return None
 
-    def execute_command_wrapper(self, msg):
-        try:
-            system, codius = self._execute_command(msg)
-            return result_to_json_response(system, codius, msg.command, ResponseStatus.OK, self.hostname)
-        except Exception as e:
-            logger.error("Error on command: {} :{}".format(msg.command.name, e))
-            system, codius = self._execute_command(msg)
-            return result_to_json_response(system, codius, msg.command, ResponseStatus.ERROR, self.hostname)
-
-
     def _execute_command(self, msg):
         if msg.command is MessageCommands.STATUS_ALL:
-            with SystemService() as system_service:
-                system = system_service.report_system_services()
-                codius = system_service.report_codius()
-                return system, codius
+            try:
+                with SystemService() as system_service:
+                    system = system_service.report_system_services()
+                    codius = system_service.report_codius()
+                    return result_to_json_response(system, codius, msg.command, ResponseStatus.OK, self.hostname)
+            except Exception as e:
+                logger.error("Error on command: {} :{}".format(msg.command.name, e))
+                return None
+
+        if msg.command is MessageCommands.SET_CODIUS_FEE:
+            os.environ['CODIUS_COST_PER_MONTH'] = str(msg.body)
 
         return None
 
@@ -52,6 +46,10 @@ class MonitorService(object):
             system = system_service.report_system_services()
             codius = system_service.report_codius()
             with DbService() as db_service:
-                logger.info(calcDialyIncome(db_service.get_pods_in24hours()))
-                # db_service.write_pods_status(codius['pods'])
-            return result_to_json_response(system, codius, MessageCommands.STATUS_CLI_UPDATE, ResponseStatus.OK, self.hostname)
+                codius['income_24'] = 0
+                db_service.write_pods_status(codius)
+                if len(db_service.get_pods_in24hours()) > 0:
+                    codius['income_24'], codius['count_24'] = calc_dialy_income(db_service.get_pods_in24hours())
+
+            return result_to_json_response(system, codius, MessageCommands.STATUS_CLI_UPDATE, ResponseStatus.OK,
+                                           self.hostname)

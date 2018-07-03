@@ -1,6 +1,6 @@
 import logging
-import pprint
 import json
+import os
 
 from subprocess import PIPE, run, CalledProcessError
 from models.report import ReportService
@@ -10,12 +10,6 @@ from settings.config import WATCH_SERVICES
 logger = logging.getLogger(__name__)
 
 services = WATCH_SERVICES
-services = {
-    'whoopsie': "whoopsie",
-    'winbind': "winbind",
-    'umountfs': "umountfs",
-    'hostapd': "hostapd"
-}
 
 
 class SystemService(object):
@@ -88,14 +82,12 @@ class SystemService(object):
             pass
 
         try:
-            logger.info(self._run_command(['echo', '$CODIUS_COST_PER_MONTH']).stdout)
-            fee = self._run_command(['echo', '$CODIUS_COST_PER_MONTH']).stdout.strip()
-            result['fee'] = int(fee)
-        except Exception as e:
+            result['fee'] = int(os.environ['CODIUS_COST_PER_MONTH'])
+        except KeyError as e:
             result['fee'] = None
-            logger.error(e)
+            logger.error('KeyError: %s' % str(e))
             pass
 
-        logger.info(result)
+        logger.info(f"Codius system info: {result}")
 
         return result

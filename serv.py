@@ -1,4 +1,4 @@
-from settings.logging import *
+from settings.logging_conf import *
 
 from services.system.system_service import SystemService
 

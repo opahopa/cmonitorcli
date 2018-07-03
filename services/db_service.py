@@ -20,7 +20,7 @@ class DbService(object):
                          (hostname text not null, status_hyperd boolean, status_moneyd boolean, status_codiusd boolean
                          pods text[])''')
             self.c.execute('''CREATE TABLE IF NOT EXISTS codius_history
-                         (record_time timestamp, pods json[])''')
+                         (record_time timestamp, pods json[], fee integer)''')
         except BaseException as error:
             print('An exception occurred on connecting to sqllite: {}'.format(error))
 
@@ -32,11 +32,14 @@ class DbService(object):
             print('An exception occurred on writing hostname to sqllite: {}'.format(error))
 
     def get_pods_in24hours(self):
-        self.c.execute("SELECT record_time as [timestamp], pods FROM codius_history WHERE record_time >= datetime('now','-1 day')")
-        res = self.c.fetchall()
-        if res[0] is not None:
-            return res
-        else:
+        try:
+            self.c.execute("SELECT record_time as [timestamp], pods, fee FROM codius_history WHERE record_time >= datetime('now','-1 day')")
+            res = self.c.fetchall()
+            if res[0] is not None:
+                return res
+            else:
+                return []
+        except IndexError:
             return []
 
     """""
@@ -45,13 +48,36 @@ class DbService(object):
         'id': ss[0],
         'name': ss[1],
         'vm_name': ss[2],
-        'status': ss[3]
+        'status': ss[3],
+        'fee': ''
     }]
     """""
-    def write_pods_status(self, pods):
+    def write_pods_status(self, codius):
+        # pods = [
+        #     {
+        #         'id': 'foihew3434h235',
+        #         'name': 'foihewoheowfh235',
+        #         'vm_name': 'foihewoheowfh235',
+        #         'status': 'activate'
+        #     },
+        #     {
+        #         'id': 'foih343434h235',
+        #         'name': 'foihewoheowfh235',
+        #         'vm_name': 'foihewoheowfh235',
+        #         'status': 'activate'
+        #     },
+        #     {
+        #         'id': 'foi343555heowfh235',
+        #         'name': 'foihewoheowfh235',
+        #         'vm_name': 'foihewoheowfh235',
+        #         'status': 'activate'
+        #     }
+        # ]
+
         try:
             time = datetime.datetime.now()
-            self.c.execute("INSERT INTO codius_history (record_time, pods) VALUES (?, ?)", (time, json.dumps(pods),))
+            self.c.execute("INSERT INTO codius_history (record_time, pods, fee) VALUES (?, ?, ?)"
+                           , (time, json.dumps(codius['pods']), int(codius['fee']),))
             self.conn.commit()
         except BaseException as error:
             print('An exception occurred on writing pods history to sqllite: {}'.format(error))

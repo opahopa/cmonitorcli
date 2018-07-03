@@ -1,16 +1,8 @@
-import websocket, json
+import websocket
 import logging
 import time
 
-try:
-    import thread
-except ImportError:
-    import _thread as thread
-
-try:
-    import threading
-except ImportError:
-    import _threading as threading
+import _thread as thread
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +18,6 @@ class WsClient(object):
         self.func_onmsg = func_onmsg
         self.func_onclose = func_onclose
         self.func_report = func_report
-        # self.connect()
 
     def connect(self):
         websocket.enableTrace(True)

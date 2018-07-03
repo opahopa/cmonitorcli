@@ -15,5 +15,6 @@ def main_job():
     pass
 
 
-if __name__ == '__main__':
+if __name__ == "__main__" and __package__ is None:
+    __package__ = "client"
     main_job()

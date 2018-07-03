@@ -1,17 +1,9 @@
 import logging, traceback
-import sys
-import json, pprint
-
+import json, os
 
 from timeit import default_timer as timer
 from models.report import ReportService
-from services.db_service import DbService
-from models.response import ResponseTypes, ResponseStatus
-from models.message import MessageCommands, MessageStatus
-
-sys.path.append("..")
-
-from models.message import Message
+from models.message import Message, MessageCommands, MessageStatus
 
 logger = logging.getLogger(__name__)
 
@@ -66,16 +58,44 @@ def result_to_json_response(report_system, report_codius, type, status, hostname
     return json.dumps(result)
 
 
-def calcDialyIncome(pods_log):
-    pods_activity = podsActivity(pods_log)
-    total_duration = 0
+""""""""""""""""""""""""""""""""""""""""
+:returns
+decimal dialy_income with precision 5.
 
-    # print(pprint.pprint(pods_activity))
+and
+
+:int: pods_count 
+"""""""""""""""""""""""""""""""""""""""""
+
+
+def calc_dialy_income(pods_log):
+    # timer_start = timer()
+
+    pods_activity, pods_count = podsActivity(pods_log)
+    try:
+        fee = int(os.environ['CODIUS_COST_PER_MONTH'])
+    except KeyError as e:
+        pass
+
+    income_24 = 0
 
     for k, v in pods_activity.items():
-        total_duration += v['duration']
+        if v['fee'] is not 0:
+            income_24 += v['duration'] * fee_per_sec(v['fee'])
+        else:
+            try:
+                income_24 += v['duration'] * fee_per_sec(fee)
+            except KeyError as e:
+                return None
 
-    print(total_duration)
+    # timer_end = timer()
+    # print(timer_end - timer_start)
+
+    return round(income_24, 5), pods_count
+
+
+def fee_per_sec(fee):
+    return fee / 30 / 24 / 60 / 60
 
 
 """"""""""""""""""""""""""""""""""""""""
@@ -85,13 +105,16 @@ Data writen to db every 3 sec, so reasonable diff is 60 sec
 Returns dict:pods_activity 
 pods_activity[id]: pod id
 pods_activity[id]['duration']: total pod execution time (seconds)
-pods_activity[id]['timestamps']: associated timestamps
+pods_activity[id]['timestamps']: tuple(timestamp, fee)
+pods_activity[id]['fee']: associated average fee
+
+and 'int' pods_count
 
 """""""""""""""""""""""""""""""""""""""""
+
+
 def podsActivity(pods_log):
     try:
-        timer_start = timer()
-
         pod_ids = []
         for log in pods_log:
             time, pods = log[0], log[1]
@@ -101,47 +124,43 @@ def podsActivity(pods_log):
         pod_ids_unique = list(set(pod_ids))
 
         pods_activity = {}
+        # associate timestamps with pod id's
+        # pods_activity[id]['timestamps'] contains tuples '(timestamp, fee)'
         for id in pod_ids_unique:
             pods_activity[id] = {}
             pods_activity[id]['timestamps'] = []
 
             for log in pods_log:
-                time, pods = log[0], log[1]
+                time, pods, fee = log[0], log[1], log[2]
                 if pods is not None and len(pods) > 0:
                     if id in [pod['id'] for pod in json.loads(pods)]:
-                        pods_activity[id]['timestamps'].append(time)
+                        pods_activity[id]['timestamps'].append((time, fee))
 
-            pods_activity[id]['timestamps'].sort()
+            pods_activity[id]['timestamps'].sort(key=lambda tup: tup[0])
 
-        print(pprint.pprint(pods_activity))
+        # print(pprint.pprint(pods_activity))
 
         # calculate total run duration for each pod
         for k, v in pods_activity.items():
             pods_activity[k]['duration'] = 0
+            pods_activity[k]['fee'] = 0
 
-            start, next = v['timestamps'][0], ''
-            for time in v['timestamps']:
-                next = time
-                diff = next - start
+            max_interruption = 60
+            starts = [t[0] for t in v['timestamps']][:-1]
+            ends = [t[0] for t in v['timestamps']][1:]
+            durations = zip(starts, ends)
+            for start, end in durations:
+                delta = (end - start).total_seconds()
+                if delta < max_interruption:
+                    pods_activity[k]['duration'] += delta
 
-                if diff.seconds < 30:
-                    pods_activity[k]['duration'] += diff.seconds
-                else:
-                    print("diff: %s" % diff.seconds)
+            pods_activity[k]['fee'] = sum([t[1] for t in v['timestamps']]) / len(v['timestamps'])
 
-                start = next
+            # print(f"added: {pods_activity[k]['duration']}")
+            # diff = v['timestamps'][-1] - v['timestamps'][0]
+            # print(f"real: {diff.seconds}")
 
-            print(f"added: {pods_activity[k]['duration']}")
-            diff = v['timestamps'][-1] - v['timestamps'][0]
-            print(f"real: {diff.seconds}")
-
-
-
-
-        timer_end = timer()
-        print(timer_end - timer_start)
-
-        return pods_activity
+        return pods_activity, len(pod_ids_unique)
     except:
         traceback.print_exc()
 

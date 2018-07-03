@@ -1,14 +1,99 @@
+ERROR|Expecting value: line 1 column 1 (char 0)
+ERROR|[Errno 2] No such file or directory: 'hyperctl': 'hyperctl'
+INFO|Codius system info: {'version': None, 'pods': [], 'memory': {'total': 7823, 'used': 6360}, 'fee': 5}
+ERROR|Expecting value: line 1 column 1 (char 0)
+ERROR|[Errno 2] No such file or directory: 'hyperctl': 'hyperctl'
+INFO|Codius system info: {'version': None, 'pods': [], 'memory': {'total': 7823, 'used': 6370}, 'fee': 5}
+ERROR|Expecting value: line 1 column 1 (char 0)
+ERROR|[Errno 2] No such file or directory: 'hyperctl': 'hyperctl'
+INFO|Codius system info: {'version': None, 'pods': [], 'memory': {'total': 7823, 'used': 6378}, 'fee': 5}
+ERROR|Expecting value: line 1 column 1 (char 0)
+ERROR|[Errno 2] No such file or directory: 'hyperctl': 'hyperctl'
+INFO|Codius system info: {'version': None, 'pods': [], 'memory': {'total': 7823, 'used': 6382}, 'fee': 5}
+ERROR|Expecting value: line 1 column 1 (char 0)
+ERROR|[Errno 2] No such file or directory: 'hyperctl': 'hyperctl'
+INFO|Codius system info: {'version': None, 'pods': [], 'memory': {'total': 7823, 'used': 6372}, 'fee': 5}
+ERROR|Expecting value: line 1 column 1 (char 0)
+ERROR|[Errno 2] No such file or directory: 'hyperctl': 'hyperctl'
+INFO|Codius system info: {'version': None, 'pods': [], 'memory': {'total': 7823, 'used': 6375}, 'fee': 5}
+ERROR|Expecting value: line 1 column 1 (char 0)
+ERROR|[Errno 2] No such file or directory: 'hyperctl': 'hyperctl'
+INFO|Codius system info: {'version': None, 'pods': [], 'memory': {'total': 7823, 'used': 6376}, 'fee': 5}
+ERROR|Expecting value: line 1 column 1 (char 0)
+ERROR|[Errno 2] No such file or directory: 'hyperctl': 'hyperctl'
+INFO|Codius system info: {'version': None, 'pods': [], 'memory': {'total': 7823, 'used': 6380}, 'fee': 5}
+ERROR|Expecting value: line 1 column 1 (char 0)
+ERROR|[Errno 2] No such file or directory: 'hyperctl': 'hyperctl'
+INFO|Codius system info: {'version': None, 'pods': [], 'memory': {'total': 7823, 'used': 6377}, 'fee': 5}
+INFO|received message: {"type": "CONTROL", "command": "SET_CODIUS_FEE", "body": "9"}
+ERROR|Expecting value: line 1 column 1 (char 0)
+ERROR|[Errno 2] No such file or directory: 'hyperctl': 'hyperctl'
+INFO|Codius system info: {'version': None, 'pods': [], 'memory': {'total': 7823, 'used': 6381}, 'fee': 9}
+ERROR|Expecting value: line 1 column 1 (char 0)
+ERROR|[Errno 2] No such file or directory: 'hyperctl': 'hyperctl'
+INFO|Codius system info: {'version': None, 'pods': [], 'memory': {'total': 7823, 'used': 6387}, 'fee': 9}
+ERROR|Expecting value: line 1 column 1 (char 0)
+ERROR|[Errno 2] No such file or directory: 'hyperctl': 'hyperctl'
+INFO|Codius system info: {'version': None, 'pods': [], 'memory': {'total': 7823, 'used': 6389}, 'fee': 9}
+ERROR|Expecting value: line 1 column 1 (char 0)
+ERROR|[Errno 2] No such file or directory: 'hyperctl': 'hyperctl'
+INFO|Codius system info: {'version': None, 'pods': [], 'memory': {'total': 7823, 'used': 6368}, 'fee': 9}
+ERROR|Expecting value: line 1 column 1 (char 0)
+ERROR|[Errno 2] No such file or directory: 'hyperctl': 'hyperctl'
+INFO|Codius system info: {'version': None, 'pods': [], 'memory': {'total': 7823, 'used': 6371}, 'fee': 9}
+ERROR|Expecting value: line 1 column 1 (char 0)
+ERROR|[Errno 2] No such file or directory: 'hyperctl': 'hyperctl'
+INFO|Codius system info: {'version': None, 'pods': [], 'memory': {'total': 7823, 'used': 6373}, 'fee': 9}
+ERROR|Expecting value: line 1 column 1 (char 0)
+ERROR|[Errno 2] No such file or directory: 'hyperctl': 'hyperctl'
+INFO|Codius system info: {'version': None, 'pods': [], 'memory': {'total': 7823, 'used': 6343}, 'fee': 9}
+ERROR|Expecting value: line 1 column 1 (char 0)
+ERROR|[Errno 2] No such file or directory: 'hyperctl': 'hyperctl'
+INFO|Codius system info: {'version': None, 'pods': [], 'memory': {'total': 7823, 'used': 6344}, 'fee': 9}
+ERROR|Expecting value: line 1 column 1 (char 0)
+ERROR|[Errno 2] No such file or directory: 'hyperctl': 'hyperctl'
+INFO|Codius system info: {'version': None, 'pods': [], 'memory': {'total': 7823, 'used': 6355}, 'fee': 9}
+ERROR|Expecting value: line 1 column 1 (char 0)
+ERROR|[Errno 2] No such file or directory: 'hyperctl': 'hyperctl'
+INFO|Codius system info: {'version': None, 'pods': [], 'memory': {'total': 7823, 'used': 6358}, 'fee': 9}
+ERROR|Expecting value: line 1 column 1 (char 0)
+ERROR|[Errno 2] No such file or directory: 'hyperctl': 'hyperctl'
+INFO|Codius system info: {'version': None, 'pods': [], 'memory': {'total': 7823, 'used': 6360}, 'fee': 9}
+ERROR|
+INFO|### closed ###
+INFO|Removed job status_update_job
 INFO|Scheduler started
-INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hopa-XPS-13-9350/
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hoop-XPS-13-9350/
 INFO|connected
 INFO|Added job "SchedulerService.add_update_job.<locals>.<lambda>" to job store "default"
 ERROR|Expecting value: line 1 column 1 (char 0)
 ERROR|[Errno 2] No such file or directory: 'hyperctl': 'hyperctl'
-INFO|$CODIUS_COST_PER_MONTH
-
-ERROR|invalid literal for int() with base 10: '$CODIUS_COST_PER_MONTH'
-INFO|{'version': None, 'pods': [], 'memory': {'total': 7830, 'used': 4798}, 'fee': None}
-INFO|None
+INFO|Codius system info: {'version': None, 'pods': [], 'memory': {'total': 7823, 'used': 6368}, 'fee': 5}
+ERROR|Expecting value: line 1 column 1 (char 0)
+ERROR|[Errno 2] No such file or directory: 'hyperctl': 'hyperctl'
+INFO|Codius system info: {'version': None, 'pods': [], 'memory': {'total': 7823, 'used': 6370}, 'fee': 5}
+ERROR|Expecting value: line 1 column 1 (char 0)
+ERROR|[Errno 2] No such file or directory: 'hyperctl': 'hyperctl'
+INFO|Codius system info: {'version': None, 'pods': [], 'memory': {'total': 7823, 'used': 6374}, 'fee': 5}
+ERROR|Expecting value: line 1 column 1 (char 0)
+ERROR|[Errno 2] No such file or directory: 'hyperctl': 'hyperctl'
+INFO|Codius system info: {'version': None, 'pods': [], 'memory': {'total': 7823, 'used': 6377}, 'fee': 5}
+ERROR|
+INFO|### closed ###
+INFO|Removed job status_update_job
+INFO|Scheduler started
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hoop-XPS-13-9350/
+INFO|connected
+INFO|Added job "SchedulerService.add_update_job.<locals>.<lambda>" to job store "default"
+ERROR|Expecting value: line 1 column 1 (char 0)
+ERROR|[Errno 2] No such file or directory: 'hyperctl': 'hyperctl'
+INFO|Codius system info: {'version': None, 'pods': [], 'memory': {'total': 7823, 'used': 6352}, 'fee': 5}
+ERROR|Expecting value: line 1 column 1 (char 0)
+ERROR|[Errno 2] No such file or directory: 'hyperctl': 'hyperctl'
+INFO|Codius system info: {'version': None, 'pods': [], 'memory': {'total': 7823, 'used': 6353}, 'fee': 5}
+ERROR|Expecting value: line 1 column 1 (char 0)
+ERROR|[Errno 2] No such file or directory: 'hyperctl': 'hyperctl'
+INFO|Codius system info: {'version': None, 'pods': [], 'memory': {'total': 7823, 'used': 6357}, 'fee': 5}
 ERROR|
 INFO|### closed ###
 INFO|Removed job status_update_job
