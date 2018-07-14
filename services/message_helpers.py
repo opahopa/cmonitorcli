@@ -20,22 +20,31 @@ def parse_message(content):
             msg.body = content["body"]
         except KeyError:
             pass
+        try:
+            msg.hostname = content["hostname"]
+        except KeyError:
+            pass
         return msg
     except Exception as e:
         logger.error(e)
         # traceback.print_exc()
 
 
-def result_to_json_response(report_system, report_codius, type, status, hostname):
+def result_to_json_response(type, status, hostname, report_system=None, report_codius=None, body=None):
     result = {}
     result['type'] = "REPORT"
     result['command'] = type.name
     result['status'] = status.name
     result['hostname'] = hostname
-    result['body'] = {
-        'system': report_system,
-        'codius': report_codius
-    }
+    
+    if body:
+        result['body'] = body
+    
+    if report_system and report_codius:
+        result['body'] = {
+            'system': report_system,
+            'codius': report_codius
+        }
 
     if status is MessageStatus.ERROR:
         return json.dumps(result)

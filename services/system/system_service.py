@@ -20,7 +20,7 @@ class SystemService(object):
     def __exit__(self, exc_type, exc_val, exc_tb):
         pass
 
-    def _run_command(self, command):
+    def run_command(self, command):
         try:
             return run(command, stdout=PIPE, stderr=PIPE, universal_newlines=True, timeout=20)
         except CalledProcessError as e:
@@ -28,11 +28,11 @@ class SystemService(object):
             logger.error(output)
 
     def get_hostname(self):
-        result = self._run_command(['uname', '-n'])
+        result = self.run_command(['uname', '-n'])
         return result.returncode, result.stdout.strip(), result.stderr, result.check_returncode
 
     def get_service_report(self, service_name):
-        result = self._run_command(['systemctl', 'status', service_name])
+        result = self.run_command(['systemctl', 'status', service_name])
         try:
             active, runtime, last_log, warning = parse_service_report_stdout(result)
             return ReportService(active=active, name=service_name, runtime=runtime, last_log=last_log, warning=warning)
@@ -59,14 +59,14 @@ class SystemService(object):
         }
 
         try:
-            version = json.loads(self._run_command(['curl', '127.0.0.1:3000/version']).stdout.strip())['version']
+            version = json.loads(self.run_command(['curl', '127.0.0.1:3000/version']).stdout.strip())['version']
             result['version'] = version
         except Exception as e:
             result['version'] = None
             logger.error(e)
             pass
         try:
-            pods = parse_hyperctl_list(self._run_command(['hyperctl', 'list']))
+            pods = parse_hyperctl_list(self.run_command(['hyperctl', 'list']))
             result['pods'] = pods
         except Exception as e:
             result['pods'] = []
@@ -74,7 +74,7 @@ class SystemService(object):
             pass
 
         try:
-            memory = parse_memory_usage(self._run_command(['free', '-m']))
+            memory = parse_memory_usage(self.run_command(['free', '-m']))
             result['memory'] = memory
         except Exception as e:
             result['memory'] = None

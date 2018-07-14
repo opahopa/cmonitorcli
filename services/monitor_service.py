@@ -31,13 +31,22 @@ class MonitorService(object):
                 with SystemService() as system_service:
                     system = system_service.report_system_services()
                     codius = system_service.report_codius()
-                    return result_to_json_response(system, codius, msg.command, ResponseStatus.OK, self.hostname)
+                    return result_to_json_response(msg.command, ResponseStatus.OK, self.hostname
+                                                   , report_system=system, report_codius=codius)
             except Exception as e:
                 logger.error("Error on command: {} :{}".format(msg.command.name, e))
                 return None
 
-        if msg.command is MessageCommands.SET_CODIUS_FEE:
+        if msg.command is MessageCommands.SET_CODIUS_FEE and msg.hostname == self.hostname:
             os.environ['CODIUS_COST_PER_MONTH'] = str(msg.body)
+        if msg.command is MessageCommands.SERVICE_RESTART and msg.hostname == self.hostname:
+            try:
+                with SystemService() as system_service:
+                    system_service.run_command(['systemctl', 'restart', msg.body])
+                    return result_to_json_response(msg.command, ResponseStatus.OK, self.hostname)
+            except Exception as e:
+                logger.error("Error on command: {} :{}".format(msg.command.name, e))
+                return result_to_json_response(msg.command, ResponseStatus.ERROR, self.hostname, body=e)
 
         return None
 
@@ -51,5 +60,5 @@ class MonitorService(object):
                 if len(db_service.get_pods_in24hours()) > 0:
                     codius['income_24'], codius['count_24'] = calc_dialy_income(db_service.get_pods_in24hours())
 
-            return result_to_json_response(system, codius, MessageCommands.STATUS_CLI_UPDATE, ResponseStatus.OK,
-                                           self.hostname)
+            return result_to_json_response(MessageCommands.STATUS_CLI_UPDATE, ResponseStatus.OK, self.hostname,
+                                           report_system=system, report_codius=codius)

@@ -16,12 +16,13 @@ class MessageCommands(Enum):
     STATUS_ALL = 'STATUS_ALL',
     STATUS_CLI_DISCONNECT = 'STATUS_CLI_DISCONNECT',
     STATUS_CLI_UPDATE = 'STATUS_CLI_UPDATE',
-    SET_CODIUS_FEE = 'SET_CODIUS_FEE'
+    SET_CODIUS_FEE = 'SET_CODIUS_FEE',
+    SERVICE_RESTART = 'SERVICE_RESTART'
 
 
 class Message(object):
 
-    def __init__(self, type, command, status=None, body=None):
+    def __init__(self, type, command, status=None, body=None, hostname=None):
         self.type = MessageTypes[type]
 
         if command:
@@ -30,3 +31,5 @@ class Message(object):
             self.status = MessageStatus[status]
         if body:
             self.body = body
+        if hostname:
+            self.hostname = hostname
