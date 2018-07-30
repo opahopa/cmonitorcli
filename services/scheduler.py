@@ -2,6 +2,7 @@ import logging
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.schedulers import SchedulerAlreadyRunningError
+from apscheduler.triggers import interval
 from apscheduler.jobstores.base import JobLookupError
 
 logger = logging.getLogger(__name__)
@@ -33,5 +34,6 @@ class SchedulerService(object):
     to be called in socket_client. ws & func passed on 'onopen' event
     """""
     def add_update_job(self, ws, job_func):
-        scheduler.add_job(lambda: job_func(ws), 'interval', seconds=3, id='status_update_job', replace_existing=True)
+        trigger = interval.IntervalTrigger(seconds=3)
+        scheduler.add_job(lambda: job_func(ws), trigger=trigger, id='status_update_job', replace_existing=True)
         pass

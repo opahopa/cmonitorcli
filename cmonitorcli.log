@@ -11463,3 +11463,18 @@ INFO|### closed ###
 INFO|Removed job status_update_job
 ERROR|[Errno 111] Connection refused
 INFO|### closed ###
+INFO|Scheduler started
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/test@test.com/hoop-XPS-13-9350/
+INFO|connected
+INFO|Added job "SchedulerService.add_update_job.<locals>.<lambda>" to job store "default"
+ERROR|Expecting value: line 1 column 1 (char 0)
+ERROR|[Errno 2] No such file or directory: 'hyperctl': 'hyperctl'
+ERROR|KeyError: 'CODIUS_COST_PER_MONTH'
+INFO|Codius system info: {'version': None, 'pods': [], 'memory': {'total': 7823, 'used': 3607}, 'fee': None}
+ERROR|Expecting value: line 1 column 1 (char 0)
+ERROR|[Errno 2] No such file or directory: 'hyperctl': 'hyperctl'
+ERROR|KeyError: 'CODIUS_COST_PER_MONTH'
+INFO|Codius system info: {'version': None, 'pods': [], 'memory': {'total': 7823, 'used': 3608}, 'fee': None}
+ERROR|
+INFO|### closed ###
+INFO|Removed job status_update_job
