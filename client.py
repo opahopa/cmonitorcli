@@ -22,7 +22,7 @@ class CmonitorCli(object):
         self.scheduler = SchedulerService(self.updater)
         self.scheduler.run_scheduler()
 
-        logger.info("connect to: ws://127.0.0.1:8000/ws/monitor/{}/{}/".format(ACC_USERNAME, self.hostname), )
+        logger.info("connect to: {}/ws/monitor/{}/{}/".format(WEBSOCKET_SERVER, ACC_USERNAME, self.hostname), )
         self.wsocket = WsClient("{}/ws/monitor/{}/{}/".format(WEBSOCKET_SERVER, ACC_USERNAME, self.hostname),
                                 func_onopen=self.scheduler.add_update_job, func_onmsg=self.watcher
                                 ,func_onclose=self.scheduler.delete_update_job, func_report=self.updater)

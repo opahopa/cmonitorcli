@@ -1,9 +1,15 @@
 import os
 import logging.config
+import configparser
 # logging.basicConfig(format='%(levelname)s|%(asctime)s|%(module)s|%(funcName)s|%(lineno)d|%(message)s',
 #                            datefmt="%d/%b/%Y %H:%M:%S" , filename='example.log', level=logging.DEBUG)
-WEBSOCKET_SERVER = 'ws://127.0.0.1:8000'
-ACC_USERNAME = 'test@test.com'
+config = configparser.ConfigParser()
+config.read('config.ini')
+
+
+WEBSOCKET_SERVER = os.environ.get('WS_HOST', 'wss://api.codiusmonitor.com')
+ACC_USERNAME = config['DEFAULT']['username'].strip('\'')
+
 WATCH_SERVICES = {
     'hyperd': "hyperd",
     'moneyd': "moneyd-xrp",

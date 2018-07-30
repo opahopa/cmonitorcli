@@ -11478,3 +11478,19 @@ INFO|Codius system info: {'version': None, 'pods': [], 'memory': {'total': 7823,
 ERROR|
 INFO|### closed ###
 INFO|Removed job status_update_job
+INFO|Scheduler started
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/'sdsd'/hoop-XPS-13-9350/
+ERROR|[Errno -2] Name or service not known
+INFO|### closed ###
+INFO|Scheduler started
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/'sdsd'/hoop-XPS-13-9350/
+ERROR|
+INFO|### closed ###
+INFO|Scheduler started
+INFO|connect to: ws://127.0.0.1:8000/ws/monitor/sdsd/hoop-XPS-13-9350/
+ERROR|
+INFO|### closed ###
+INFO|Scheduler started
+INFO|connect to: wss://api.codiusmonitor.com/ws/monitor/sdsd/hoop-XPS-13-9350/
+ERROR|
+INFO|### closed ###
