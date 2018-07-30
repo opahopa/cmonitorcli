@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from settings.config import *
 from client import CmonitorCli
 
