@@ -2,9 +2,10 @@
 
 block_cipher = None
 
+spec_root = os.path.abspath(SPECPATH)
 
 a = Analysis(['main.py'],
-             pathex=['/home/hoop/PycharmProjects/cmonitorserv/cmonitorcli'],
+             pathex=[spec_root],
              binaries=[],
              datas=[ ('settings/config.ini', 'settings') ],
              hiddenimports=[],

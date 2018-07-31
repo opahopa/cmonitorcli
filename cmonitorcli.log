@@ -11494,3 +11494,7 @@ INFO|Scheduler started
 INFO|connect to: wss://api.codiusmonitor.com/ws/monitor/sdsd/hoop-XPS-13-9350/
 ERROR|
 INFO|### closed ###
+INFO|Scheduler started
+INFO|connect to: wss://api.codiusmonitor.com/ws/monitor/sdsd/hoop-XPS-13-9350/
+ERROR|
+INFO|### closed ###

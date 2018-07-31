@@ -43,7 +43,7 @@ class SystemService(object):
     def report_system_services(self):
         reports = []
         for s in services:
-            reports.append(self.get_service_report(s))
+            reports.append(self.get_service_report(services[s]))
 
         # for k, v in reports.items():
         #     logger.info("{}:{}".format(k, pprint.pprint(v.toDict())))
