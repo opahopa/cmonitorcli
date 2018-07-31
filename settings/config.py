@@ -1,14 +1,23 @@
-import os
+import os, sys
 import logging.config
 import configparser
 # logging.basicConfig(format='%(levelname)s|%(asctime)s|%(module)s|%(funcName)s|%(lineno)d|%(message)s',
 #                            datefmt="%d/%b/%Y %H:%M:%S" , filename='example.log', level=logging.DEBUG)
 config = configparser.ConfigParser()
-config.read('config.ini')
 
+if getattr(sys, 'freeze', False):
+    # running as bundle (aka frozen)
+    bundle_dir = sys._MEIPASS
+else:
+    # running live
+    bundle_dir = os.path.dirname(os.path.abspath(__file__))
+
+config.read(os.path.join(bundle_dir, 'config.ini'))
+
+
+ACC_USERNAME = config['DEFAULT']['username'].strip('\'')
 
 WEBSOCKET_SERVER = os.environ.get('WS_HOST', 'wss://api.codiusmonitor.com')
-ACC_USERNAME = config['DEFAULT']['username'].strip('\'')
 
 WATCH_SERVICES = {
     'hyperd': "hyperd",
