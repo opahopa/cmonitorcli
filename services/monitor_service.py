@@ -39,7 +39,7 @@ class MonitorService(object):
 
         if msg.command is MessageCommands.SET_CODIUS_FEE and msg.hostname == self.hostname:
             with SystemService() as system_service:
-                system_service.run_command(['export', 'CODIUS_COST_PER_MONTH={}'.format(str(msg.body))])
+                system_service.run_command('export CODIUS_COST_PER_MONTH={}'.format(str(msg.body)), shell=True)
         if msg.command is MessageCommands.SERVICE_RESTART and msg.hostname == self.hostname:
             try:
                 with SystemService() as system_service:

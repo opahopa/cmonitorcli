@@ -63,3 +63,6 @@ def parse_memory_usage(result):
             }
 
     return memory
+
+def parse_fee(result):
+    return int(result.stdout.strip())

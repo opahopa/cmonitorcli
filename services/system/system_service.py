@@ -4,7 +4,7 @@ import os
 
 from subprocess import PIPE, run, CalledProcessError
 from models.report import ReportService
-from services.system.system_helpers import parse_service_report_stdout, parse_hyperctl_list, parse_memory_usage
+from services.system.system_helpers import parse_service_report_stdout, parse_hyperctl_list, parse_memory_usage, parse_fee
 from settings.config import WATCH_SERVICES
 
 logger = logging.getLogger(__name__)
@@ -20,9 +20,9 @@ class SystemService(object):
     def __exit__(self, exc_type, exc_val, exc_tb):
         pass
 
-    def run_command(self, command):
+    def run_command(self, command, shell=False):
         try:
-            return run(command, stdout=PIPE, stderr=PIPE, universal_newlines=True, timeout=20)
+            return run(command, stdout=PIPE, stderr=PIPE, universal_newlines=True, timeout=20, shell=shell)
         except CalledProcessError as e:
             output = e.output.decode()
             logger.error(output)
@@ -82,7 +82,7 @@ class SystemService(object):
             pass
 
         try:
-            result['fee'] = int(os.environ['CODIUS_COST_PER_MONTH'])
+            result['fee'] = parse_fee(self.run_command('echo $CODIUS_COST_PER_MONTH', shell=True))
         except KeyError as e:
             result['fee'] = None
             logger.error('KeyError: %s' % str(e))
