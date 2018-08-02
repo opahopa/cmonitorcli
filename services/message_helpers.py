@@ -4,6 +4,7 @@ import json, os
 from timeit import default_timer as timer
 from models.report import ReportService
 from models.message import Message, MessageCommands, MessageStatus
+from services.utils import get_fee
 
 logger = logging.getLogger(__name__)
 
@@ -82,7 +83,7 @@ def calc_dialy_income(pods_log):
 
     pods_activity, pods_count = podsActivity(pods_log)
     try:
-        fee = int(os.environ['CODIUS_COST_PER_MONTH'])
+        fee = get_fee()
     except KeyError as e:
         pass
 

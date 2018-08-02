@@ -1,11 +1,11 @@
 import logging
 import json
-import os
 
 from subprocess import PIPE, run, CalledProcessError
 from models.report import ReportService
 from services.system.system_helpers import parse_service_report_stdout, parse_hyperctl_list, parse_memory_usage, parse_fee
 from settings.config import WATCH_SERVICES
+from services.utils import get_fee
 
 logger = logging.getLogger(__name__)
 
@@ -82,7 +82,7 @@ class SystemService(object):
             pass
 
         try:
-            result['fee'] = parse_fee(self.run_command('echo $CODIUS_COST_PER_MONTH', shell=True))
+            result['fee'] = get_fee()
         except KeyError as e:
             result['fee'] = None
             logger.error('KeyError: %s' % str(e))

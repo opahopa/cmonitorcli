@@ -6,6 +6,7 @@ from services.system.system_service import SystemService
 from services.db_service import DbService
 from .message_helpers import parse_message, result_to_json_response, calc_dialy_income
 from models.response import ResponseStatus
+from services.utils import set_fee_in_codiusconf
 
 logger = logging.getLogger(__name__)
 logging.getLogger('apscheduler.executors.default').setLevel(logging.DEBUG)
@@ -39,7 +40,9 @@ class MonitorService(object):
 
         if msg.command is MessageCommands.SET_CODIUS_FEE and msg.hostname == self.hostname:
             with SystemService() as system_service:
-                system_service.run_command('export CODIUS_COST_PER_MONTH={}'.format(str(msg.body)), shell=True)
+                set_fee_in_codiusconf(msg.body)
+                system_service.run_command('systemctl daemon-reload', shell=True)
+                system_service.run_command('systemctl restart codiusd', shell=True)
         if msg.command is MessageCommands.SERVICE_RESTART and msg.hostname == self.hostname:
             try:
                 with SystemService() as system_service:

@@ -14,6 +14,7 @@ else:
 
 config.read(os.path.join(bundle_dir, 'config.ini'))
 
+CODIUS_CONF = '/etc/systemd/system/codiusd.service'
 
 ACC_USERNAME = config['DEFAULT']['username'].strip('\'')
 
