@@ -7,3 +7,4 @@ dist/
 cmonitorcli.log*
 cmonitorcli.log.*
 cmonitorcli.db
+test.py

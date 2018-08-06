@@ -1,7 +1,6 @@
 import logging, traceback
-import json, os
+import json
 
-from timeit import default_timer as timer
 from models.report import ReportService
 from models.message import Message, MessageCommands, MessageStatus
 from services.utils import get_fee
@@ -78,7 +77,7 @@ and
 """""""""""""""""""""""""""""""""""""""""
 
 
-def calc_dialy_income(pods_log):
+def calc_income(pods_log):
     # timer_start = timer()
 
     pods_activity, pods_count = podsActivity(pods_log)

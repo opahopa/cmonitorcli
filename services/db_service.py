@@ -31,9 +31,10 @@ class DbService(object):
         except BaseException as error:
             print('An exception occurred on writing hostname to sqllite: {}'.format(error))
 
-    def get_pods_in24hours(self):
+    def get_pods_in_n_days(self, n):
         try:
-            self.c.execute("SELECT record_time as [timestamp], pods, fee FROM codius_history WHERE record_time >= datetime('now','-1 day')")
+            self.c.execute("SELECT record_time as [timestamp], pods, fee"
+                           " FROM codius_history WHERE record_time >= datetime('now', '-{} day')".format(n))
             res = self.c.fetchall()
             if res[0] is not None:
                 return res

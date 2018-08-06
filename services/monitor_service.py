@@ -1,10 +1,11 @@
 import logging
-import os
+import itertools, datetime
+
 
 from models.message import MessageCommands, MessageTypes
 from services.system.system_service import SystemService
 from services.db_service import DbService
-from .message_helpers import parse_message, result_to_json_response, calc_dialy_income
+from .message_helpers import parse_message, result_to_json_response, calc_income
 from models.response import ResponseStatus
 from services.utils import set_fee_in_codiusconf
 
@@ -51,6 +52,9 @@ class MonitorService(object):
             except Exception as e:
                 logger.error("Error on command: {} :{}".format(msg.command.name, e))
                 return result_to_json_response(msg.command, ResponseStatus.ERROR, self.hostname, body=e)
+        if msg.command is MessageCommands.STATS_ALL:
+            return result_to_json_response(
+                msg.command, ResponseStatus.OK, self.hostname, body=self.stats_n_days(int(msg.body)))
 
         return None
 
@@ -61,8 +65,31 @@ class MonitorService(object):
             with DbService() as db_service:
                 codius['income_24'] = 0
                 db_service.write_pods_status(codius)
-                if len(db_service.get_pods_in24hours()) > 0:
-                    codius['income_24'], codius['count_24'] = calc_dialy_income(db_service.get_pods_in24hours())
+                if len(db_service.get_pods_in_n_days(1)) > 0:
+                    codius['income_24'], codius['count_24'] = calc_income(db_service.get_pods_in_n_days(1))
 
             return result_to_json_response(MessageCommands.STATUS_CLI_UPDATE, ResponseStatus.OK, self.hostname,
                                            report_system=system, report_codius=codius)
+
+    """"""""""""""""""""""""""""""""""""""""
+    :returns
+    list with dict values
+
+    :datetime: date
+    :int: income
+    :int: count
+    """""""""""""""""""""""""""""""""""""""""
+    def stats_n_days(self, n):
+        dialy = []
+
+        with DbService() as db_service:
+            pods_n_days = db_service.get_pods_in_n_days(n)
+            for dt, grp in itertools.groupby(pods_n_days, key=lambda x: x[0].date()):
+                tmp = []
+                for v in list(grp):
+                    tmp.append(v)
+
+                income, count = calc_income(tmp)
+                dialy.append({'date': dt, 'income': income, 'count': count})
+
+        return dialy
