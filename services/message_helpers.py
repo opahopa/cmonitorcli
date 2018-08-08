@@ -26,8 +26,8 @@ def parse_message(content):
             pass
         return msg
     except Exception as e:
-        logger.error(e)
-        # traceback.print_exc()
+        # logger.error(e)
+        traceback.print_exc(e)
 
 
 def result_to_json_response(type, status, hostname, report_system=None, report_codius=None, body=None):
@@ -64,7 +64,7 @@ def result_to_json_response(type, status, hostname, report_system=None, report_c
     #         except Exception as e:
     #             logger.error(e)
 
-    return json.dumps(result)
+    return json.dumps(result, default=str)
 
 
 """"""""""""""""""""""""""""""""""""""""

@@ -81,7 +81,10 @@ class DbService(object):
                            , (time, json.dumps(codius['pods']), int(codius['fee']),))
             self.conn.commit()
         except BaseException as error:
-            print('An exception occurred on writing pods history to sqllite: {}'.format(error))
+            print('A BaseException occurred on writing pods history to sqllite: {}'.format(error))
+            traceback.print_exc()
+        except Exception as error:
+            print('An Exception occurred on writing pods history to sqllite: {}'.format(error))
             traceback.print_exc()
 
     def get_hostname(self):

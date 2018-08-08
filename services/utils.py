@@ -1,7 +1,10 @@
 import random, string, re
 import fileinput
+import logging
 
 from settings.config import CODIUS_CONF
+
+logger = logging.getLogger(__name__)
 
 
 def rnd_servname(n):
@@ -13,13 +16,17 @@ def rnd_string(n):
 
 
 def get_fee():
-    with open(CODIUS_CONF, 'r') as myfile:
-        data = myfile.read().replace('\n', '')
+    try:
+        with open(CODIUS_CONF, 'r') as myfile:
+            data = myfile.read().replace('\n', '')
 
-    p = re.compile('CODIUS_XRP_PER_MONTH=([0-9]+)')
-    m = p.search(data)
+        p = re.compile('CODIUS_XRP_PER_MONTH=([0-9]+)')
+        m = p.search(data)
 
-    return int(m.group(1))
+        return int(m.group(1))
+    except Exception as e:
+        logger.error(e)
+        pass
 
 
 def set_fee_in_codiusconf(fee):

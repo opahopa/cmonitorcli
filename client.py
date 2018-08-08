@@ -25,7 +25,7 @@ class CmonitorCli(object):
         logger.info("connect to: {}/ws/monitor/{}/{}/".format(WEBSOCKET_SERVER, ACC_USERNAME, self.hostname), )
         self.wsocket = WsClient("{}/ws/monitor/{}/{}/".format(WEBSOCKET_SERVER, ACC_USERNAME, self.hostname),
                                 func_onopen=self.scheduler.add_update_job, func_onmsg=self.watcher
-                                ,func_onclose=self.scheduler.delete_update_job, func_report=self.updater)
+                                , func_onclose=self.scheduler.delete_update_job, func_report=self.updater)
         self.wsocket.connect()
 
     def __enter__(self):
