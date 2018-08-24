@@ -1,8 +1,11 @@
 import random, string, re
 import fileinput
-import logging
+import logging, traceback
 
+# try:
 from settings.config import CODIUS_CONF
+# except:
+#     pass
 
 logger = logging.getLogger(__name__)
 
@@ -30,9 +33,14 @@ def get_fee():
 
 
 def set_fee_in_codiusconf(fee):
-    for line in fileinput.input(CODIUS_CONF, inplace=1):
-        line = re.sub('CODIUS_XRP_PER_MONTH=[0-9]+', f'CODIUS_XRP_PER_MONTH={str(fee)}', line)
+    try:
+        with open(CODIUS_CONF) as f:
+            newText = re.sub('CODIUS_XRP_PER_MONTH=[0-9]+', f'CODIUS_XRP_PER_MONTH={str(fee)}', f.read(), re.MULTILINE)
 
+        with open(CODIUS_CONF, "w") as f:
+            f.write(newText)
+    except Exception as ex:
+        traceback.print_exc(ex)
 
 if __name__ == "__main__":
-    print(get_fee())
+    print(set_fee_in_codiusconf(74))
