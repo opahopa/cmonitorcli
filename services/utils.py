@@ -1,5 +1,4 @@
 import random, string, re
-import fileinput
 import logging, traceback
 
 # try:
@@ -23,12 +22,19 @@ def get_fee():
         with open(CODIUS_CONF, 'r') as myfile:
             data = myfile.read().replace('\n', '')
 
-        p = re.compile('CODIUS_XRP_PER_MONTH=([0-9]+)')
-        m = p.search(data)
+        regexList = ['CODIUS_COST_PER_MONTH=([0-9]+)', 'COST_PER_MONTH=([0-9]+)', 'CODIUS_XRP_PER_MONTH=([0-9]+)']
 
-        return int(m.group(1))
+        gotMatch = False
+        for regex in regexList:
+            m = re.search(re.compile(regex), data)
+            if m:
+                gotMatch = True
+                break
+
+        if gotMatch:
+            return int(m.group(1))
     except Exception as e:
-        logger.error(e)
+        traceback.print_exc(e)
         pass
 
 
@@ -36,11 +42,14 @@ def set_fee_in_codiusconf(fee):
     try:
         with open(CODIUS_CONF) as f:
             newText = re.sub('CODIUS_XRP_PER_MONTH=[0-9]+', f'CODIUS_XRP_PER_MONTH={str(fee)}', f.read(), re.MULTILINE)
+            newText = re.sub('CODIUS_COST_PER_MONTH=[0-9]+', f'CODIUS_COST_PER_MONTH={str(fee)}', newText, re.MULTILINE)
+            newText = re.sub('COST_PER_MONTH=[0-9]+', f'COST_PER_MONTH={str(fee)}', newText, re.MULTILINE)
 
-        with open(CODIUS_CONF, "w") as f:
+        with open('text.txt', "w") as f:
             f.write(newText)
     except Exception as ex:
         traceback.print_exc(ex)
 
+
 if __name__ == "__main__":
-    print(set_fee_in_codiusconf(74))
+    print(set_fee_in_codiusconf(15))

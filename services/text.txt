@@ -1,0 +1,17 @@
+[root@codius1 ~]# cat /etc/systemd/system/codiusd.service
+[Unit]
+Description=Codiusd
+After=network.target nss-lookup.target
+[Service]
+ExecStart=/usr/bin/codiusd
+Environment=DEBUG=*
+Environment=CODIUS_PUBLIC_URI=https://codius1.codius-host.net
+Environment=CODIUS_COST_PER_MONTH=15
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=codiusd
+User=root
+Group=root
+[Install]
+WantedBy=multi-user.target
