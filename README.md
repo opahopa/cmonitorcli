@@ -1,4 +1,12 @@
 # cmonitorcli
-Run ONLY with python => 3.6
+codiusmonitor.com client executable.
 
-Set api url in settings.py if changed
+dev requirements:
+python => 3.6
+
+Establishing connection with the user-interface through the Django channels websockets.
+
+Logic:
+
+Sending codius server status and codiusd usage statistics every 3 seconds.
+Responds to the limited amount of commands set in: `services/monitor_service.py` -> `def _execute_command(self, msg)`
