@@ -107,7 +107,8 @@ class MonitorService(object):
             try:
                 with SystemService as system_service:
                    result = system_service.run_command(str(installer_command))
-                   return {'success': True, 'body': result.stdout.strip()}
+                   body = "\n".join(result.stdout.strip().split('\n'))
+                   return {'success': True, 'body': body[1:len(body)]}
             except Exception as e:
                 return {'success': False, 'body': e}
         else:

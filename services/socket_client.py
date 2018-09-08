@@ -37,7 +37,7 @@ class WsClient(object):
             logger.info("received message: {}".format(message))
             self.func_onmsg(ws, message)
         except Exception as e:
-            logger.info(e)
+            logger.error(e)
             pass
 
     def on_error(self, ws, error):
