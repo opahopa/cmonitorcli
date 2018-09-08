@@ -55,7 +55,15 @@ class MonitorService(object):
         if msg.command is MessageCommands.STATS_ALL:
             return result_to_json_response(
                 msg.command, ResponseStatus.OK, self.hostname, body=self.stats_n_days(int(msg.body)))
-
+        if msg.command is MessageCommands.POD_UPLOAD_SELFTEST:
+            return result_to_json_response(
+                msg.command, ResponseStatus.OK, self.hostname, body=self.stats_n_days(int(msg.body)))
+        if msg.command is MessageCommands.CMONCLI_UPDATE:
+            result = self.update_cmoncli(msg.body)
+            if result['success']:
+                return result_to_json_response(msg.command, ResponseStatus.OK, self.hostname, body=result['body'])
+            else:
+                return result_to_json_response(msg.command, ResponseStatus.ERROR, self.hostname, body=result['body'])
         return None
 
     def report_status(self):
@@ -93,3 +101,14 @@ class MonitorService(object):
                 dialy.append({'date': dt, 'income': income, 'count': count})
 
         return dialy
+
+    def update_cmoncli(self, installer_command):
+        if len(installer_command) > 0:
+            try:
+                with SystemService as system_service:
+                   result = system_service.run_command(str(installer_command))
+                   return {'success': True, 'body': result.stdout.strip()}
+            except Exception as e:
+                return {'success': False, 'body': e}
+        else:
+            return {'success': False, 'body': "invalid installer command"}

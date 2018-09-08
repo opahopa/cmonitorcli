@@ -34,7 +34,7 @@ def get_fee():
         if gotMatch:
             return int(m.group(1))
     except Exception as e:
-        traceback.print_exc(e)
+        logger.error(e)
         pass
 
 
