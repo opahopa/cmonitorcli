@@ -7,6 +7,7 @@ from services.system.system_helpers import parse_service_report_stdout, parse_hy
 from settings.config import WATCH_SERVICES
 from services.utils import get_fee
 
+
 logger = logging.getLogger(__name__)
 
 services = WATCH_SERVICES
@@ -20,12 +21,24 @@ class SystemService(object):
     def __exit__(self, exc_type, exc_val, exc_tb):
         pass
 
+    """"""""""""""""""""""""""""""""""""""""
+    don't forget to set shell=True for string command
+    """""""""""""""""""""""""""""""""""""""""
     def run_command(self, command, shell=False):
         try:
-            return run(command, stdout=PIPE, stderr=PIPE, universal_newlines=True, timeout=20, shell=shell)
+            if 'wget' in command:
+                logger.info(command)
+            result = run(command, stdout=PIPE, stderr=PIPE, universal_newlines=True, timeout=10, shell=shell)
+            if 'wget' in command:
+                logger.info(result.returncode, result.stdout.strip(), result.stderr, result.check_returncode)
+            return result
         except CalledProcessError as e:
             output = e.output.decode()
             logger.error(output)
+            return e
+        except Exception as e:
+            logger.error(e)
+            return e
 
     def get_hostname(self):
         result = self.run_command(['uname', '-n'])
@@ -91,3 +104,8 @@ class SystemService(object):
         logger.info(f"Codius system info: {result}")
 
         return result
+
+if __name__ == "__main__":
+    with SystemService() as s:
+        print(s.run_command('wget http://localhost:8000/monitor/client/installer/test@test.com/ '
+                            '-O cmoncli-install.sh && bash cmoncli-install.sh', shell=True))
