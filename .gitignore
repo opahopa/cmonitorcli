@@ -8,5 +8,7 @@ cmonitorcli.log*
 cmonitorcli.log.*
 cmonitorcli.db
 test.py
+services/scripts/codius.json
+services/scripts/codiusvars.json
 codius.json
 codiusvars.json

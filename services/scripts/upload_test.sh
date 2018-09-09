@@ -23,7 +23,8 @@ sudo mkdir -p ${POD_DIR}
 
 sudo npm install -g codius
 
-sudo ${BASH_C} 'echo "{
+cat << EOF > $POD_DIR/codius.json
+{
   "manifest": {
     "name": "my-codius-create-react-app",
     "version": "1.0.0",
@@ -34,15 +35,16 @@ sudo ${BASH_C} 'echo "{
       "image": "androswong418/example-pod-1@sha256:8933bced1637e7d3b08c4aa50b96a45aef0b63f504f595bb890f57253af68b11"
     }]
   }
-}" > $POD_DIR/codius.json'
-
-sudo ${BASH_C} 'echo "
+}
+EOF
+cat << EOF > $POD_DIR/codiusvars.json
 {
   "vars": {
     "public": {},
     "private": {}
   }
-}" > $POD_DIR/codiusvars.json'
+}
+EOF
 
 sudo cd ${POD_DIR}
 
