@@ -36,7 +36,8 @@ sudo ${BASH_C} 'echo "{
   }
 }" > $POD_DIR/codius.json'
 
-sudo ${BASH_C} 'echo "{
+sudo ${BASH_C} 'echo "
+{
   "vars": {
     "public": {},
     "private": {}
