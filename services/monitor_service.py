@@ -57,8 +57,11 @@ class MonitorService(object):
             return result_to_json_response(
                 msg.command, ResponseStatus.OK, self.hostname, body=self.stats_n_days(int(msg.body)))
         if msg.command is MessageCommands.POD_UPLOAD_SELFTEST:
-            return result_to_json_response(
-                msg.command, ResponseStatus.OK, self.hostname, body=self.stats_n_days(int(msg.body)))
+            result = self.codiusd_upload_test()
+            if result['success']:
+                return result_to_json_response(msg.command, ResponseStatus.OK, self.hostname, body=result['body'])
+            else:
+                return result_to_json_response(msg.command, ResponseStatus.ERROR, self.hostname, body=result['body'])
         if msg.command is MessageCommands.CMONCLI_UPDATE:
             result = self.update_cmoncli(msg.body)
             if result['success']:
@@ -109,11 +112,20 @@ class MonitorService(object):
                 with SystemService() as system_service:
                    command = f'wget https://{WEBSOCKET_SERVER.split("://")[1]}/{path} ' \
                              f'-O cmoncli-install.sh && bash cmoncli-install.sh'
-                   result = system_service.run_command(command.strip())
-                   logger.info(result.stdout.strip())
-                   # body = "\n".join(result.stdout.strip().split('\n'))
+                   logger.info(command)
+                   result = system_service.run_command(command.strip(), shell=True)
                    return {'success': True, 'body': result.stdout.strip()}
             except Exception as e:
+                logger.error(e)
                 return {'success': False, 'body': e}
         else:
             return {'success': False, 'body': "invalid installer command"}
+
+    def codiusd_upload_test(self):
+        try:
+            with SystemService() as system_service:
+                result = system_service.run_command("bash scripts/upload_test.sh", shell=True)
+            return {'success': True, 'body': result.stdout.strip()}
+        except Exception as e:
+            logger.error(e)
+            return {'success': False, 'body': e}

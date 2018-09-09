@@ -1,7 +1,9 @@
 import sqlite3, traceback
 import datetime
 import json
+import logging
 
+logger = logging.getLogger(__name__)
 
 class DbService(object):
 
@@ -81,11 +83,11 @@ class DbService(object):
                            , (time, json.dumps(codius['pods']), int(codius['fee']),))
             self.conn.commit()
         except BaseException as error:
-            print('A BaseException occurred on writing pods history to sqllite: {}'.format(error))
-            traceback.print_exc()
+            logger.error('A BaseException occurred on writing pods history to sqllite: {}'.format(error))
+        except TypeError as error:
+            logger.error('An TypeError occurred on writing pods history to sqllite: {}'.format(error))
         except Exception as error:
-            print('An Exception occurred on writing pods history to sqllite: {}'.format(error))
-            traceback.print_exc()
+            logger.error('An Exception occurred on writing pods history to sqllite: {}'.format(error))
 
     def get_hostname(self):
         self.c.execute("SELECT hostname FROM system_info")
