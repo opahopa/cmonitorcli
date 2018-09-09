@@ -1,6 +1,6 @@
 import logging
 import itertools
-import traceback
+import os, sys
 
 from models.message import MessageCommands, MessageTypes
 from services.system.system_service import SystemService
@@ -12,6 +12,13 @@ from settings.config import WEBSOCKET_SERVER
 
 logger = logging.getLogger(__name__)
 logging.getLogger('apscheduler.executors.default').setLevel(logging.DEBUG)
+
+
+
+if getattr(sys, 'freeze', False):
+    bundle_dir = sys._MEIPASS
+else:
+    bundle_dir = os.path.dirname(os.path.abspath(__file__))
 
 
 class MonitorService(object):
@@ -127,8 +134,14 @@ class MonitorService(object):
     def codiusd_upload_test(self):
         try:
             with SystemService() as system_service:
-                result = system_service.run_command("bash scripts/upload_test.sh", shell=True)
-            return {'success': True, 'body': result.stdout.strip()}
+                script_path = os.path.join(bundle_dir, 'scripts/upload_test.sh')
+                logger.info(f"Running codiusd_upload_test() path:{script_path}")
+                result = system_service.run_command(f"bash {script_path}", shell=True)
+                logger.info(result.stdout.strip())
+                if len(result.stdout.strip()) > 1:
+                    return {'success': True, 'body': result.stdout.strip()}
+                else:
+                    return {'success': False, 'body': "Upload test command execution error"}
         except Exception as e:
             logger.error(e)
             return {'success': False, 'body': e}
