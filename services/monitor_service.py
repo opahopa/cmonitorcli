@@ -2,7 +2,6 @@ import logging
 import itertools
 import traceback
 
-
 from models.message import MessageCommands, MessageTypes
 from services.system.system_service import SystemService
 from services.db_service import DbService
@@ -23,12 +22,14 @@ class MonitorService(object):
     def watch_message(self, content):
         msg = parse_message(content)
         try:
+            if msg.type is MessageTypes.CONTROL and msg.hostname == self.hostname:
+                return self._execute_command_single(msg)
             if msg.type is MessageTypes.CONTROL:
-                return self._execute_command(msg)
+                return self._execute_command_all(msg)
         except AttributeError:
             return None
 
-    def _execute_command(self, msg):
+    def _execute_command_all(self, msg):
         if msg.command is MessageCommands.STATUS_ALL:
             try:
                 with SystemService() as system_service:
@@ -39,13 +40,17 @@ class MonitorService(object):
             except Exception as e:
                 logger.error("Error on command: {} :{}".format(msg.command.name, e))
                 return None
+        if msg.command is MessageCommands.STATS_ALL:
+            return result_to_json_response(
+                msg.command, ResponseStatus.OK, self.hostname, body=self.stats_n_days(int(msg.body)))
 
-        if msg.command is MessageCommands.SET_CODIUS_FEE and msg.hostname == self.hostname:
+    def _execute_command_single(self, msg):
+        if msg.command is MessageCommands.SET_CODIUS_FEE:
             with SystemService() as system_service:
                 set_fee_in_codiusconf(msg.body)
                 system_service.run_command('systemctl daemon-reload', shell=True)
                 system_service.run_command('systemctl restart codiusd', shell=True)
-        if msg.command is MessageCommands.SERVICE_RESTART and msg.hostname == self.hostname:
+        if msg.command is MessageCommands.SERVICE_RESTART:
             try:
                 with SystemService() as system_service:
                     system_service.run_command(['systemctl', 'restart', msg.body])
@@ -53,9 +58,6 @@ class MonitorService(object):
             except Exception as e:
                 logger.error("Error on command: {} :{}".format(msg.command.name, e))
                 return result_to_json_response(msg.command, ResponseStatus.ERROR, self.hostname, body=e)
-        if msg.command is MessageCommands.STATS_ALL:
-            return result_to_json_response(
-                msg.command, ResponseStatus.OK, self.hostname, body=self.stats_n_days(int(msg.body)))
         if msg.command is MessageCommands.POD_UPLOAD_SELFTEST:
             result = self.codiusd_upload_test()
             if result['success']:
@@ -91,6 +93,7 @@ class MonitorService(object):
     :int: income
     :int: count
     """""""""""""""""""""""""""""""""""""""""
+
     def stats_n_days(self, n):
         dialy = []
 
@@ -110,11 +113,11 @@ class MonitorService(object):
         if len(path) > 0:
             try:
                 with SystemService() as system_service:
-                   command = f'wget https://{WEBSOCKET_SERVER.split("://")[1]}/{path} ' \
-                             f'-O cmoncli-install.sh && bash cmoncli-install.sh'
-                   logger.info(command)
-                   result = system_service.run_command(command.strip(), shell=True)
-                   return {'success': True, 'body': result.stdout.strip()}
+                    command = f'wget https://{WEBSOCKET_SERVER.split("://")[1]}/{path} ' \
+                              f'-O cmoncli-install.sh && bash cmoncli-install.sh'
+                    logger.info(command)
+                    result = system_service.run_command(command.strip(), shell=True)
+                    return {'success': True, 'body': result.stdout.strip()}
             except Exception as e:
                 logger.error(e)
                 return {'success': False, 'body': e}
