@@ -1,6 +1,7 @@
 import websocket
 import logging
 import time
+import traceback
 
 import _thread as thread
 
@@ -37,7 +38,7 @@ class WsClient(object):
             logger.info("received message: {}".format(message))
             self.func_onmsg(ws, message)
         except Exception as e:
-            logger.error(e)
+            traceback.print_exc(e)
             pass
 
     def on_error(self, ws, error):

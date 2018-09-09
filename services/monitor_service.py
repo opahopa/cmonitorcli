@@ -1,5 +1,6 @@
 import logging
-import itertools, datetime
+import itertools
+import traceback
 
 
 from models.message import MessageCommands, MessageTypes
@@ -8,6 +9,7 @@ from services.db_service import DbService
 from .message_helpers import parse_message, result_to_json_response, calc_income
 from models.response import ResponseStatus
 from services.utils import set_fee_in_codiusconf
+from settings.config import WEBSOCKET_SERVER
 
 logger = logging.getLogger(__name__)
 logging.getLogger('apscheduler.executors.default').setLevel(logging.DEBUG)
@@ -20,7 +22,6 @@ class MonitorService(object):
 
     def watch_message(self, content):
         msg = parse_message(content)
-
         try:
             if msg.type is MessageTypes.CONTROL:
                 return self._execute_command(msg)
@@ -102,13 +103,16 @@ class MonitorService(object):
 
         return dialy
 
-    def update_cmoncli(self, installer_command):
-        if len(installer_command) > 0:
+    def update_cmoncli(self, path):
+        if len(path) > 0:
             try:
-                with SystemService as system_service:
-                   result = system_service.run_command(str(installer_command))
-                   body = "\n".join(result.stdout.strip().split('\n'))
-                   return {'success': True, 'body': body[1:len(body)]}
+                with SystemService() as system_service:
+                   command = f'wget https://{WEBSOCKET_SERVER.split("://")[1]}/{path} ' \
+                             f'-O cmoncli-install.sh && bash cmoncli-install.sh'
+                   result = system_service.run_command(command.strip())
+                   logger.info(result.stdout.strip())
+                   # body = "\n".join(result.stdout.strip().split('\n'))
+                   return {'success': True, 'body': result.stdout.strip()}
             except Exception as e:
                 return {'success': False, 'body': e}
         else:
