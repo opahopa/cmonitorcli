@@ -13,8 +13,6 @@ from settings.config import WEBSOCKET_SERVER
 logger = logging.getLogger(__name__)
 logging.getLogger('apscheduler.executors.default').setLevel(logging.DEBUG)
 
-
-
 if getattr(sys, 'freeze', False):
     bundle_dir = sys._MEIPASS
 else:
@@ -28,13 +26,12 @@ class MonitorService(object):
 
     def watch_message(self, content):
         msg = parse_message(content)
-        try:
-            if msg.type is MessageTypes.CONTROL and msg.hostname == self.hostname:
+
+        if msg.type is MessageTypes.CONTROL:
+            if hasattr(msg, 'hostname') == self.hostname:
                 return self._execute_command_single(msg)
-            if msg.type is MessageTypes.CONTROL:
+            else:
                 return self._execute_command_all(msg)
-        except AttributeError:
-            return None
 
     def _execute_command_all(self, msg):
         if msg.command is MessageCommands.STATUS_ALL:
