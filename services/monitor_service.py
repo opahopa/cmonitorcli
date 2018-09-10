@@ -134,11 +134,9 @@ class MonitorService(object):
     def codiusd_upload_test(self):
         try:
             with SystemService() as system_service:
-                script_path = os.path.join(bundle_dir, 'scripts/upload_test.sh')
-                logger.info(f"Running codiusd_upload_test() path:{script_path}")
-                command = f"bash {script_path}"
-                logger.info("executing command: {}".format(command))
-                result = system_service.run_command(command, shell=True)
+                command = f"bash {os.path.join(bundle_dir, 'scripts/upload_test.sh')}"
+                logger.info("Running codiusd_upload_test(), command: {}".format(command))
+                result = system_service.run_command(command, shell=True, timeout=60)
                 logger.info(result.stdout.strip())
                 if len(result.stdout.strip()) > 1:
                     return {'success': True, 'body': result.stdout.strip()}

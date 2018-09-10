@@ -24,11 +24,11 @@ class SystemService(object):
     """"""""""""""""""""""""""""""""""""""""
     don't forget to set shell=True for string command
     """""""""""""""""""""""""""""""""""""""""
-    def run_command(self, command, shell=False):
+    def run_command(self, command, shell=False, timeout=10):
         try:
             if 'wget' in command:
                 logger.info(command)
-            result = run(command, stdout=PIPE, stderr=PIPE, universal_newlines=True, timeout=10, shell=shell)
+            result = run(command, stdout=PIPE, stderr=PIPE, universal_newlines=True, timeout=timeout, shell=shell)
             if 'wget' in command:
                 logger.info(result.returncode, result.stdout.strip(), result.stderr, result.check_returncode)
             return result
