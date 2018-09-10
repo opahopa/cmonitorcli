@@ -19,6 +19,7 @@ check_user() {
 }
 check_user
 
+sudo rm -rf ${POD_DIR} 2>/dev/null || true
 sudo mkdir -p ${POD_DIR}
 
 sudo npm install -g codius
@@ -46,7 +47,6 @@ cat << EOF > $POD_DIR/codiusvars.json
 }
 EOF
 
-sudo cd ${POD_DIR}
+cd ${POD_DIR}
 
 sudo DEBUG=* codius upload --host https://$HOSTNAME --duration 30 -o -y
-sudo rm -rf ${POD_DIR}

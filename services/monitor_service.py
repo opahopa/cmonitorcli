@@ -28,7 +28,7 @@ class MonitorService(object):
         msg = parse_message(content)
 
         if msg.type is MessageTypes.CONTROL:
-            if hasattr(msg, 'hostname') == self.hostname:
+            if hasattr(msg, 'hostname') and msg.hostname == self.hostname:
                 return self._execute_command_single(msg)
             else:
                 return self._execute_command_all(msg)
