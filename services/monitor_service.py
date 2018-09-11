@@ -35,17 +35,7 @@ class MonitorService(object):
 
     def _execute_command_all(self, msg):
         if msg.command is MessageCommands.STATUS_ALL:
-            try:
-                with SystemService() as system_service:
-                    system = system_service.report_system_services()
-                    codius = system_service.report_codius()
-                    extra_services = system_service.report_extra_services()
-                    return result_to_json_response(msg.command, ResponseStatus.OK, self.hostname
-                                                   , report_system=system, report_codius=codius
-                                                   , report_extra_services=extra_services)
-            except Exception as e:
-                logger.error("Error on command: {} :{}".format(msg.command.name, e))
-                return None
+            return self.report_status(msg.command)
         if msg.command is MessageCommands.STATS_ALL:
             return result_to_json_response(
                 msg.command, ResponseStatus.OK, self.hostname, body=self.stats_n_days(int(msg.body)))
@@ -65,32 +55,37 @@ class MonitorService(object):
                 logger.error("Error on command: {} :{}".format(msg.command.name, e))
                 return result_to_json_response(msg.command, ResponseStatus.ERROR, self.hostname, body=e)
         if msg.command is MessageCommands.POD_UPLOAD_SELFTEST:
-            result = self.codiusd_upload_test()
-            if result['success']:
-                return result_to_json_response(msg.command, ResponseStatus.OK, self.hostname, body=result['body'])
-            else:
-                return result_to_json_response(msg.command, ResponseStatus.ERROR, self.hostname, body=result['body'])
+            return self.command_wrapper(msg, self.codiusd_upload_test)
         if msg.command is MessageCommands.CMONCLI_UPDATE:
-            result = self.update_cmoncli(msg.body)
-            if result['success']:
-                return result_to_json_response(msg.command, ResponseStatus.OK, self.hostname, body=result['body'])
-            else:
-                return result_to_json_response(msg.command, ResponseStatus.ERROR, self.hostname, body=result['body'])
+            return self.command_wrapper(msg, lambda: self.update_cmoncli(msg.body))
+        if msg.command is MessageCommands.INSTALL_SERVICE:
+            return self.command_wrapper(msg, lambda: self.install_service(msg.body))
         return None
 
-    def report_status(self):
-        with SystemService() as system_service:
-            system = system_service.report_system_services()
-            codius = system_service.report_codius()
-            extra_services = system_service.report_extra_services()
-            with DbService() as db_service:
-                codius['income_24'] = 0
-                db_service.write_pods_status(codius)
-                if len(db_service.get_pods_in_n_days(1)) > 0:
-                    codius['income_24'], codius['count_24'] = calc_income(db_service.get_pods_in_n_days(1))
+    def command_wrapper(self, msg, fcn):
+        result = fcn()
+        if result['success']:
+            return result_to_json_response(msg.command, ResponseStatus.OK, self.hostname, body=result['body'])
+        else:
+            return result_to_json_response(msg.command, ResponseStatus.ERROR, self.hostname, body=result['body'])
 
-            return result_to_json_response(MessageCommands.STATUS_CLI_UPDATE, ResponseStatus.OK, self.hostname,
-                                           report_system=system, report_codius=codius, report_extra_services=extra_services )
+    def report_status(self, msg_command=MessageCommands.STATUS_CLI_UPDATE):
+        try:
+            with SystemService() as system_service:
+                system = system_service.report_system_services()
+                codius = system_service.report_codius()
+                extra_services = system_service.report_extra_services()
+                with DbService() as db_service:
+                    codius['income_24'] = 0
+                    db_service.write_pods_status(codius)
+                    if len(db_service.get_pods_in_n_days(1)) > 0:
+                        codius['income_24'], codius['count_24'] = calc_income(db_service.get_pods_in_n_days(1))
+
+                return result_to_json_response(msg_command, ResponseStatus.OK, self.hostname,
+                                               report_system=system, report_codius=codius, report_extra_services=extra_services )
+        except Exception as e:
+            logger.error("Error on command: {} :{}".format(msg_command.name, e))
+            return None
 
     """"""""""""""""""""""""""""""""""""""""
     :returns
@@ -134,14 +129,20 @@ class MonitorService(object):
     def codiusd_upload_test(self):
         try:
             with SystemService() as system_service:
-                command = f"bash {os.path.join(bundle_dir, 'scripts/upload_test.sh')}"
+                command = f"bash -x {os.path.join(bundle_dir, 'scripts/upload_test.sh')}"
                 logger.info("Running codiusd_upload_test(), command: {}".format(command))
-                result = system_service.run_command(command, shell=True, timeout=60)
-                logger.info(result.stdout.strip())
+                result = system_service.run_command(command, shell=True, timeout=45)
+                if result.stderr:
+                    err = result.stderr
+                else:
+                    err = ''
                 if len(result.stdout.strip()) > 1:
                     return {'success': True, 'body': result.stdout.strip()}
                 else:
-                    return {'success': False, 'body': "Upload test command execution error"}
+                    return {'success': False, 'body': f"Upload test command execution error. {err}"}
         except Exception as e:
             logger.error(e)
             return {'success': False, 'body': e}
+
+    def install_service(self, name):
+        logger.info(name)

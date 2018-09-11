@@ -24,7 +24,7 @@ sudo mkdir -p ${POD_DIR}
 
 sudo npm install -g codius
 
-cat << EOF > $POD_DIR/codius.json
+sudo cat << EOF > $POD_DIR/codius.json
 {
   "manifest": {
     "name": "my-codius-create-react-app",
@@ -38,7 +38,7 @@ cat << EOF > $POD_DIR/codius.json
   }
 }
 EOF
-cat << EOF > $POD_DIR/codiusvars.json
+sudo cat << EOF > $POD_DIR/codiusvars.json
 {
   "vars": {
     "public": {},
@@ -49,4 +49,6 @@ EOF
 
 cd ${POD_DIR}
 
-sudo DEBUG=* codius upload --host https://$HOSTNAME --duration 30 -o -y
+DEBUG=* codius upload --host https://$HOSTNAME --duration 30 -o -y
+#${SUDO} kill -9 $(ps -ef|grep codius |grep -v "grep"|awk '{print $2}') || true
+exit 0

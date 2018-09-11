@@ -76,8 +76,9 @@ ${SUDO} firewall-cmd --zone=public --add-port=443/tcp --permanent
 ${SUDO} firewall-cmd --zone=public --add-port=7768/tcp --permanent
 ${SUDO} firewall-cmd --zone=public --add-port=3000/tcp --permanent
 
-${SUDO} systemctl start firewalld
+${SUDO} systemctl start firewalld 2>/dev/null || true
 ${SUDO} systemctl enable fail2ban 2>/dev/null || true
 ${SUDO} systemctl start fail2ban
 
 show_message info "Installation done! \n"
+exit 0

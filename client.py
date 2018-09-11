@@ -37,7 +37,7 @@ class CmonitorCli(object):
 
     def _get_hostname(self):
         os_hostname = self.system.get_hostname()
-        if os_hostname is None or os_hostname[0] != 0 or len(os_hostname[1]) == 0:
+        if os_hostname[0] is None or len(os_hostname[0]) == 0:
             hostname = self.db.get_hostname()
             if self.db.get_hostname() is None:
                 hostname = rnd_servname(5)
@@ -45,7 +45,7 @@ class CmonitorCli(object):
 
             return hostname
         else:
-            return os_hostname[1]
+            return os_hostname[0]
 
     """""
     ws: passed through ws initializer method in socket_client.py

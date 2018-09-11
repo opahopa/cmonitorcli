@@ -1,12 +1,15 @@
 import logging
 import json
+import shlex
 
-from subprocess import PIPE, run, CalledProcessError
+from subprocess import PIPE, run, CalledProcessError, Popen
+from threading import Timer
 
 from models.report import ReportService
 from services.system.system_helpers import parse_service_report_stdout, parse_hyperctl_list, parse_memory_usage, parse_fee
 from settings.config import WATCH_SERVICES, EXTRA_SERVICES
 from services.utils import get_fee
+from services.utils import Dict2Obj
 
 logger = logging.getLogger(__name__)
 
@@ -24,12 +27,18 @@ class SystemService(object):
 
     """"""""""""""""""""""""""""""""""""""""
     don't forget to set shell=True for string command
+    timeout bug: https://bugs.python.org/issue30154
+    => thread.
     """""""""""""""""""""""""""""""""""""""""
-
     def run_command(self, command, shell=False, timeout=10):
+        process = Popen(command, stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=shell)
+        timer = Timer(timeout, process.kill)
         try:
-            result = run(command, stdout=PIPE, stderr=PIPE, universal_newlines=True, timeout=timeout, shell=shell)
-            return result
+            timer.start()
+            result = process.communicate(timeout=timeout)
+            # process.wait()
+
+            return Dict2Obj({'stdout': result[0].strip(), 'stderr': result[1]})
         except CalledProcessError as e:
             output = e.output.decode()
             logger.error(output)
@@ -37,10 +46,12 @@ class SystemService(object):
         except Exception as e:
             logger.error(e)
             return e
+        finally:
+            timer.cancel()
 
     def get_hostname(self):
         result = self.run_command(['uname', '-n'])
-        return result.returncode, result.stdout.strip(), result.stderr, result.check_returncode
+        return result.stdout.strip(), result.stderr
 
     def get_service_report(self, service_name):
         result = self.run_command(['systemctl', 'status', service_name])

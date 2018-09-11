@@ -51,5 +51,14 @@ def set_fee_in_codiusconf(fee):
         traceback.print_exc(ex)
 
 
+class Dict2Obj(object):
+    """
+    Turns a dictionary into a class
+    """
+    def __init__(self, dictionary):
+        for key in dictionary:
+            setattr(self, key, dictionary[key])
+
+
 if __name__ == "__main__":
     print(set_fee_in_codiusconf(15))
