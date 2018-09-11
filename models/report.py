@@ -20,7 +20,7 @@ class ReportAll(object):
 
 class ReportService(object):
 
-    def __init__(self, active, name, last_log=None, runtime=None, warning=None):
+    def __init__(self, active, name, last_log=None, runtime=None, warning=None, error=None, installed=True):
         """single service report."""
         self.type = "service"
         self.active = active
@@ -28,6 +28,8 @@ class ReportService(object):
         self.last_log = last_log
         self.runtime = runtime
         self.warning = warning
+        self.error = error
+        self.installed = installed
 
     def toDict(self):
         return {
@@ -36,7 +38,9 @@ class ReportService(object):
             'name': self.name,
             'last_log': self.last_log,
             'runtime': self.runtime,
-            'warning': self.warning
+            'warning': self.warning,
+            'error': self.error,
+            'installed': self.installed
         }
 
     def to_json(self):

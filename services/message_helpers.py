@@ -30,7 +30,8 @@ def parse_message(content):
         traceback.print_exc(e)
 
 
-def result_to_json_response(type, status, hostname, report_system=None, report_codius=None, body=None):
+def result_to_json_response(type, status, hostname, report_system=None, report_codius=None, body=None,
+                            report_extra_services=None):
     result = {}
     result['type'] = "REPORT"
     result['command'] = type.name
@@ -46,6 +47,9 @@ def result_to_json_response(type, status, hostname, report_system=None, report_c
             'codius': report_codius
         }
 
+    if report_extra_services:
+        result['body']['extra_services'] = report_extra_services
+
     if status is MessageStatus.ERROR:
         return json.dumps(result)
 
@@ -54,8 +58,13 @@ def result_to_json_response(type, status, hostname, report_system=None, report_c
             if isinstance(report_system[i], ReportService):
                 report_system[i] = report_system[i].toDict()
 
+        for i in range(0, len(report_extra_services)):
+            if isinstance(report_extra_services[i], ReportService):
+                report_extra_services[i] = report_extra_services[i].toDict()
+
         result['body']['system'] = report_system
         result['body']['codius'] = report_codius
+        result['body']['extra_services'] = report_extra_services
 
     #     for k, v in content.items():
     #         try:

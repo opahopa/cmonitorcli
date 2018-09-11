@@ -26,6 +26,9 @@ WATCH_SERVICES = {
     'codiusd': "codiusd",
     'nginx': "nginx"
 }
+EXTRA_SERVICES = {
+    'fail2ban': "fail2ban"
+}
 
 BASE_DIR_LOG = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 

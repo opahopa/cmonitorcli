@@ -39,8 +39,10 @@ class MonitorService(object):
                 with SystemService() as system_service:
                     system = system_service.report_system_services()
                     codius = system_service.report_codius()
+                    extra_services = system_service.report_extra_services()
                     return result_to_json_response(msg.command, ResponseStatus.OK, self.hostname
-                                                   , report_system=system, report_codius=codius)
+                                                   , report_system=system, report_codius=codius
+                                                   , report_extra_services=extra_services)
             except Exception as e:
                 logger.error("Error on command: {} :{}".format(msg.command.name, e))
                 return None
@@ -80,6 +82,7 @@ class MonitorService(object):
         with SystemService() as system_service:
             system = system_service.report_system_services()
             codius = system_service.report_codius()
+            extra_services = system_service.report_extra_services()
             with DbService() as db_service:
                 codius['income_24'] = 0
                 db_service.write_pods_status(codius)
@@ -87,7 +90,7 @@ class MonitorService(object):
                     codius['income_24'], codius['count_24'] = calc_income(db_service.get_pods_in_n_days(1))
 
             return result_to_json_response(MessageCommands.STATUS_CLI_UPDATE, ResponseStatus.OK, self.hostname,
-                                           report_system=system, report_codius=codius)
+                                           report_system=system, report_codius=codius, report_extra_services=extra_services )
 
     """"""""""""""""""""""""""""""""""""""""
     :returns

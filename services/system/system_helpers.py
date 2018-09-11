@@ -5,11 +5,12 @@ logger = logging.getLogger(__name__)
 
 def parse_service_report_stdout(result):
     stdout_lines = result.stdout.strip().split('\n')
-
     active = False
     run_time = None
     last_log = None
     warning = None
+    error = None
+    installed = True
     txt_start = 0
     try:
         for i in range(0, len(stdout_lines)):
@@ -27,10 +28,13 @@ def parse_service_report_stdout(result):
         pass
 
     if len(result.stderr) > 5:
+        error = result.stderr
         if 'Warning' in result.stderr:
             warning = result.stderr.split("Warning", 1)[1].strip()
+        if 'could not be found' in result.stderr:
+            installed = False
 
-    return active, run_time, last_log, warning
+    return active, run_time, last_log, warning, error, installed
 
 
 def parse_hyperctl_list(result):
