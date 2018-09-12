@@ -31,6 +31,7 @@ check_user() {
   fi
 }
 check_user
+
 check_distro() {
     if [ -n "$(command -v lsb_release)" ]; then
         distroname=$(lsb_release -s -d)
@@ -47,7 +48,7 @@ check_distro() {
     if [[ ${distroname,,} = *"centos"* ]]; then
       echo "centos"
     else
-        echo "Sorry but your linux distribution is not yet supported."
+        >&2 echo "Sorry but this linux distribution is not yet supported."
         exit 1
     fi
 }
@@ -58,6 +59,7 @@ if pgrep -x "fail2ban" > /dev/null
 then
     echo "fail2ban is already enabled on your host"
     exit 1
+fi
 
 ${SUDO} yum install -y epel-release
 ${SUDO} yum install -y fail2ban fail2ban-systemd

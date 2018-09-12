@@ -1,8 +1,8 @@
 import logging
 import json
-import shlex
+import datetime
 
-from subprocess import PIPE, run, CalledProcessError, Popen
+from subprocess import PIPE, run, CalledProcessError, Popen, TimeoutExpired
 from threading import Timer
 
 from models.report import ReportService
@@ -38,7 +38,7 @@ class SystemService(object):
             result = process.communicate(timeout=timeout)
             # process.wait()
 
-            return Dict2Obj({'stdout': result[0].strip(), 'stderr': result[1]})
+            return Dict2Obj({'stdout': result[0].strip(), 'stderr': result[1], 'returncode': process.returncode})
         except CalledProcessError as e:
             output = e.output.decode()
             logger.error(output)
@@ -76,6 +76,23 @@ class SystemService(object):
     def report_codius(self):
         result = {
             'version': '',
+            'peers': {
+                'num': 0,
+                'list': []
+            },
+            'selftest': None,
+            'uptime': {
+                'server': {
+                    'days': '',
+                    'hours': '',
+                    'minutes': ''
+                },
+                'service': {
+                    'days': '',
+                    'hours': '',
+                    'minutes': ''
+                }
+            },
             'pods': [],
             'memory': {},
             'fee': 0
@@ -86,14 +103,46 @@ class SystemService(object):
             result['version'] = version
         except Exception as e:
             result['version'] = None
-            logger.error(e)
+            logger.error(f'codius version load fail: {e}')
+            pass
+        try:
+            codius_info = json.loads(self.run_command(['curl', '127.0.0.1:3000/info']).stdout.strip())
+            try:
+                result['peers']['num'] = int(codius_info['numPeers'])
+            except Exception as e:
+                logger.error(f'codius peers load fail: {e}')
+            pass
+            try:
+                time = datetime.timedelta(seconds=round(int(codius_info['serverUptime'])))
+                result['uptime']['server']['days'] = str(time.days)
+                result['uptime']['server']['hours'] = str(round(time.min * 60))
+                result['uptime']['server']['minutes'] = str(time.min)
+            except Exception as e:
+                logger.error(f'codius server uptime load fail: {e}')
+            pass
+            try:
+                time = datetime.timedelta(seconds=round(int(codius_info['serviceUptime'])))
+                result['uptime']['service']['days'] = str(time.days)
+                result['uptime']['service']['hours'] = str(round(time.min * 60))
+                result['uptime']['service']['minutes'] = str(time.min)
+            except Exception as e:
+                logger.error(f'codius service uptime load fail: {e}')
+            pass
+            try:
+                result['peers']['selftest'] = bool(codius_info['selfTestSuccess'])
+            except Exception as e:
+                logger.error(f'codius selftest load fail: {e}')
+            pass
+        except Exception as e:
+            result['peers'] = None
+            logger.error(f'codius info load fail: {e}')
             pass
         try:
             pods = parse_hyperctl_list(self.run_command(['hyperctl', 'list']))
             result['pods'] = pods
         except Exception as e:
             result['pods'] = []
-            logger.error(e)
+            logger.error(f'pods list load fail: {e}')
             pass
 
         try:
@@ -101,7 +150,7 @@ class SystemService(object):
             result['memory'] = memory
         except Exception as e:
             result['memory'] = None
-            logger.error(e)
+            logger.error(f'Memory usage load fail {e}')
             pass
 
         try:

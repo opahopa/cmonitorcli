@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 BASH_C="bash -c"
 HOSTNAME=$(sudo uname -n 2>/dev/null || true)
 CURRENT_USER="$(id -un 2>/dev/null || true)"
@@ -13,7 +14,7 @@ check_user() {
     if (command_exist sudo);then
       SUDO='sudo'
     else
-      echo "This script need root privilege" && exit "This script need root privilege"
+      >&2 echo "This script need root privilege" && exit 1 "This script need root privilege"
     fi
   fi
 }

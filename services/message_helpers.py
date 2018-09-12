@@ -37,10 +37,10 @@ def result_to_json_response(type, status, hostname, report_system=None, report_c
     result['command'] = type.name
     result['status'] = status.name
     result['hostname'] = hostname
-    
+
     if body:
         result['body'] = body
-    
+
     if report_system and report_codius:
         result['body'] = {
             'system': report_system,
@@ -183,3 +183,16 @@ def podsActivity(pods_log):
         traceback.print_exc()
 
     pass
+
+
+def bash_cmd_result(result):
+    if hasattr(result, 'stdout') and result.stdout and result.returncode == 0:
+        return {'success': True, 'body': result.stdout.strip()}
+    if hasattr(result, 'stderr') and result.stderr:
+        if result.stdout:
+            err = '\n' + result.stdout + '\n' + result.stderr
+        else:
+            err = result.stderr
+    else:
+        err = result
+    return {'success': False, 'body': f"Run bash script command execution error. {err}"}

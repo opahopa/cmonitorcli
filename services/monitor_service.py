@@ -5,10 +5,11 @@ import os, sys
 from models.message import MessageCommands, MessageTypes
 from services.system.system_service import SystemService
 from services.db_service import DbService
-from .message_helpers import parse_message, result_to_json_response, calc_income
+from .message_helpers import parse_message, result_to_json_response, calc_income, bash_cmd_result
 from models.response import ResponseStatus
 from services.utils import set_fee_in_codiusconf
 from settings.config import WEBSOCKET_SERVER
+from settings.config import EXTRA_SERVICES
 
 logger = logging.getLogger(__name__)
 logging.getLogger('apscheduler.executors.default').setLevel(logging.DEBUG)
@@ -17,6 +18,11 @@ if getattr(sys, 'freeze', False):
     bundle_dir = sys._MEIPASS
 else:
     bundle_dir = os.path.dirname(os.path.abspath(__file__))
+
+bash_scripts = {
+    'upload_test': 'scripts/upload_test.sh',
+    'install_fail2ban': 'scripts/install_fail2ban.sh'
+}
 
 
 class MonitorService(object):
@@ -47,15 +53,13 @@ class MonitorService(object):
                 system_service.run_command('systemctl daemon-reload', shell=True)
                 system_service.run_command('systemctl restart codiusd', shell=True)
         if msg.command is MessageCommands.SERVICE_RESTART:
-            try:
-                with SystemService() as system_service:
-                    system_service.run_command(['systemctl', 'restart', msg.body])
-                    return result_to_json_response(msg.command, ResponseStatus.OK, self.hostname)
-            except Exception as e:
-                logger.error("Error on command: {} :{}".format(msg.command.name, e))
-                return result_to_json_response(msg.command, ResponseStatus.ERROR, self.hostname, body=e)
+            return self.command_wrapper(msg, lambda: self.run_systemctl_command('restart', msg.body, msg.command))
+        if msg.command is MessageCommands.SERVICE_STOP:
+            return self.command_wrapper(msg, lambda: self.run_systemctl_command('stop', msg.body, msg.command))
+        if msg.command is MessageCommands.SERVICE_SPECAIL_DATA:
+            return self.command_wrapper(msg, lambda: self.service_special_data(msg))
         if msg.command is MessageCommands.POD_UPLOAD_SELFTEST:
-            return self.command_wrapper(msg, self.codiusd_upload_test)
+            return self.command_wrapper(msg, lambda: self.run_bash_script(bash_scripts['upload_test']))
         if msg.command is MessageCommands.CMONCLI_UPDATE:
             return self.command_wrapper(msg, lambda: self.update_cmoncli(msg.body))
         if msg.command is MessageCommands.INSTALL_SERVICE:
@@ -95,7 +99,6 @@ class MonitorService(object):
     :int: income
     :int: count
     """""""""""""""""""""""""""""""""""""""""
-
     def stats_n_days(self, n):
         dialy = []
 
@@ -111,38 +114,56 @@ class MonitorService(object):
 
         return dialy
 
+    def run_systemctl_command(self, command, service_name, command_name):
+        try:
+            with SystemService() as system_service:
+                system_service.run_command(['systemctl', command, service_name])
+                return {'success': True}
+        except Exception as e:
+            logger.error("Error on command: {} :{}".format(command_name.name, e))
+            return {'success': False, 'body': e}
+
     def update_cmoncli(self, path):
         if len(path) > 0:
-            try:
-                with SystemService() as system_service:
-                    command = f'wget https://{WEBSOCKET_SERVER.split("://")[1]}/{path} ' \
-                              f'-O cmoncli-install.sh && bash cmoncli-install.sh'
-                    logger.info(command)
-                    result = system_service.run_command(command.strip(), shell=True)
-                    return {'success': True, 'body': result.stdout.strip()}
-            except Exception as e:
-                logger.error(e)
-                return {'success': False, 'body': e}
+            command = f'wget https://{WEBSOCKET_SERVER.split("://")[1]}/{path} ' \
+                      f'-O cmoncli-install.sh && bash cmoncli-install.sh'
+            return self.run_bash_script('', command)
         else:
             return {'success': False, 'body': "invalid installer command"}
 
-    def codiusd_upload_test(self):
+    def install_service(self, name):
+        if name == 'fail2ban':
+            return self.run_bash_script(bash_scripts['install_fail2ban'])
+
+
+    """"""""""""""""""""""""""""""""""""""""
+    :returns
+    dictionary:
+
+    :success: boolean
+    :body: string
+    """""""""""""""""""""""""""""""""""""""""
+    def run_bash_script(self, script_path, command=None):
         try:
             with SystemService() as system_service:
-                command = f"bash -x {os.path.join(bundle_dir, 'scripts/upload_test.sh')}"
-                logger.info("Running codiusd_upload_test(), command: {}".format(command))
+
+                if command is None:
+                    command = f"bash {os.path.join(bundle_dir, script_path)}"
+
+                logger.info("Running run_bash_script(), command: {}".format(command))
                 result = system_service.run_command(command, shell=True, timeout=45)
-                if result.stderr:
-                    err = result.stderr
-                else:
-                    err = ''
-                if len(result.stdout.strip()) > 1:
-                    return {'success': True, 'body': result.stdout.strip()}
-                else:
-                    return {'success': False, 'body': f"Upload test command execution error. {err}"}
+                return bash_cmd_result(result)
         except Exception as e:
             logger.error(e)
             return {'success': False, 'body': e}
 
-    def install_service(self, name):
-        logger.info(name)
+    def service_special_data(self, msg):
+        if msg.body in EXTRA_SERVICES:
+            if msg.body is 'fail2ban':
+                try:
+                    with SystemService() as system_service:
+                        result = system_service.run_command('cat /var/log/secure | grep \'Failed password\'', shell=True)
+                        return bash_cmd_result(result)
+                except Exception as e:
+                    logger.error(e)
+                    return {'success': False, 'body': e}
