@@ -3,7 +3,6 @@ import logging
 
 from distutils.version import LooseVersion
 from settings.config import REST_SERVER
-from services.monitor_service import MonitorService
 import version
 
 logger = logging.getLogger(__name__)
