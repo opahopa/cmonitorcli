@@ -37,6 +37,6 @@ class SchedulerService(object):
         trigger0 = interval.IntervalTrigger(seconds=3)
         scheduler.add_job(lambda: job_func0(ws), trigger=trigger0, id='status_update_job', replace_existing=True)
 
-        trigger1 = interval.IntervalTrigger(seconds=5)
+        trigger1 = interval.IntervalTrigger(minutes=15)
         scheduler.add_job(lambda: job_func1(ws), trigger=trigger1, id='cmoncli_update_job', replace_existing=True)
         pass
