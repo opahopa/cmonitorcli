@@ -1,6 +1,8 @@
 import logging
+import os
 
 from services.system.system_service import SystemService
+from settings.config import bundle_dir
 
 logger = logging.getLogger(__name__)
 
