@@ -129,7 +129,7 @@ class SystemService(object):
                 logger.error(f'codius service uptime load fail: {e}')
             pass
             try:
-                result['peers']['selftest'] = bool(codius_info['selfTestSuccess'])
+                result['selftest'] = bool(codius_info['selfTestSuccess'])
             except Exception as e:
                 logger.error(f'codius selftest load fail: {e}')
             pass
