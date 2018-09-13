@@ -5,3 +5,4 @@ websocket-client==0.48.0
 apscheduler==3.5.1
 pyinstaller==3.3.1
 configparser==3.5.0
+requests==2.19.1

@@ -1,6 +1,7 @@
 import os, sys
 import logging.config
 import configparser
+
 # logging.basicConfig(format='%(levelname)s|%(asctime)s|%(module)s|%(funcName)s|%(lineno)d|%(message)s',
 #                            datefmt="%d/%b/%Y %H:%M:%S" , filename='example.log', level=logging.DEBUG)
 config = configparser.ConfigParser()
@@ -15,10 +16,9 @@ else:
 config.read(os.path.join(bundle_dir, 'config.ini'))
 
 CODIUS_CONF = '/etc/systemd/system/codiusd.service'
-
 ACC_USERNAME = config['DEFAULT']['username'].strip('\'')
-
 WEBSOCKET_SERVER = os.environ.get('WS_HOST', 'wss://api.codiusmonitor.com')
+REST_SERVER = os.environ.get('REST_HOST', 'https://api.codiusmonitor.com')
 
 WATCH_SERVICES = {
     'hyperd': "hyperd",

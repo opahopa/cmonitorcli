@@ -8,6 +8,8 @@ from services.db_service import DbService
 from services.utils import rnd_servname
 from services.monitor_service import MonitorService
 from services.scheduler import SchedulerService
+from services.cli_service import cli_update_watcher
+from models.message import MessageCommands, MessageStatus
 
 logger = logging.getLogger(__name__)
 
@@ -19,13 +21,14 @@ class CmonitorCli(object):
         self.hostname = self._get_hostname()
         self.monitor_service = MonitorService(self.hostname)
 
-        self.scheduler = SchedulerService(self.updater)
+        self.scheduler = SchedulerService()
         self.scheduler.run_scheduler()
 
         logger.info("connect to: {}/ws/monitor/{}/{}/".format(WEBSOCKET_SERVER, ACC_USERNAME, self.hostname), )
         self.wsocket = WsClient("{}/ws/monitor/{}/{}/".format(WEBSOCKET_SERVER, ACC_USERNAME, self.hostname),
                                 func_onopen=self.scheduler.add_update_job, func_onmsg=self.watcher
-                                , func_onclose=self.scheduler.delete_update_job, func_report=self.updater)
+                                , func_onclose=self.scheduler.delete_update_job, func_report=self.updater,
+                                func_cli_upd=self.cli_updater)
         self.wsocket.connect()
 
     def __enter__(self):
@@ -50,7 +53,6 @@ class CmonitorCli(object):
     """""
     ws: passed through ws initializer method in socket_client.py
     """""
-
     def watcher(self, ws, content):
         result_json = self.monitor_service.watch_message(content)
         if result_json is not None:
@@ -62,3 +64,14 @@ class CmonitorCli(object):
         if result_json is not None:
             ws.send(result_json)
             logger.debug("Sent update: {}".format(result_json))
+
+    def cli_updater(self, ws):
+        if cli_update_watcher() == True:
+            msg = {
+                'type': "REPORT",
+                'command': MessageCommands.CLI_UPGRADE_REQUIRED,
+                'status': MessageStatus.OK.name,
+                'hostname': self.hostname
+            }
+            ws.send(json.dumps(msg, default=str))
+        pass

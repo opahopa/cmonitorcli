@@ -4,6 +4,8 @@ codiusmonitor.com client executable.
 dev requirements:
 python => 3.6
 
+Don't forget to update version.py on cli updates.
+
 Establishing connection with the user-interface through the Django channels websockets.
 
 Logic:

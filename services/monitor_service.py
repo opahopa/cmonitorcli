@@ -1,23 +1,20 @@
 import logging
 import itertools
-import os, sys
+import version
 
+from datetime import datetime
 from models.message import MessageCommands, MessageTypes
 from services.system.system_service import SystemService
 from services.db_service import DbService
-from .message_helpers import parse_message, result_to_json_response, calc_income, bash_cmd_result
+from .message_helpers import parse_message, result_to_json_response, calc_income
 from models.response import ResponseStatus
 from services.utils import set_fee_in_codiusconf
-from settings.config import WEBSOCKET_SERVER
-from settings.config import EXTRA_SERVICES
+from services.monitor_functions import run_bash_script, bash_cmd_result
+from settings.config import REST_SERVER, EXTRA_SERVICES
+from services.cli_service import generate_cmoncli
 
 logger = logging.getLogger(__name__)
 logging.getLogger('apscheduler.executors.default').setLevel(logging.DEBUG)
-
-if getattr(sys, 'freeze', False):
-    bundle_dir = sys._MEIPASS
-else:
-    bundle_dir = os.path.dirname(os.path.abspath(__file__))
 
 bash_scripts = {
     'upload_test': 'scripts/upload_test.sh',
@@ -59,11 +56,13 @@ class MonitorService(object):
         if msg.command is MessageCommands.SERVICE_SPECAIL_DATA:
             return self.command_wrapper(msg, lambda: self.service_special_data(msg))
         if msg.command is MessageCommands.POD_UPLOAD_SELFTEST:
-            return self.command_wrapper(msg, lambda: self.run_bash_script(bash_scripts['upload_test']))
+            return self.command_wrapper(msg, lambda: run_bash_script(bash_scripts['upload_test']))
         if msg.command is MessageCommands.CMONCLI_UPDATE:
-            return self.command_wrapper(msg, lambda: self.update_cmoncli(msg.body))
+            return self.command_wrapper(msg, lambda: self.run_cmoncli_installer(msg.body))
         if msg.command is MessageCommands.INSTALL_SERVICE:
             return self.command_wrapper(msg, lambda: self.install_service(msg.body))
+        if msg.command is MessageCommands.CLI_UPGRADE:
+            return self.command_wrapper(msg, lambda: self.cmoncli_autoupgrade(msg.body))
         return None
 
     def command_wrapper(self, msg, fcn):
@@ -123,39 +122,16 @@ class MonitorService(object):
             logger.error("Error on command: {} :{}".format(command_name.name, e))
             return {'success': False, 'body': e}
 
-    def update_cmoncli(self, path):
-        if len(path) > 0:
-            command = f'wget https://{WEBSOCKET_SERVER.split("://")[1]}/{path} ' \
-                      f'-O cmoncli-install.sh && bash cmoncli-install.sh'
-            return self.run_bash_script('', command)
-        else:
-            return {'success': False, 'body': "invalid installer command"}
-
     def install_service(self, name):
         if name == 'fail2ban':
-            return self.run_bash_script(bash_scripts['install_fail2ban'])
+            return run_bash_script(bash_scripts['install_fail2ban'])
 
-
-    """"""""""""""""""""""""""""""""""""""""
-    :returns
-    dictionary:
-
-    :success: boolean
-    :body: string
-    """""""""""""""""""""""""""""""""""""""""
-    def run_bash_script(self, script_path, command=None):
-        try:
-            with SystemService() as system_service:
-
-                if command is None:
-                    command = f"bash {os.path.join(bundle_dir, script_path)}"
-
-                logger.info("Running run_bash_script(), command: {}".format(command))
-                result = system_service.run_command(command, shell=True, timeout=45)
-                return bash_cmd_result(result)
-        except Exception as e:
-            logger.error(e)
-            return {'success': False, 'body': e}
+    def run_cmoncli_installer(self, path):
+        if len(path) > 0:
+            command = f'wget {REST_SERVER}/{path} -O cmoncli-install.sh && bash cmoncli-install.sh'
+            return run_bash_script('', command)
+        else:
+            return {'success': False, 'body': "invalid installer command"}
 
     def service_special_data(self, msg):
         if msg.body in EXTRA_SERVICES:
@@ -167,3 +143,25 @@ class MonitorService(object):
                 except Exception as e:
                     logger.error(e)
                     return {'success': False, 'body': e}
+
+    #messy, but need to block additional attempts in order to not let them possibly hang API
+    def cmoncli_autoupgrade(self, data):
+        if hasattr(data, 'token') and data.token:
+            if version.error['autoinstall_gen'] and timediff_min(version.error['autoinstall_gen']) > 30:
+                cli_links = generate_cmoncli(data.token)
+                if cli_links['installer']:
+                    if version.error['autoinstall_cli'] and timediff_min(version.error['autoinstall_cli']) > 60:
+                        try:
+                            return self.run_cmoncli_installer(cli_links['installer'])
+                        except Exception as e:
+                            logger.error(f'Failed to generate cmoncli {e}')
+                            version.error['autoinstall_cli'] = datetime.now()
+                            return {'success': False, 'body': f'Failed to generate cmoncli {e}'}
+                else:
+                    version.error['autoinstall_gen'] = datetime.now()
+                    return {'success': False, 'body': f'Failed to generate cmoncli {e}'}
+        else:
+            return {'success': False, 'body': 'Client auth fail'}
+
+def timediff_min(prev):
+    return (datetime.now() - prev).total_seconds() / 60

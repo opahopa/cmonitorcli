@@ -13,12 +13,13 @@ class WsClient(object):
     def __enter__(self):
         return self
 
-    def __init__(self, url, func_onopen, func_onmsg, func_onclose, func_report):
+    def __init__(self, url, func_onopen, func_onmsg, func_onclose, func_report, func_cli_upd=None):
         self.url = url
         self.func_onopen = func_onopen
         self.func_onmsg = func_onmsg
         self.func_onclose = func_onclose
         self.func_report = func_report
+        self.func_cli_upd = func_cli_upd
 
     def connect(self):
         websocket.enableTrace(True)
@@ -63,12 +64,12 @@ class WsClient(object):
         :return:
         """
 
-        def run(func_onopen, ws, func_report):
+        def run(func_onopen, ws, func_report, func_cli_upd):
             logger.info("connected")
             # ws.send(json.dumps({
             #     'message': "Hello there"
             # }))
-            func_onopen(ws, func_report)
+            func_onopen(ws, func_report, func_cli_upd)
             # ws.close()
 
-        thread.start_new_thread(run, (self.func_onopen, ws, self.func_report, ))
+        thread.start_new_thread(run, (self.func_onopen, ws, self.func_report, self.func_cli_upd))

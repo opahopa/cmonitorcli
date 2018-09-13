@@ -4,6 +4,7 @@ import json
 from models.report import ReportService
 from models.message import Message, MessageCommands, MessageStatus
 from services.utils import get_fee
+from version import CLI_VERSION
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +38,7 @@ def result_to_json_response(type, status, hostname, report_system=None, report_c
     result['command'] = type.name
     result['status'] = status.name
     result['hostname'] = hostname
+    result['cli_version'] = CLI_VERSION
 
     if body:
         result['body'] = body
@@ -84,7 +86,6 @@ and
 
 :int: pods_count 
 """""""""""""""""""""""""""""""""""""""""
-
 
 def calc_income(pods_log):
     # timer_start = timer()
@@ -183,16 +184,3 @@ def podsActivity(pods_log):
         traceback.print_exc()
 
     pass
-
-
-def bash_cmd_result(result):
-    if hasattr(result, 'stdout') and result.stdout and result.returncode == 0:
-        return {'success': True, 'body': result.stdout.strip()}
-    if hasattr(result, 'stderr') and result.stderr:
-        if result.stdout:
-            err = '\n' + result.stdout + '\n' + result.stderr
-        else:
-            err = result.stderr
-    else:
-        err = result
-    return {'success': False, 'body': f"Run bash script command execution error. {err}"}
