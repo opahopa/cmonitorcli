@@ -147,16 +147,20 @@ class MonitorService(object):
     #messy, but need to block additional attempts in order to not let them possibly hang API
     def cmoncli_autoupgrade(self, data):
         if hasattr(data, 'token') and data.token:
-            if version.error['autoinstall_gen'] and timediff_min(version.error['autoinstall_gen']) > 30:
+            if not version.error['autoinstall_gen'] or (version.error['autoinstall_gen'] and timediff_min(version.error['autoinstall_gen']) > 30):
                 cli_links = generate_cmoncli(data.token)
                 if cli_links['installer']:
-                    if version.error['autoinstall_cli'] and timediff_min(version.error['autoinstall_cli']) > 60:
+                    if not version.error['autoinstall_cli'] or (version.error['autoinstall_cli'] and timediff_min(version.error['autoinstall_cli']) > 60):
                         try:
-                            return self.run_cmoncli_installer(cli_links['installer'])
+                            result = self.run_cmoncli_installer(cli_links['installer'])
+
+                            # if reached here means failed
+                            if result or result is None:
+                                version.error['autoinstall_cli'] = datetime.now()
                         except Exception as e:
-                            logger.error(f'Failed to generate cmoncli {e}')
+                            logger.error(f'Failed to install cmoncli {e}')
                             version.error['autoinstall_cli'] = datetime.now()
-                            return {'success': False, 'body': f'Failed to generate cmoncli {e}'}
+                            return {'success': False, 'body': f'Failed to install cmoncli {e}'}
                 else:
                     version.error['autoinstall_gen'] = datetime.now()
                     return {'success': False, 'body': f'Failed to generate cmoncli {e}'}
