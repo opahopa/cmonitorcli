@@ -33,6 +33,7 @@ def parse_message(content):
 
 def result_to_json_response(type, status, hostname, report_system=None, report_codius=None, body=None,
                             report_extra_services=None):
+
     result = {}
     result['type'] = "REPORT"
     result['command'] = type.name
@@ -51,6 +52,9 @@ def result_to_json_response(type, status, hostname, report_system=None, report_c
 
     if report_extra_services:
         result['body']['extra_services'] = report_extra_services
+
+    if CLI_VERSION:
+        result['body']['cli_version'] = CLI_VERSION
 
     if status is MessageStatus.ERROR:
         return json.dumps(result)

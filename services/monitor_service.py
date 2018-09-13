@@ -1,6 +1,7 @@
 import logging
 import itertools
 import version
+import traceback
 
 from datetime import datetime
 from models.message import MessageCommands, MessageTypes
