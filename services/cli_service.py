@@ -30,7 +30,7 @@ def cli_update_watcher():
 
 def get_version():
     try:
-        return requests.get(url=REST_SERVER + '/monitor/client/version/', timeout=10).json()
+        return requests.get(url=REST_SERVER + '/monitor/client/info/version/', timeout=10).json()
     except Exception as e:
         logger.error(f'Failed to get version number from API {e}')
 
