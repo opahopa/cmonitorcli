@@ -83,14 +83,14 @@ class SystemService(object):
             'selftest': None,
             'uptime': {
                 'server': {
-                    'days': '',
-                    'hours': '',
-                    'minutes': ''
+                    'days': 0,
+                    'hours': 0,
+                    'minutes': 0
                 },
                 'service': {
-                    'days': '',
-                    'hours': '',
-                    'minutes': ''
+                    'days': 0,
+                    'hours': 0,
+                    'minutes': 0
                 }
             },
             'pods': [],
@@ -114,17 +114,17 @@ class SystemService(object):
             pass
             try:
                 time = datetime.timedelta(seconds=round(int(codius_info['serverUptime'])))
-                result['uptime']['server']['days'] = str(time.days)
-                result['uptime']['server']['hours'] = str(round(time.min * 60))
-                result['uptime']['server']['minutes'] = str(time.min)
+                result['uptime']['server']['days'] = time.days
+                result['uptime']['server']['hours'] = round(time.seconds/3600)
+                result['uptime']['server']['minutes'] = round(time.seconds/60)
             except Exception as e:
                 logger.error(f'codius server uptime load fail: {e}')
             pass
             try:
                 time = datetime.timedelta(seconds=round(int(codius_info['serviceUptime'])))
-                result['uptime']['service']['days'] = str(time.days)
-                result['uptime']['service']['hours'] = str(round(time.min * 60))
-                result['uptime']['service']['minutes'] = str(time.min)
+                result['uptime']['service']['days'] = time.days
+                result['uptime']['service']['hours'] = round(time.seconds/3600)
+                result['uptime']['service']['minutes'] = round(time.seconds/60)
             except Exception as e:
                 logger.error(f'codius service uptime load fail: {e}')
             pass
