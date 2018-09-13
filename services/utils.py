@@ -59,6 +59,5 @@ class Dict2Obj(object):
         for key in dictionary:
             setattr(self, key, dictionary[key])
 
-
 if __name__ == "__main__":
     print(set_fee_in_codiusconf(15))

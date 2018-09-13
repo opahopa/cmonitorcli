@@ -33,53 +33,53 @@ def parse_message(content):
 
 def result_to_json_response(type, status, hostname, report_system=None, report_codius=None, body=None,
                             report_extra_services=None):
+    try:
+        result = {}
+        result['type'] = "REPORT"
+        result['command'] = type.name
+        result['status'] = status.name
+        result['hostname'] = hostname
 
-    result = {}
-    result['type'] = "REPORT"
-    result['command'] = type.name
-    result['status'] = status.name
-    result['hostname'] = hostname
-    result['cli_version'] = CLI_VERSION
+        if body:
+            result['body'] = body
 
-    if body:
-        result['body'] = body
+        if report_system and report_codius:
+            result['body'] = {
+                'system': report_system,
+                'codius': report_codius
+            }
 
-    if report_system and report_codius:
-        result['body'] = {
-            'system': report_system,
-            'codius': report_codius
-        }
 
-    if report_extra_services:
-        result['body']['extra_services'] = report_extra_services
+        if report_extra_services:
+            result['body']['extra_services'] = report_extra_services
 
-    if CLI_VERSION:
-        result['body']['cli_version'] = CLI_VERSION
+        if status is MessageStatus.ERROR:
+            return json.dumps(result, default=str)
 
-    if status is MessageStatus.ERROR:
-        return json.dumps(result)
+        if type is MessageCommands.STATUS_ALL or type is MessageCommands.STATUS_CLI_UPDATE:
+            for i in range(0, len(report_system)):
+                if isinstance(report_system[i], ReportService):
+                    report_system[i] = report_system[i].toDict()
 
-    if type is MessageCommands.STATUS_ALL or type is MessageCommands.STATUS_CLI_UPDATE:
-        for i in range(0, len(report_system)):
-            if isinstance(report_system[i], ReportService):
-                report_system[i] = report_system[i].toDict()
+            for i in range(0, len(report_extra_services)):
+                if isinstance(report_extra_services[i], ReportService):
+                    report_extra_services[i] = report_extra_services[i].toDict()
 
-        for i in range(0, len(report_extra_services)):
-            if isinstance(report_extra_services[i], ReportService):
-                report_extra_services[i] = report_extra_services[i].toDict()
+            result['body']['system'] = report_system
+            result['body']['codius'] = report_codius
+            result['body']['extra_services'] = report_extra_services
+            result['body']['cli_version'] = CLI_VERSION
 
-        result['body']['system'] = report_system
-        result['body']['codius'] = report_codius
-        result['body']['extra_services'] = report_extra_services
+        #     for k, v in content.items():
+        #         try:
+        #             if isinstance(content[k], ReportService):
+        #                 content[k] = v.toDict()
+        #         except Exception as e:
+        #             logger.error(e)
 
-    #     for k, v in content.items():
-    #         try:
-    #             if isinstance(content[k], ReportService):
-    #                 content[k] = v.toDict()
-    #         except Exception as e:
-    #             logger.error(e)
-
-    return json.dumps(result, default=str)
+        return json.dumps(result, default=str)
+    except Exception as e:
+        traceback.print_exc(e)
 
 
 """"""""""""""""""""""""""""""""""""""""

@@ -1,5 +1,6 @@
 import logging
 import os, sys
+import json
 
 from services.system.system_service import SystemService
 from settings.config import bundle_dir
@@ -24,7 +25,7 @@ def bash_cmd_result(result):
             else:
                 err = result.stderr
         else:
-            err = result
+            err = result.__dict__
         return {'success': False, 'body': f"Run bash script command execution error. {err}"}
     except Exception as e:
         logger.error(f'bash script cmd result parsing error: {e}')

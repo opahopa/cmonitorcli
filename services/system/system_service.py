@@ -42,10 +42,10 @@ class SystemService(object):
         except CalledProcessError as e:
             output = e.output.decode()
             logger.error(output)
-            return e
+            return output
         except Exception as e:
             logger.error(e)
-            return e
+            return e.__str__()
         finally:
             timer.cancel()
 
