@@ -85,7 +85,8 @@ class MonitorService(object):
                         codius['income_24'], codius['count_24'] = calc_income(db_service.get_pods_in_n_days(1))
 
                 return result_to_json_response(msg_command, ResponseStatus.OK, self.hostname,
-                                               report_system=system, report_codius=codius, report_extra_services=extra_services )
+                                               report_system=system, report_codius=codius,
+                                               report_extra_services=extra_services)
         except Exception as e:
             logger.error("Error on command: {} :{}".format(msg_command.name, e))
             return None
@@ -98,6 +99,7 @@ class MonitorService(object):
     :int: income
     :int: count
     """""""""""""""""""""""""""""""""""""""""
+
     def stats_n_days(self, n):
         dialy = []
 
@@ -138,19 +140,22 @@ class MonitorService(object):
             if msg.body is 'fail2ban':
                 try:
                     with SystemService() as system_service:
-                        result = system_service.run_command('cat /var/log/secure | grep \'Failed password\'', shell=True)
+                        result = system_service.run_command('cat /var/log/secure | grep \'Failed password\'',
+                                                            shell=True)
                         return bash_cmd_result(result)
                 except Exception as e:
                     logger.error(e)
                     return {'success': False, 'body': e}
 
-    #messy, but need to block additional attempts in order to not let them possibly hang API
+    # messy, but need to block additional attempts in order to not let them possibly hang API
     def cmoncli_autoupgrade(self, data):
         if hasattr(data, 'token') and data.token:
-            if not version.error['autoinstall_gen'] or (version.error['autoinstall_gen'] and timediff_min(version.error['autoinstall_gen']) > 30):
+            if not version.error['autoinstall_gen'] or (
+                    version.error['autoinstall_gen'] and timediff_min(version.error['autoinstall_gen']) > 30):
                 cli_links = generate_cmoncli(data.token)
                 if cli_links['installer']:
-                    if not version.error['autoinstall_cli'] or (version.error['autoinstall_cli'] and timediff_min(version.error['autoinstall_cli']) > 60):
+                    if not version.error['autoinstall_cli'] or (
+                            version.error['autoinstall_cli'] and timediff_min(version.error['autoinstall_cli']) > 60):
                         try:
                             result = self.run_cmoncli_installer(cli_links['installer'])
 
@@ -163,9 +168,10 @@ class MonitorService(object):
                             return {'success': False, 'body': f'Failed to install cmoncli {e}'}
                 else:
                     version.error['autoinstall_gen'] = datetime.now()
-                    return {'success': False, 'body': f'Failed to generate cmoncli {e}'}
+                    return {'success': False, 'body': 'Failed to generate cmoncli'}
         else:
             return {'success': False, 'body': 'Client auth fail'}
+
 
 def timediff_min(prev):
     return (datetime.now() - prev).total_seconds() / 60
