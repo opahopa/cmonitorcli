@@ -53,7 +53,7 @@ def get_version():
 def generate_cmoncli(token):
     try:
         logger.info(REST_SERVER)
-        return requests.get(url=REST_SERVER + '/monitor/client/generate/', timeout=10,
+        return requests.get(url=REST_SERVER + '/monitor/client/generate/', timeout=60,
                             headers={'Authorization': f'JWT {token}'}).json()
     except Exception as e:
         logger.error(f'Failed to generate cli {e}')
