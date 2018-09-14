@@ -37,7 +37,11 @@ class SystemService(object):
             timer.start()
             result = process.communicate(timeout=timeout)
             # process.wait()
-            d = {}
+            d = {
+                'stdout': '',
+                'stderr': '',
+                'returncode': 1
+            }
             if result[0]:
                 d['stdout'] = result[0].strip()
             if result[1]:
