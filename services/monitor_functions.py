@@ -17,12 +17,13 @@ else:
 
 def bash_cmd_result(result):
     try:
+        logger.info(result)
         if hasattr(result, 'stdout') and result.stdout and result.returncode == 0:
             return {'success': True, 'body': result.stdout.strip()}
         if hasattr(result, 'stderr') and result.stderr:
-            if result.stdout:
+            try:
                 err = '\n' + result.stdout + '\n' + result.stderr
-            else:
+            except:
                 err = result.stderr
         else:
             err = result

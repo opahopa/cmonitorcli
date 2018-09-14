@@ -149,7 +149,7 @@ class MonitorService(object):
                         return bash_cmd_result(result)
                 except Exception as e:
                     logger.error(e)
-                    return {'success': False, 'body': e}
+                    return {'success': False, 'body': e.__str__()}
 
     # messy, but need to block additional attempts in order to not let them possibly hang API
     def cmoncli_autoupgrade(self, data):

@@ -37,8 +37,16 @@ class SystemService(object):
             timer.start()
             result = process.communicate(timeout=timeout)
             # process.wait()
+            d = {}
+            if result[0]:
+                d['stdout'] = result[0].strip()
+            if result[1]:
+                d['stderr'] = result[1]
+            if process.returncode:
+                d['returncode'] = process.returncode
 
-            return Dict2Obj({'stdout': result[0].strip(), 'stderr': result[1], 'returncode': process.returncode})
+            return Dict2Obj(d)
+
         except CalledProcessError as e:
             output = e.output.decode()
             logger.error(output)
