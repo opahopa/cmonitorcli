@@ -25,7 +25,7 @@ def bash_cmd_result(result):
             else:
                 err = result.stderr
         else:
-            err = result.__dict__
+            err = result
         return {'success': False, 'body': f"Run bash script command execution error. {err}"}
     except Exception as e:
         logger.error(f'bash script cmd result parsing error: {e}')

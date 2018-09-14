@@ -73,3 +73,4 @@ class WsClient(object):
             # ws.close()
 
         thread.start_new_thread(run, (self.func_onopen, ws, self.func_report, self.func_cli_upd))
+

@@ -8,7 +8,7 @@ from services.db_service import DbService
 from services.utils import rnd_servname
 from services.monitor_service import MonitorService
 from services.scheduler import SchedulerService
-from services.cli_service import cli_update_watcher
+from services.cli_tools import cli_update_watcher, cli_update_request
 from models.message import MessageCommands, MessageStatus
 
 logger = logging.getLogger(__name__)
@@ -66,12 +66,7 @@ class CmonitorCli(object):
             logger.debug("Sent update: {}".format(result_json))
 
     def cli_updater(self, ws):
-        if cli_update_watcher() == True:
-            msg = {
-                'type': "REPORT",
-                'command': MessageCommands.CLI_UPGRADE_REQUIRED,
-                'status': MessageStatus.OK.name,
-                'hostname': self.hostname
-            }
+        msg = cli_update_request(self.hostname)
+        if msg is not None:
             ws.send(json.dumps(msg, default=str))
         pass

@@ -1,7 +1,6 @@
 import logging
 import itertools
 import version
-import traceback
 
 from datetime import datetime
 from models.message import MessageCommands, MessageTypes
@@ -12,7 +11,8 @@ from models.response import ResponseStatus
 from services.utils import set_fee_in_codiusconf
 from services.monitor_functions import run_bash_script, bash_cmd_result
 from settings.config import REST_SERVER, EXTRA_SERVICES
-from services.cli_service import generate_cmoncli
+from services.cli_tools import generate_cmoncli
+from .cli_tools import cli_update_request
 
 logger = logging.getLogger(__name__)
 logging.getLogger('apscheduler.executors.default').setLevel(logging.DEBUG)
@@ -39,6 +39,9 @@ class MonitorService(object):
 
     def _execute_command_all(self, msg):
         if msg.command is MessageCommands.STATUS_ALL:
+            msg_upd = cli_update_request(self.hostname)
+            if msg_upd is not None:
+                return result_to_json_response(msg_upd['command'], ResponseStatus.OK, self.hostname)
             return self.report_status(msg.command)
         if msg.command is MessageCommands.STATS_ALL:
             return result_to_json_response(
@@ -150,25 +153,22 @@ class MonitorService(object):
 
     # messy, but need to block additional attempts in order to not let them possibly hang API
     def cmoncli_autoupgrade(self, data):
-        if hasattr(data, 'token') and data.token:
+        if data['token']:
             if not version.error['autoinstall_gen'] or (
                     version.error['autoinstall_gen'] and timediff_min(version.error['autoinstall_gen']) > 30):
-                cli_links = generate_cmoncli(data.token)
+                cli_links = generate_cmoncli(data['token'])
                 if cli_links['installer']:
                     if not version.error['autoinstall_cli'] or (
                             version.error['autoinstall_cli'] and timediff_min(version.error['autoinstall_cli']) > 60):
                         try:
-                            result = self.run_cmoncli_installer(cli_links['installer'])
-
-                            # if reached here means failed
-                            if result or result is None:
-                                version.error['autoinstall_cli'] = datetime.now()
+                            return self.run_cmoncli_installer(cli_links['installer'])
                         except Exception as e:
                             logger.error(f'Failed to install cmoncli {e}')
                             version.error['autoinstall_cli'] = datetime.now()
-                            return {'success': False, 'body': f'Failed to install cmoncli {e}'}
+                            return {'success': False, 'body': f'Failed to install cmoncli {e.__str__()}'}
                 else:
                     version.error['autoinstall_gen'] = datetime.now()
+                    logger.info('Failed to generate cmoncli')
                     return {'success': False, 'body': 'Failed to generate cmoncli'}
         else:
             return {'success': False, 'body': 'Client auth fail'}
