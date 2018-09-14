@@ -57,6 +57,8 @@ class MonitorService(object):
             return self.command_wrapper(msg, lambda: self.run_systemctl_command('restart', msg.body, msg.command))
         if msg.command is MessageCommands.SERVICE_STOP:
             return self.command_wrapper(msg, lambda: self.run_systemctl_command('stop', msg.body, msg.command))
+        if msg.command is MessageCommands.SERVICE_START:
+            return self.command_wrapper(msg, lambda: self.run_systemctl_command('start', msg.body, msg.command))
         if msg.command is MessageCommands.SERVICE_SPECAIL_DATA:
             return self.command_wrapper(msg, lambda: self.service_special_data(msg))
         if msg.command is MessageCommands.POD_UPLOAD_SELFTEST:
@@ -65,12 +67,16 @@ class MonitorService(object):
             return self.command_wrapper(msg, lambda: self.run_cmoncli_installer(msg.body))
         if msg.command is MessageCommands.INSTALL_SERVICE:
             return self.command_wrapper(msg, lambda: self.install_service(msg.body))
+        if msg.command is MessageCommands.UNINSTALL_SERVICE:
+            return self.command_wrapper(msg, lambda: self.uninstall_service(msg.body))
         if msg.command is MessageCommands.CLI_UPGRADE:
             return self.command_wrapper(msg, lambda: self.cmoncli_autoupgrade(msg.body))
         return None
 
     def command_wrapper(self, msg, fcn):
         result = fcn()
+        if not 'body' in result:
+            result['body'] = 'success'
         if result['success']:
             return result_to_json_response(msg.command, ResponseStatus.OK, self.hostname, body=result['body'])
         else:
@@ -122,8 +128,12 @@ class MonitorService(object):
     def run_systemctl_command(self, command, service_name, command_name):
         try:
             with SystemService() as system_service:
-                system_service.run_command(['systemctl', command, service_name])
-                return {'success': True}
+                result = system_service.run_command(['systemctl', command, service_name])
+                if command == 'stop' or command == 'restart' or command == 'start':
+                    logger.info('stop/restart/start')
+                    return {'success': True}
+                else:
+                    return bash_cmd_result(result)
         except Exception as e:
             logger.error("Error on command: {} :{}".format(command_name.name, e))
             return {'success': False, 'body': e}
@@ -131,6 +141,15 @@ class MonitorService(object):
     def install_service(self, name):
         if name == 'fail2ban':
             return run_bash_script(bash_scripts['install_fail2ban'])
+
+    def uninstall_service(self, name):
+        if name == 'fail2ban':
+            with SystemService() as system_service:
+                result = system_service.run_command('yum remove -y fail2ban\*',
+                                                    shell=True)
+                return bash_cmd_result(result)
+        else:
+            return {'success': False, 'body': f'{name} service is not supported'}
 
     def run_cmoncli_installer(self, path):
         if len(path) > 0:
@@ -141,15 +160,19 @@ class MonitorService(object):
 
     def service_special_data(self, msg):
         if msg.body in EXTRA_SERVICES:
-            if msg.body is 'fail2ban':
+            if msg.body == 'fail2ban':
                 try:
+                    logger.info('Running fail2ban log request')
                     with SystemService() as system_service:
-                        result = system_service.run_command('cat /var/log/secure | grep \'Failed password\'',
+                        result = system_service.run_command('tail -n 1000 /var/log/secure | grep \'Failed password\'',
                                                             shell=True)
                         return bash_cmd_result(result)
                 except Exception as e:
                     logger.error(e)
                     return {'success': False, 'body': e.__str__()}
+            return {'success': False, 'body': f'{msg.body} no method for this service'}
+        else:
+            return {'success': False, 'body': f'{msg.body} service is not supported'}
 
     # messy, but need to block additional attempts in order to not let them possibly hang API
     def cmoncli_autoupgrade(self, data):

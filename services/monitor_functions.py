@@ -4,6 +4,7 @@ import json
 
 from services.system.system_service import SystemService
 from settings.config import bundle_dir
+from services.utils import Dict2Obj
 
 logger = logging.getLogger(__name__)
 
@@ -17,8 +18,9 @@ else:
 
 def bash_cmd_result(result):
     try:
-        logger.info(result)
         if len(result.stdout) > 1 and result.returncode == 0:
+            return {'success': True, 'body': result.stdout.strip()}
+        if len(result.stdout) > 1 and len(result.stderr) == 0:
             return {'success': True, 'body': result.stdout.strip()}
         if len(result.stderr) > 1:
             try:
@@ -27,10 +29,14 @@ def bash_cmd_result(result):
                 err = result.stderr
         else:
             err = result
+
+        if isinstance(err, Dict2Obj):
+            err = err.__dict__
+
         return {'success': False, 'body': f"Run bash script command execution error. {err}"}
     except Exception as e:
         logger.error(f'bash script cmd result parsing error: {e}')
-        return {'success': False, 'body': f"bash script cmd result parsing error: {err}"}
+        return {'success': False, 'body': f"bash script cmd result parsing error: {e}"}
 
 
 """"""""""""""""""""""""""""""""""""""""

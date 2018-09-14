@@ -46,7 +46,7 @@ class SystemService(object):
                 d['stdout'] = result[0].strip()
             if result[1]:
                 d['stderr'] = result[1]
-            if process.returncode:
+            if hasattr(process, 'returncode') and process.returncode:
                 d['returncode'] = process.returncode
 
             return Dict2Obj(d)
