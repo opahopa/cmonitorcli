@@ -18,20 +18,22 @@ else:
 
 def bash_cmd_result(result):
     try:
-        if len(result.stdout) > 1 and result.returncode == 0:
-            return {'success': True, 'body': result.stdout.strip()}
-        if len(result.stdout) > 1 and len(result.stderr) == 0:
-            return {'success': True, 'body': result.stdout.strip()}
-        if len(result.stderr) > 1:
-            try:
-                err = '\n' + result.stdout + '\n' + result.stderr
-            except:
-                err = result.stderr
+        err = None
+        if isinstance(result, Dict2Obj):
+            if len(result.stdout) > 1 and result.returncode == 0:
+                return {'success': True, 'body': result.stdout.strip()}
+            if len(result.stdout) > 1 and len(result.stderr) == 0:
+                return {'success': True, 'body': result.stdout.strip()}
+            if len(result.stderr) > 1:
+                try:
+                    err = '\n' + result.stdout + '\n' + result.stderr
+                except:
+                    err = result.stderr
+
+            if not err:
+                err = result.__dict__
         else:
             err = result
-
-        if isinstance(err, Dict2Obj):
-            err = err.__dict__
 
         return {'success': False, 'body': f"Run bash script command execution error. {err}"}
     except Exception as e:

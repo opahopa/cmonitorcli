@@ -53,6 +53,7 @@ class MonitorService(object):
                 set_fee_in_codiusconf(msg.body)
                 system_service.run_command('systemctl daemon-reload', shell=True)
                 system_service.run_command('systemctl restart codiusd', shell=True)
+                return result_to_json_response(msg.command, ResponseStatus.OK, self.hostname, body='success')
         if msg.command is MessageCommands.SERVICE_RESTART:
             return self.command_wrapper(msg, lambda: self.run_systemctl_command('restart', msg.body, msg.command))
         if msg.command is MessageCommands.SERVICE_STOP:
