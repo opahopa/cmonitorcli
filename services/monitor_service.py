@@ -127,6 +127,7 @@ class MonitorService(object):
 
     def run_systemctl_command(self, command, service_name, command_name):
         try:
+            logger.info(command)
             with SystemService() as system_service:
                 result = system_service.run_command(['systemctl', command, service_name])
                 if command == 'stop' or command == 'restart' or command == 'start':

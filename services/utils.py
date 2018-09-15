@@ -45,7 +45,7 @@ def set_fee_in_codiusconf(fee):
             newText = re.sub('CODIUS_COST_PER_MONTH=[0-9]+', f'CODIUS_COST_PER_MONTH={str(fee)}', newText, re.MULTILINE)
             newText = re.sub('COST_PER_MONTH=[0-9]+', f'COST_PER_MONTH={str(fee)}', newText, re.MULTILINE)
 
-        with open('text.txt', "w") as f:
+        with open(CODIUS_CONF, "w") as f:
             f.write(newText)
     except Exception as ex:
         traceback.print_exc(ex)
