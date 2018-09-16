@@ -5,10 +5,11 @@ import datetime
 from subprocess import PIPE, run, CalledProcessError, Popen, TimeoutExpired
 from threading import Timer
 
+from models.codius_vars import CodiusVariables
 from models.report import ReportService
 from services.system.system_helpers import parse_service_report_stdout, parse_hyperctl_list, parse_memory_usage, parse_fee
 from settings.config import WATCH_SERVICES, EXTRA_SERVICES
-from services.utils import get_fee
+from services.utils import get_fee, get_codius_vars
 from services.utils import Dict2Obj
 
 logger = logging.getLogger(__name__)
@@ -107,7 +108,13 @@ class SystemService(object):
             },
             'pods': [],
             'memory': {},
-            'fee': 0
+            'fee': 0,
+            'variables': [
+                {
+                    'name': CodiusVariables,
+                    'value': ''
+                }
+            ]
         }
 
         try:
@@ -167,9 +174,16 @@ class SystemService(object):
 
         try:
             result['fee'] = get_fee()
-        except KeyError as e:
+        except Exception as e:
             result['fee'] = None
-            logger.error('KeyError: %s' % str(e))
+            logger.error('Failed to get fee: %s' % str(e))
+            pass
+
+        try:
+            result['variables'] = get_codius_vars()
+        except Exception as e:
+            result['variables'] = None
+            logger.error('Failed to get codiusd vard: %s' % str(e))
             pass
 
         logger.debug(f"Codius system info: {result}")

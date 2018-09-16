@@ -1,0 +1,20 @@
+[Unit]
+Description=Codiusd
+After=network.target nss-lookup.target
+[Service]
+ExecStart=/usr/bin/npm start
+Environment="DEBUG=codiusd*,ilp*,-*Peer*,-*trace*"
+Environment="CODIUS_XRP_PER_MONTH=9"
+Environment="CODIUS_PUBLIC_URI="
+Environment="CODIUS_MAX_MEMORY_FRACTION=erreyery"
+Environment="CODIUS_ADDITIONAL_HOST_INFO=regreherh"
+Environment="CODIUS_BOOTSTRAP_PEERS=tyjtj"
+WorkingDirectory=/usr/lib/node_modules/codiusd
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=codiusd
+User=root
+Group=root
+[Install]
+WantedBy=multi-user.target

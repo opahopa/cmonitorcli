@@ -8,11 +8,9 @@ from services.system.system_service import SystemService
 from services.db_service import DbService
 from .message_helpers import parse_message, result_to_json_response, calc_income
 from models.response import ResponseStatus
-from services.utils import set_fee_in_codiusconf
-from services.monitor_functions import run_bash_script, bash_cmd_result
+from services.monitor_functions import run_bash_script, bash_cmd_result, set_codiusd_fee, set_codiusd_variables
 from settings.config import REST_SERVER, EXTRA_SERVICES
-from services.cli_tools import generate_cmoncli
-from .cli_tools import cli_update_request
+from services.cli_tools import generate_cmoncli, cli_update_request
 
 logger = logging.getLogger(__name__)
 logging.getLogger('apscheduler.executors.default').setLevel(logging.DEBUG)
@@ -49,11 +47,7 @@ class MonitorService(object):
 
     def _execute_command_single(self, msg):
         if msg.command is MessageCommands.SET_CODIUS_FEE:
-            with SystemService() as system_service:
-                set_fee_in_codiusconf(msg.body)
-                system_service.run_command('systemctl daemon-reload', shell=True)
-                system_service.run_command('systemctl restart codiusd', shell=True)
-                return result_to_json_response(msg.command, ResponseStatus.OK, self.hostname, body='success')
+            return self.command_wrapper(msg, lambda: set_codiusd_fee(msg.body))
         if msg.command is MessageCommands.SERVICE_RESTART:
             return self.command_wrapper(msg, lambda: self.run_systemctl_command('restart', msg.body, msg.command))
         if msg.command is MessageCommands.SERVICE_STOP:
@@ -63,7 +57,7 @@ class MonitorService(object):
         if msg.command is MessageCommands.SERVICE_SPECAIL_DATA:
             return self.command_wrapper(msg, lambda: self.service_special_data(msg))
         if msg.command is MessageCommands.POD_UPLOAD_SELFTEST:
-            return self.command_wrapper(msg, lambda: run_bash_script(bash_scripts['upload_test']))
+            return self.command_wrapper(msg, lambda: run_bash_script(bash_scripts['upload_test'], timeout=60))
         if msg.command is MessageCommands.CMONCLI_UPDATE:
             return self.command_wrapper(msg, lambda: self.run_cmoncli_installer(msg.body))
         if msg.command is MessageCommands.INSTALL_SERVICE:
@@ -72,6 +66,8 @@ class MonitorService(object):
             return self.command_wrapper(msg, lambda: self.uninstall_service(msg.body))
         if msg.command is MessageCommands.CLI_UPGRADE:
             return self.command_wrapper(msg, lambda: self.cmoncli_autoupgrade(msg.body))
+        if msg.command is MessageCommands.SET_CODIUSD_VARIABLES:
+            return self.command_wrapper(msg, lambda: set_codiusd_variables(msg.body))
         return None
 
     def command_wrapper(self, msg, fcn):
@@ -142,7 +138,7 @@ class MonitorService(object):
 
     def install_service(self, name):
         if name == 'fail2ban':
-            return run_bash_script(bash_scripts['install_fail2ban'])
+            return run_bash_script(bash_scripts['install_fail2ban'], timeout=60)
 
     def uninstall_service(self, name):
         if name == 'fail2ban':
@@ -156,7 +152,7 @@ class MonitorService(object):
     def run_cmoncli_installer(self, path):
         if len(path) > 0:
             command = f'wget {REST_SERVER}/{path} -O cmoncli-install.sh && bash cmoncli-install.sh'
-            return run_bash_script('', command)
+            return run_bash_script('', command, timeout=45)
         else:
             return {'success': False, 'body': "invalid installer command"}
 
