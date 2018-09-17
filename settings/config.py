@@ -27,7 +27,8 @@ WATCH_SERVICES = {
     'nginx': "nginx"
 }
 EXTRA_SERVICES = {
-    'fail2ban': "fail2ban"
+    'fail2ban': "fail2ban",
+    'netstat': 'netstat'
 }
 
 BASE_DIR_LOG = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

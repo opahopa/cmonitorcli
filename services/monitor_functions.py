@@ -18,7 +18,7 @@ else:
     bundle_dir = os.path.dirname(os.path.abspath(__file__))
 
 
-def bash_cmd_result(result):
+def bash_cmd_result(result, exclude_errors=False):
     try:
         err = None
         if isinstance(result, Dict2Obj):
@@ -28,8 +28,8 @@ def bash_cmd_result(result):
                 return {'success': True, 'body': result.stdout.strip()}
             if len(result.stdout) > 1 and result.returncode != 0:
                 if len(result.stderr) > 1:
-                    return {'success': False, 'body': result.stderr + result.stdout.strip() }
-                return {'success': False, 'body': result.stdout.strip()}
+                    return {'success': True, 'body': result.stderr + result.stdout.strip() }
+                return {'success': True, 'body': result.stdout.strip()}
             if len(result.stderr) > 1:
                 try:
                     err = '\n' + result.stderr + '\n' + result.stdout

@@ -1,4 +1,5 @@
 import logging
+import re
 import itertools
 import version
 
@@ -68,6 +69,8 @@ class MonitorService(object):
             return self.command_wrapper(msg, lambda: self.cmoncli_autoupgrade(msg.body))
         if msg.command is MessageCommands.SET_CODIUSD_VARIABLES:
             return self.command_wrapper(msg, lambda: set_codiusd_variables(msg.body))
+        if msg.command is MessageCommands.EXTRA_NETSTAT:
+            return self.command_wrapper(msg, lambda: self.service_special_data(msg))
         return None
 
     def command_wrapper(self, msg, fcn):
@@ -157,14 +160,24 @@ class MonitorService(object):
             return {'success': False, 'body': "invalid installer command"}
 
     def service_special_data(self, msg):
-        if msg.body in EXTRA_SERVICES:
-            if msg.body == 'fail2ban':
+        if msg.body['name'] in EXTRA_SERVICES:
+            if msg.body['name'] == 'fail2ban':
                 try:
                     logger.info('Running fail2ban log request')
                     with SystemService() as system_service:
                         result = system_service.run_command('tail -n 1000 /var/log/secure | grep \'Failed password\'',
                                                             shell=True)
                         return bash_cmd_result(result)
+                except Exception as e:
+                    logger.error(e)
+                    return {'success': False, 'body': e.__str__()}
+            if msg.body['name'] == 'netstat':
+                try:
+                    cmd = 'netstat {}'.format(msg.body['args'].strip())
+                    logger.info('Running netstat request: {}'.format(cmd))
+                    with SystemService() as system_service:
+                        result = system_service.run_command(cmd, shell=True)
+                        return bash_cmd_result(result, exclude_errors=True)
                 except Exception as e:
                     logger.error(e)
                     return {'success': False, 'body': e.__str__()}
