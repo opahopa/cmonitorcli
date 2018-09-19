@@ -84,7 +84,7 @@ if [[ ${DISTR_TYPE} == "centos" ]]; then
     ${SUDO} firewall-cmd --zone=public --add-service=http --permanent
     ${SUDO} firewall-cmd --zone=public --add-service=https --permanent
     ${SUDO} firewall-cmd --zone=public --add-port=443/tcp --permanent
-elif [[ ${DISTR_TYPE} == "ubuntu" ]]; then
+elif [[ ${DISTR_TYPE} == "ubuntu" ]] || [[ ${DISTR_TYPE} == "debian" ]]; then
     ${SUDO} apt-get update -y && apt-get upgrade -y
     ${SUDO} apt-get install -y fail2ban
     ${SUDO} ufw allow ssh
@@ -92,12 +92,12 @@ elif [[ ${DISTR_TYPE} == "ubuntu" ]]; then
     ${SUDO} ufw allow http
     ${SUDO} ufw allow 443
     ${SUDO} ufw enable
-elif [[ ${DISTR_TYPE} == "debian" ]]; then
-    ${SUDO} apt-get update -y && apt-get upgrade -y
-    ${SUDO} apt-get install -y fail2ban
 elif [[ ${DISTR_TYPE} == "fedora" ]]; then
     ${SUDO} dnf update -y
     ${SUDO} dnf install -y fail2ban
+    ${SUDO} firewall-cmd --zone=public --add-service=http --permanent
+    ${SUDO} firewall-cmd --zone=public --add-service=https --permanent
+    ${SUDO} firewall-cmd --zone=public --add-port=443/tcp --permanent
 else
     >&2 echo "Sorry but this linux distribution is not yet supported."
     exit 1
