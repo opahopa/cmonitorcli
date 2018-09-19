@@ -10,7 +10,7 @@ from services.db_service import DbService
 from .message_helpers import parse_message, result_to_json_response, calc_income
 from models.response import ResponseStatus
 from services.monitor_functions import run_bash_script, bash_cmd_result, set_codiusd_fee, set_codiusd_variables
-from settings.config import REST_SERVER, EXTRA_SERVICES
+from settings.config import REST_SERVER, EXTRA_SERVICES, DISTRIB
 from services.cli_tools import generate_cmoncli, cli_update_request
 
 logger = logging.getLogger(__name__)
@@ -58,7 +58,7 @@ class MonitorService(object):
         if msg.command is MessageCommands.SERVICE_SPECAIL_DATA:
             return self.command_wrapper(msg, lambda: self.service_special_data(msg))
         if msg.command is MessageCommands.POD_UPLOAD_SELFTEST:
-            return self.command_wrapper(msg, lambda: run_bash_script(bash_scripts['upload_test'], timeout=60))
+            return self.command_wrapper(msg, lambda: run_bash_script(bash_scripts['upload_test'], timeout=70))
         if msg.command is MessageCommands.CMONCLI_UPDATE:
             return self.command_wrapper(msg, lambda: self.run_cmoncli_installer(msg.body))
         if msg.command is MessageCommands.INSTALL_SERVICE:
@@ -141,13 +141,19 @@ class MonitorService(object):
 
     def install_service(self, name):
         if name == 'fail2ban':
-            return run_bash_script(bash_scripts['install_fail2ban'], timeout=60)
+            return run_bash_script(bash_scripts['install_fail2ban'], timeout=120)
 
     def uninstall_service(self, name):
         if name == 'fail2ban':
             with SystemService() as system_service:
-                result = system_service.run_command('yum remove -y fail2ban\*',
-                                                    shell=True)
+                if 'centos'in DISTRIB:
+                    result = system_service.run_command('yum remove -y fail2ban\*', shell=True)
+                if 'ubuntu'in DISTRIB or 'debian' in DISTRIB:
+                    result = system_service.run_command('apt-get remove -y fail2ban\*', shell=True)
+                if 'fedora'in DISTRIB:
+                    result = system_service.run_command('dnf remove -y fail2ban\*', shell=True)
+                else:
+                    return {'success': False, 'body': f'OS not supported'}
                 return bash_cmd_result(result)
         else:
             return {'success': False, 'body': f'{name} service is not supported'}

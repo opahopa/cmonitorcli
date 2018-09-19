@@ -1,6 +1,7 @@
 import os, sys
 import logging.config
 import configparser
+import platform
 
 # logging.basicConfig(format='%(levelname)s|%(asctime)s|%(module)s|%(funcName)s|%(lineno)d|%(message)s',
 #                            datefmt="%d/%b/%Y %H:%M:%S" , filename='example.log', level=logging.DEBUG)
@@ -71,3 +72,6 @@ LOGGING = {
     }
 }
 logging.config.dictConfig(LOGGING)
+
+
+DISTRIB = platform.linux_distribution()[0].lower()
