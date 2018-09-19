@@ -77,12 +77,19 @@ then
     exit 1
 fi
 
+enable_firewalld() {
+    ${SUDO} firewall-cmd --zone=public --add-service=http --permanent
+    ${SUDO} firewall-cmd --zone=public --add-service=https --permanent
+    ${SUDO} systemctl enable firewalld 2>/dev/null || true
+    ${SUDO} systemctl start firewalld 2>/dev/null || true
+}
+
+
 if [[ ${DISTR_TYPE} == "centos" ]]; then
     ${SUDO} yum install -y epel-release
     ${SUDO} yum install -y fail2ban fail2ban-systemd
     ${SUDO} yum update -y selinux-policy
-    ${SUDO} firewall-cmd --zone=public --add-service=http --permanent
-    ${SUDO} firewall-cmd --zone=public --add-service=https --permanent
+    enable_firewalld
 elif [[ ${DISTR_TYPE} == "ubuntu" ]] || [[ ${DISTR_TYPE} == "debian" ]]; then
     ${SUDO} apt-get update -y && apt-get upgrade -y
     ${SUDO} apt-get install -y fail2ban
@@ -93,8 +100,7 @@ elif [[ ${DISTR_TYPE} == "ubuntu" ]] || [[ ${DISTR_TYPE} == "debian" ]]; then
 elif [[ ${DISTR_TYPE} == "fedora" ]]; then
     ${SUDO} dnf update -y
     ${SUDO} dnf install -y fail2ban
-    ${SUDO} firewall-cmd --zone=public --add-service=http --permanent
-    ${SUDO} firewall-cmd --zone=public --add-service=https --permanent
+    enable_firewalld
 else
     >&2 echo "Sorry but this linux distribution is not yet supported."
     exit 1
@@ -110,7 +116,6 @@ logpath = %(sshd_log)s
 maxretry = 5
 bantime = 86400" > /etc/fail2ban/jail.d/sshd.local'
 
-${SUDO} systemctl start firewalld 2>/dev/null || true
 ${SUDO} systemctl enable fail2ban 2>/dev/null || true
 ${SUDO} systemctl start fail2ban
 
