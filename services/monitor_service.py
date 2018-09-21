@@ -18,7 +18,8 @@ logging.getLogger('apscheduler.executors.default').setLevel(logging.DEBUG)
 
 bash_scripts = {
     'upload_test': 'scripts/upload_test.sh',
-    'install_fail2ban': 'scripts/install_fail2ban.sh'
+    'install_fail2ban': 'scripts/install_fail2ban.sh',
+    'cleanup_hyperd': 'scripts/cleanup_hyperd.sh'
 }
 
 
@@ -71,6 +72,8 @@ class MonitorService(object):
             return self.command_wrapper(msg, lambda: set_codiusd_variables(msg.body))
         if msg.command is MessageCommands.EXTRA_NETSTAT:
             return self.command_wrapper(msg, lambda: self.service_special_data(msg))
+        if msg.command is MessageCommands.CLEANUP_HYPERD:
+            return self.command_wrapper(msg, lambda: run_bash_script(bash_scripts['cleanup_hyperd'], timeout=45))
         return None
 
     def command_wrapper(self, msg, fcn):

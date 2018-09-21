@@ -80,6 +80,7 @@ fi
 enable_firewalld() {
     ${SUDO} firewall-cmd --zone=public --add-service=http --permanent
     ${SUDO} firewall-cmd --zone=public --add-service=https --permanent
+    ${SUDO} firewall-cmd --zone=public --add-service=ssh --permanent 2>/dev/null || true
     ${SUDO} systemctl enable firewalld 2>/dev/null || true
     ${SUDO} systemctl start firewalld 2>/dev/null || true
 }
