@@ -21,7 +21,7 @@ check_user
 
  # Stop services
 sudo systemctl stop hyperd
-sudo systemctl stop codiusd.service
+sudo systemctl stop codiusd
 
 # Unmount all Hyperd-stuff
 sudo umount /var/lib/hyper/hosts/* 2>/dev/null || true
@@ -37,6 +37,6 @@ sudo ifconfig hyper0 down 2>/dev/null || true
 
 #start services
 sudo systemctl start hyperd
-sudo systemctl start codiusd.service
+sudo systemctl start codiusd
 
-exit 0
+echo "hyperd cleanup done"
