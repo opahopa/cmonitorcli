@@ -103,7 +103,7 @@ class MonitorService(object):
                                                report_extra_services=extra_services)
         except Exception as e:
             logger.error("Error on command: {} :{}".format(msg_command.name, e))
-            return None
+            return result_to_json_response(msg_command, ResponseStatus.ERROR, self.hostname, body=e)
 
     """"""""""""""""""""""""""""""""""""""""
     :returns

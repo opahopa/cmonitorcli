@@ -113,6 +113,8 @@ def calc_income(codiusd_log):
     #         except KeyError as e:
     #             return None
 
+    logger.info(codiusd_log[0])
+    logger.info(codiusd_log[-1])
     for log in codiusd_log:
         time, pods, fee, contracts_active = log[0], log[1], log[2], log[3]
         if contracts_active > 0:
