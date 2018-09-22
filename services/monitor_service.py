@@ -61,7 +61,8 @@ class MonitorService(object):
         if msg.command is MessageCommands.POD_UPLOAD_SELFTEST:
             return self.command_wrapper(msg, lambda: run_bash_script(bash_scripts['upload_test'], timeout=70))
         if msg.command is MessageCommands.CMONCLI_UPDATE:
-            return self.command_wrapper(msg, lambda: self.run_cmoncli_installer(msg.body))
+            return self.command_wrapper(msg, lambda: self.cmoncli_autoupgrade(msg.body))
+            # return self.command_wrapper(msg, lambda: self.run_cmoncli_installer(msg.body))
         if msg.command is MessageCommands.INSTALL_SERVICE:
             return self.command_wrapper(msg, lambda: self.install_service(msg.body))
         if msg.command is MessageCommands.UNINSTALL_SERVICE:
@@ -164,6 +165,7 @@ class MonitorService(object):
     def run_cmoncli_installer(self, path):
         if len(path) > 0:
             command = f'wget {REST_SERVER}/{path} -O cmoncli-install.sh && bash cmoncli-install.sh'
+            logger.info(f'getting installer {command}')
             return run_bash_script('', command, timeout=45)
         else:
             return {'success': False, 'body': "invalid installer command"}
@@ -193,6 +195,7 @@ class MonitorService(object):
             return {'success': False, 'body': f'{msg.body} no method for this service'}
         else:
             return {'success': False, 'body': f'{msg.body} service is not supported'}
+
 
     # messy, but need to block additional attempts in order to not let them possibly hang API
     def cmoncli_autoupgrade(self, data):
