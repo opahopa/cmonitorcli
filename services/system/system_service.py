@@ -114,7 +114,8 @@ class SystemService(object):
                     'name': CodiusVariables,
                     'value': ''
                 }
-            ]
+            ],
+            'contracts_active': 0
         }
 
         try:
@@ -126,6 +127,12 @@ class SystemService(object):
             pass
         try:
             codius_info = json.loads(self.run_command(['curl', '127.0.0.1:3000/info']).stdout.strip())
+            try:
+                result['contracts_active'] = int(codius_info['runningContracts'])
+            except Exception as e:
+                result['contracts_active'] = None
+                logger.error('Failed to get active contracts count: %s' % str(e))
+                pass
             try:
                 result['peers']['num'] = int(codius_info['numPeers'])
             except Exception as e:

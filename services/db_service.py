@@ -11,6 +11,7 @@ class DbService(object):
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        self.conn.close()
         pass
 
     def __init__(self):
@@ -22,7 +23,14 @@ class DbService(object):
                          (hostname text not null, status_hyperd boolean, status_moneyd boolean, status_codiusd boolean
                          pods text[])''')
             self.c.execute('''CREATE TABLE IF NOT EXISTS codius_history
-                         (record_time timestamp, pods json[], fee integer)''')
+                         (record_time timestamp, pods json[], fee integer, contracts_active integer)''')
+
+            self.c.execute('PRAGMA user_version')
+            v = int(self.c.fetchone()[0])
+            if v < 1:
+                self.c.execute('ALTER TABLE codius_history ADD COLUMN contracts_active integer')
+                self.c.execute('PRAGMA user_version = 1')
+
         except BaseException as error:
             print('An exception occurred on connecting to sqllite: {}'.format(error))
 
@@ -33,9 +41,9 @@ class DbService(object):
         except BaseException as error:
             print('An exception occurred on writing hostname to sqllite: {}'.format(error))
 
-    def get_pods_in_n_days(self, n):
+    def get_codiusd_in_n_days(self, n):
         try:
-            self.c.execute("SELECT record_time as [timestamp], pods, fee"
+            self.c.execute("SELECT record_time as [timestamp], pods, fee, contracts_active"
                            " FROM codius_history WHERE record_time >= datetime('now', '-{} day')".format(n))
             res = self.c.fetchall()
             if res[0] is not None:
@@ -79,8 +87,8 @@ class DbService(object):
 
         try:
             time = datetime.datetime.now()
-            self.c.execute("INSERT INTO codius_history (record_time, pods, fee) VALUES (?, ?, ?)"
-                           , (time, json.dumps(codius['pods']), int(codius['fee']),))
+            self.c.execute("INSERT INTO codius_history (record_time, pods, fee, contracts_active) VALUES (?, ?, ?, ?)"
+                           , (time, json.dumps(codius['pods']), int(codius['fee']), int(codius['contracts_active']),))
             self.conn.commit()
         except BaseException as error:
             logger.error('A BaseException occurred on writing pods history to sqllite: {}'.format(error))

@@ -94,8 +94,8 @@ class MonitorService(object):
                 with DbService() as db_service:
                     codius['income_24'] = 0
                     db_service.write_pods_status(codius)
-                    if len(db_service.get_pods_in_n_days(1)) > 0:
-                        codius['income_24'], codius['count_24'] = calc_income(db_service.get_pods_in_n_days(1))
+                    if len(db_service.get_codiusd_in_n_days(1)) > 0:
+                        codius['income_24'], codius['count_24'] = calc_income(db_service.get_codiusd_in_n_days(1))
 
                 return result_to_json_response(msg_command, ResponseStatus.OK, self.hostname,
                                                report_system=system, report_codius=codius,
@@ -117,7 +117,7 @@ class MonitorService(object):
         dialy = []
 
         with DbService() as db_service:
-            pods_n_days = db_service.get_pods_in_n_days(n)
+            pods_n_days = db_service.get_codiusd_in_n_days(n)
             for dt, grp in itertools.groupby(pods_n_days, key=lambda x: x[0].date()):
                 tmp = []
                 for v in list(grp):

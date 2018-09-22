@@ -90,11 +90,11 @@ and
 
 :int: pods_count 
 """""""""""""""""""""""""""""""""""""""""
-
-def calc_income(pods_log):
+report_interval = 3
+def calc_income(codiusd_log):
     # timer_start = timer()
 
-    pods_activity, pods_count = podsActivity(pods_log)
+
     try:
         fee = get_fee()
     except KeyError as e:
@@ -102,19 +102,26 @@ def calc_income(pods_log):
 
     income_24 = 0
 
-    for k, v in pods_activity.items():
-        if v['fee'] is not 0:
-            income_24 += v['duration'] * fee_per_sec(v['fee'])
-        else:
-            try:
-                income_24 += v['duration'] * fee_per_sec(fee)
-            except KeyError as e:
-                return None
+    # to estimate income based on pods activity
+    # pods_activity, pods_count = podsActivity(codiusd_log)
+    # for k, v in pods_activity.items():
+    #     if v['fee'] is not 0:
+    #         income_24 += v['duration'] * fee_per_sec(v['fee'])
+    #     else:
+    #         try:
+    #             income_24 += v['duration'] * fee_per_sec(fee)
+    #         except KeyError as e:
+    #             return None
+
+    for log in codiusd_log:
+        time, pods, fee, contracts_active = log[0], log[1], log[2], log[3]
+        if contracts_active > 0:
+            income_24 += (contracts_active * fee_per_sec(fee)) * report_interval
 
     # timer_end = timer()
     # print(timer_end - timer_start)
 
-    return round(income_24, 5), pods_count
+    return round(income_24, 5), len(get_pod_unique_ids(codiusd_log))
 
 
 def fee_per_sec(fee):
@@ -136,15 +143,9 @@ and 'int' pods_count
 """""""""""""""""""""""""""""""""""""""""
 
 
-def podsActivity(pods_log):
+def podsActivity(codiusd_log):
     try:
-        pod_ids = []
-        for log in pods_log:
-            time, pods = log[0], log[1]
-            if pods is not None and len(pods) > 0:
-                pod_ids.extend([pod['id'] for pod in json.loads(pods)])
-
-        pod_ids_unique = list(set(pod_ids))
+        pod_ids_unique = get_pod_unique_ids(codiusd_log)
 
         pods_activity = {}
         # associate timestamps with pod id's
@@ -153,7 +154,7 @@ def podsActivity(pods_log):
             pods_activity[id] = {}
             pods_activity[id]['timestamps'] = []
 
-            for log in pods_log:
+            for log in codiusd_log:
                 time, pods, fee = log[0], log[1], log[2]
                 if pods is not None and len(pods) > 0:
                     if id in [pod['id'] for pod in json.loads(pods)]:
@@ -179,12 +180,17 @@ def podsActivity(pods_log):
 
             pods_activity[k]['fee'] = sum([t[1] for t in v['timestamps']]) / len(v['timestamps'])
 
-            # print(f"added: {pods_activity[k]['duration']}")
-            # diff = v['timestamps'][-1] - v['timestamps'][0]
-            # print(f"real: {diff.seconds}")
 
         return pods_activity, len(pod_ids_unique)
     except:
         traceback.print_exc()
-
     pass
+
+def get_pod_unique_ids(codiusd_log):
+    pod_ids = []
+    for log in codiusd_log:
+        time, pods = log[0], log[1]
+        if pods is not None and len(pods) > 0:
+            pod_ids.extend([pod['id'] for pod in json.loads(pods)])
+
+    return list(set(pod_ids))
