@@ -193,7 +193,7 @@ class SystemService(object):
             logger.error('Failed to get codiusd vard: %s' % str(e))
             pass
 
-        logger.debug(f"Codius system info: {result}")
+        logger.info(f"Codius system info: {result}")
 
         return result
 
