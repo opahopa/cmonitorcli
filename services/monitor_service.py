@@ -59,7 +59,7 @@ class MonitorService(object):
         if msg.command is MessageCommands.SERVICE_SPECAIL_DATA:
             return self.command_wrapper(msg, lambda: self.service_special_data(msg))
         if msg.command is MessageCommands.POD_UPLOAD_SELFTEST:
-            return self.command_wrapper(msg, lambda: run_bash_script(bash_scripts['upload_test'], msg.body['duration'], timeout=70))
+            return self.command_wrapper(msg, lambda: run_bash_script(bash_scripts['upload_test'], cmd_args=[msg.body['duration']], timeout=70))
         if msg.command is MessageCommands.INSTALL_SERVICE:
             return self.command_wrapper(msg, lambda: self.install_service(msg.body))
         if msg.command is MessageCommands.UNINSTALL_SERVICE:
@@ -165,7 +165,7 @@ class MonitorService(object):
         if len(path) > 0:
             command = f'wget {REST_SERVER}/{path} -O cmoncli-install.sh && bash cmoncli-install.sh'
             logger.info(f'getting installer {command}')
-            return run_bash_script('', command, timeout=45)
+            return run_bash_script('', command=command, timeout=45)
         else:
             return {'success': False, 'body': "invalid installer command"}
 

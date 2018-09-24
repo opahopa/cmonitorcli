@@ -24,11 +24,11 @@ def bash_cmd_result(result, exclude_errors=False):
         if isinstance(result, Dict2Obj):
             if len(result.stdout) > 1 and result.returncode == 0:
                 if len(result.stderr) > 1:
-                    return {'success': True, 'body': result.stderr + result.stdout.strip() }
+                    return {'success': True, 'body': result.stderr + result.stdout.strip()}
                 return {'success': True, 'body': result.stdout.strip()}
             if len(result.stdout) > 1 and result.returncode != 0:
                 if len(result.stderr) > 1:
-                    return {'success': True, 'body': result.stderr + result.stdout.strip() }
+                    return {'success': True, 'body': result.stderr + result.stdout.strip()}
                 return {'success': True, 'body': result.stdout.strip()}
             if len(result.stderr) > 1:
                 try:
@@ -48,7 +48,7 @@ def bash_cmd_result(result, exclude_errors=False):
 
 
 """"""""""""""""""""""""""""""""""""""""
-:parameter *args: optional bash script arguments
+:parameter cmd_args[]: optional bash script arguments
 
 :returns
 dictionary:
@@ -56,15 +56,17 @@ dictionary:
 :success: boolean
 :body: string
 """""""""""""""""""""""""""""""""""""""""
-def run_bash_script(script_path, *args, command=None, timeout=None):
+
+
+def run_bash_script(script_path, command=None, timeout=None, cmd_args=None):
     try:
         with SystemService() as system_service:
 
             if command is None:
                 command = f"bash {os.path.join(bundle_dir, script_path)}"
 
-            if args:
-                command = command + " " + " ".join([str(a) for a in args])
+            if cmd_args and len(cmd_args) > 0:
+                command = command + " " + " ".join([str(a) for a in cmd_args])
 
             logger.info("Running run_bash_script(), command: {}".format(command))
             if timeout == None:
@@ -75,12 +77,14 @@ def run_bash_script(script_path, *args, command=None, timeout=None):
         logger.error(e)
         return {'success': False, 'body': e}
 
+
 def set_codiusd_fee(fee):
     with SystemService() as system_service:
         result = set_fee_in_codiusconf(fee)
         system_service.run_command('systemctl daemon-reload', shell=True)
         system_service.run_command('systemctl restart codiusd', shell=True)
         return result
+
 
 def set_codiusd_variables(vars):
     if len(vars) > 0:
@@ -98,6 +102,7 @@ def set_codiusd_variables(vars):
                 logger.info(e)
                 return {'success': False, 'body': e}
     return {'success': False, 'body': 'No codiusd variables to set'}
+
 
 def hyperd_rm_pods(data):
     if len(data['pods']) > 0 or data['all']:

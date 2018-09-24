@@ -56,6 +56,6 @@ EOF
 
 cd ${POD_DIR}
 
-DEBUG=* codius upload --host https://$HOSTNAME --duration 30 -o -y
+DEBUG=* codius upload --host https://${HOSTNAME} --duration ${DURATION} -o -y
 #${SUDO} kill -9 $(ps -ef|grep codius |grep -v "grep"|awk '{print $2}') || true
 exit 0
