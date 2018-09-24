@@ -5,6 +5,12 @@ HOSTNAME=$(sudo uname -n 2>/dev/null || true)
 CURRENT_USER="$(id -un 2>/dev/null || true)"
 POD_DIR="/root/scripts/upload-test"
 
+DURATION=30
+if [ "$1" != "" ]; then
+    DURATION=$1
+fi
+
+
 command_exist() {
   type "$@" > /dev/null 2>&1
 }

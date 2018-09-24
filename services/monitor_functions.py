@@ -48,18 +48,23 @@ def bash_cmd_result(result, exclude_errors=False):
 
 
 """"""""""""""""""""""""""""""""""""""""
+:parameter *args: optional bash script arguments
+
 :returns
 dictionary:
 
 :success: boolean
 :body: string
 """""""""""""""""""""""""""""""""""""""""
-def run_bash_script(script_path, command=None, timeout=None):
+def run_bash_script(script_path, *args, command=None, timeout=None):
     try:
         with SystemService() as system_service:
 
             if command is None:
                 command = f"bash {os.path.join(bundle_dir, script_path)}"
+
+            if args:
+                command = command + " " + " ".join([str(a) for a in args])
 
             logger.info("Running run_bash_script(), command: {}".format(command))
             if timeout == None:
@@ -93,3 +98,27 @@ def set_codiusd_variables(vars):
                 logger.info(e)
                 return {'success': False, 'body': e}
     return {'success': False, 'body': 'No codiusd variables to set'}
+
+def hyperd_rm_pods(data):
+    if len(data['pods']) > 0 or data['all']:
+        with SystemService() as system_service:
+            if data['all']:
+                try:
+                    system_service.run_command(['hyperctl', 'stop', '$(hyperd list pod)'])
+                    system_service.run_command(['hyperctl', 'stop', '$(hyperd list container)'])
+                    system_service.run_command(['hyperctl', 'rm', '$(hyperd list pod)'])
+                    system_service.run_command(['hyperctl', 'rm', '$(hyperd list container)'])
+                    return {'success': True, 'body': 'success'}
+                except Exception as e:
+                    logger.info(e)
+                    return {'success': False, 'body': e}
+
+            for pod in data['pods']:
+                try:
+                    system_service.run_command(['hyperctl', 'stop', pod['id']])
+                    system_service.run_command(['hyperctl', 'rm', pod['id']])
+                except Exception as e:
+                    logger.info(e)
+                    return {'success': False, 'body': e}
+            return {'success': True, 'body': 'success'}
+    return {'success': False, 'body': 'No pods to remove'}

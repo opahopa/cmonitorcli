@@ -1,5 +1,4 @@
 import logging
-import re
 import itertools
 import version
 
@@ -9,7 +8,8 @@ from services.system.system_service import SystemService
 from services.db_service import DbService
 from .message_helpers import parse_message, result_to_json_response, calc_income
 from models.response import ResponseStatus
-from services.monitor_functions import run_bash_script, bash_cmd_result, set_codiusd_fee, set_codiusd_variables
+from services.monitor_functions import run_bash_script, bash_cmd_result, set_codiusd_fee, set_codiusd_variables,\
+    hyperd_rm_pods
 from settings.config import REST_SERVER, EXTRA_SERVICES, DISTRIB
 from services.cli_tools import generate_cmoncli, cli_update_request
 
@@ -59,10 +59,7 @@ class MonitorService(object):
         if msg.command is MessageCommands.SERVICE_SPECAIL_DATA:
             return self.command_wrapper(msg, lambda: self.service_special_data(msg))
         if msg.command is MessageCommands.POD_UPLOAD_SELFTEST:
-            return self.command_wrapper(msg, lambda: run_bash_script(bash_scripts['upload_test'], timeout=70))
-        if msg.command is MessageCommands.CMONCLI_UPDATE:
-            return self.command_wrapper(msg, lambda: self.cmoncli_autoupgrade(msg.body))
-            # return self.command_wrapper(msg, lambda: self.run_cmoncli_installer(msg.body))
+            return self.command_wrapper(msg, lambda: run_bash_script(bash_scripts['upload_test'], msg.body['duration'], timeout=70))
         if msg.command is MessageCommands.INSTALL_SERVICE:
             return self.command_wrapper(msg, lambda: self.install_service(msg.body))
         if msg.command is MessageCommands.UNINSTALL_SERVICE:
@@ -75,6 +72,8 @@ class MonitorService(object):
             return self.command_wrapper(msg, lambda: self.service_special_data(msg))
         if msg.command is MessageCommands.CLEANUP_HYPERD:
             return self.command_wrapper(msg, lambda: run_bash_script(bash_scripts['cleanup_hyperd'], timeout=45))
+        if msg.command is MessageCommands.HYPERD_RM_POD:
+            return self.command_wrapper(msg, lambda: hyperd_rm_pods(msg.body))
         return None
 
     def command_wrapper(self, msg, fcn):

@@ -1,5 +1,5 @@
 import logging
-import json
+import json, re
 import datetime
 
 from subprocess import PIPE, run, CalledProcessError, Popen, TimeoutExpired
@@ -106,7 +106,11 @@ class SystemService(object):
                     'minutes': 0
                 }
             },
-            'pods': [],
+            'hyperd': {
+                'pods': [],
+                'version': '',
+                'virtualization': ''
+            },
             'memory': {},
             'fee': 0,
             'variables': [
@@ -125,6 +129,8 @@ class SystemService(object):
             result['version'] = None
             logger.error(f'codius version load fail: {e}')
             pass
+
+        # localhost/info data
         try:
             codius_info = json.loads(self.run_command(['curl', '127.0.0.1:3000/info']).stdout.strip())
             try:
@@ -163,14 +169,22 @@ class SystemService(object):
             result['peers'] = None
             logger.error(f'codius info load fail: {e}')
             pass
+
+        # hyperctl
         try:
             pods = parse_hyperctl_list(self.run_command(['hyperctl', 'list']))
-            result['pods'] = pods
+            result['hyperd']['pods'] = pods
         except Exception as e:
             result['pods'] = []
             logger.error(f'pods list load fail: {e}')
             pass
+        try:
+            result['hyperd']['version'] = re.search('([0-9].[0-9].[0-9])', self.run_command(['hyperctl', 'version']).stdout).group(1)
+        except Exception as e:
+            logger.error(f'hyperctl version load fail: {e}')
+            pass
 
+        # other
         try:
             memory = parse_memory_usage(self.run_command(['free', '-m']))
             result['memory'] = memory
