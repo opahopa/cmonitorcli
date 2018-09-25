@@ -84,7 +84,7 @@ class DbService(object):
         #         'status': 'activate'
         #     }
         # ]
-        if int(codius['contracts_active']):
+        if codius['contracts_active']:
             contracts_active = int(codius['contracts_active'])
         else:
             contracts_active = 0
