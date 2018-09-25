@@ -84,11 +84,15 @@ class DbService(object):
         #         'status': 'activate'
         #     }
         # ]
+        if int(codius['contracts_active']):
+            contracts_active = int(codius['contracts_active'])
+        else:
+            contracts_active = 0
 
         try:
             time = datetime.datetime.now()
             self.c.execute("INSERT INTO codius_history (record_time, pods, fee, contracts_active) VALUES (?, ?, ?, ?)"
-                           , (time, json.dumps(codius['pods']), int(codius['fee']), int(codius['contracts_active']),))
+                           , (time, json.dumps(codius['pods']), int(codius['fee']), contracts_active,))
             self.conn.commit()
         except BaseException as error:
             logger.error('A BaseException occurred on writing pods history to sqllite: {}'.format(error))
