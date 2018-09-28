@@ -19,9 +19,9 @@ class DbService(object):
             self.conn = sqlite3.connect('cmonitorcli.db', detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             self.c = self.conn.cursor()
 
-            self.c.execute('''CREATE TABLE IF NOT EXISTS system_info
-                         (hostname text not null, status_hyperd boolean, status_moneyd boolean, status_codiusd boolean
-                         pods text[])''')
+            self.c.execute('''CREATE TABLE IF NOT EXISTS system_info (hostname text not null)''')
+            self.c.execute('''CREATE TABLE IF NOT EXISTS system_log
+                (record_time timestamp, status_hyperd boolean, status_moneyd boolean, status_codiusd boolean, status_nginx boolean)''')
             self.c.execute('''CREATE TABLE IF NOT EXISTS codius_history
                          (record_time timestamp, pods json[], fee integer, contracts_active integer)''')
 
@@ -53,6 +53,18 @@ class DbService(object):
         except IndexError:
             return []
 
+    def get_system_in_n_days(self, n):
+        try:
+            self.c.execute("SELECT record_time as [timestamp], status_hyperd, status_moneyd, status_codiusd, status_nginx"
+                           " FROM system_log WHERE record_time >= datetime('now', '-{} day')".format(n))
+            res = self.c.fetchall()
+            if res[0] is not None:
+                return res
+            else:
+                return []
+        except IndexError:
+            return []
+
     """""
     pods:
     [{
@@ -62,8 +74,9 @@ class DbService(object):
         'status': ss[3],
         'fee': ''
     }]
+    
     """""
-    def write_pods_status(self, codius):
+    def write_status(self, codius, system):
         # pods = [
         #     {
         #         'id': 'foihew3434h235',
@@ -89,10 +102,25 @@ class DbService(object):
         else:
             contracts_active = 0
 
+        systemd_statuses = {
+            'hyperd': False,
+            'moneyd': False,
+            'codiusd': False,
+            'nginx': False
+        }
+        for service in system:
+            if service.name in systemd_statuses.keys():
+                systemd_statuses[service.name] = service.active
+
         try:
             time = datetime.datetime.now()
-            self.c.execute("INSERT INTO codius_history (record_time, pods, fee, contracts_active) VALUES (?, ?, ?, ?)"
-                           , (time, json.dumps(codius['pods']), int(codius['fee']), contracts_active,))
+
+            if codius['fee'] and contracts_active:
+                self.c.execute("INSERT INTO codius_history (record_time, pods, fee, contracts_active) VALUES (?, ?, ?, ?)"
+                               , (time, json.dumps(codius['pods']), int(codius['fee']), contracts_active,))
+            self.c.execute("INSERT INTO system_log (record_time, status_hyperd, status_moneyd, status_codiusd, status_nginx)"
+                           " VALUES (?, ?, ?, ?, ?)"
+                           , (time, systemd_statuses['hyperd'], systemd_statuses['moneyd'], systemd_statuses['codiusd'], systemd_statuses['nginx'],))
             self.conn.commit()
         except BaseException as error:
             logger.error('A BaseException occurred on writing pods history to sqllite: {}'.format(error))
@@ -108,3 +136,10 @@ class DbService(object):
             return res[0]
         else:
             return None
+
+    def cleanup_old_records(self, n):
+        try:
+            self.c.execute("DELETE FROM codius_history WHERE record_time <= datetime('now', '-{} day')".format(n))
+            self.c.execute("DELETE FROM system_log WHERE record_time <= datetime('now', '-{} day')".format(n))
+        except IndexError:
+            return []

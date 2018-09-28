@@ -93,7 +93,7 @@ class MonitorService(object):
                 extra_services = system_service.report_extra_services()
                 with DbService() as db_service:
                     codius['income_24'] = 0
-                    db_service.write_pods_status(codius)
+                    db_service.write_status(codius, system)
                     if len(db_service.get_codiusd_in_n_days(1)) > 0:
                         codius['income_24'], codius['count_24'] = calc_income(db_service.get_codiusd_in_n_days(1))
 

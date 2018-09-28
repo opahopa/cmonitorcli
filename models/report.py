@@ -31,6 +31,7 @@ class ReportService(object):
         self.error = error
         self.installed = installed
 
+
     def toDict(self):
         return {
             'type': self.type,

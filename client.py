@@ -22,6 +22,7 @@ class CmonitorCli(object):
 
         self.scheduler = SchedulerService()
         self.scheduler.run_scheduler()
+        self.scheduler.add_db_cleanup_task()
 
         logger.info("connect to: {}/ws/monitor/{}/{}/".format(WEBSOCKET_SERVER, ACC_USERNAME, self.hostname), )
         self.wsocket = WsClient("{}/ws/monitor/{}/{}/".format(WEBSOCKET_SERVER, ACC_USERNAME, self.hostname),
