@@ -28,7 +28,10 @@ class DbService(object):
             self.c.execute('PRAGMA user_version')
             v = int(self.c.fetchone()[0])
             if v < 1:
-                self.c.execute('ALTER TABLE codius_history ADD COLUMN contracts_active integer')
+                try:
+                    self.c.execute('ALTER TABLE codius_history ADD COLUMN contracts_active integer')
+                except BaseException:
+                    pass
                 self.c.execute('PRAGMA user_version = 1')
 
         except BaseException as error:

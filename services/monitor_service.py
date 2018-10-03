@@ -56,6 +56,8 @@ class MonitorService(object):
             return self.command_wrapper(msg, lambda: self.run_systemctl_command('stop', msg.body, msg.command))
         if msg.command is MessageCommands.SERVICE_START:
             return self.command_wrapper(msg, lambda: self.run_systemctl_command('start', msg.body, msg.command))
+        if msg.command is MessageCommands.STATS_SYSTEM:
+            return self.command_wrapper(msg, lambda: self.system_stats(msg.body))
         if msg.command is MessageCommands.SERVICE_SPECAIL_DATA:
             return self.command_wrapper(msg, lambda: self.service_special_data(msg))
         if msg.command is MessageCommands.POD_UPLOAD_SELFTEST:
@@ -112,7 +114,6 @@ class MonitorService(object):
     :int: income
     :int: count
     """""""""""""""""""""""""""""""""""""""""
-
     def stats_n_days(self, n):
         dialy = []
 
@@ -127,6 +128,32 @@ class MonitorService(object):
                 dialy.append({'date': dt, 'income': income, 'count': count})
 
         return dialy
+
+    def system_stats(self, body):
+        result = []
+
+        try:
+            with DbService() as db_service:
+                services_status_log = db_service.get_system_in_n_days(int(body['days']))
+                if body['days'] == 1:
+                    for hr_minute, grp in itertools.groupby(services_status_log, lambda x: (x[0].hour, x[0].minute)):
+                        group = list(grp)
+                        hyperd = sum([v[1] for v in group]) >= (len(group) / 2)
+                        moneyd = sum([v[2] for v in group]) >= (len(group) / 2)
+                        codiusd = sum([v[3] for v in group]) >= (len(group) / 2)
+                        nginx = sum([v[4] for v in group]) >= (len(group) / 2)
+                        result.append({'time': hr_minute, 'hyperd': int(hyperd), 'moneyd': int(moneyd), 'codiusd': int(codiusd), 'nginx': int(nginx) })
+                elif body['days'] > 1:
+                    for hr, grp in itertools.groupby(services_status_log, lambda x: x[0].hour):
+                        group = list(grp)
+                        hyperd = sum([v[1] for v in group]) >= (len(group) / 2)
+                        moneyd = sum([v[2] for v in group]) >= (len(group) / 2)
+                        codiusd = sum([v[3] for v in group]) >= (len(group) / 2)
+                        nginx = sum([v[4] for v in group]) >= (len(group) / 2)
+                        result.append({'hour': hr, 'hyperd': int(hyperd), 'moneyd': int(moneyd), 'codiusd': int(codiusd), 'nginx': int(nginx) })
+            return {'success': True, 'body': result}
+        except Exception as e:
+            return {'success': False, 'body': e}
 
     def run_systemctl_command(self, command, service_name, command_name):
         try:
