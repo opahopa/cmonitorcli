@@ -61,7 +61,7 @@ class MonitorService(object):
         if msg.command is MessageCommands.SERVICE_SPECAIL_DATA:
             return self.command_wrapper(msg, lambda: self.service_special_data(msg))
         if msg.command is MessageCommands.POD_UPLOAD_SELFTEST:
-            return self.command_wrapper(msg, lambda: run_bash_script(bash_scripts['upload_test'], cmd_args=[msg.body['duration']], timeout=70))
+            return self.command_wrapper(msg, lambda: run_bash_script(bash_scripts['upload_test'], cmd_args=[msg.body['duration']], timeout=160))
         if msg.command is MessageCommands.INSTALL_SERVICE:
             return self.command_wrapper(msg, lambda: self.install_service(msg.body))
         if msg.command is MessageCommands.UNINSTALL_SERVICE:
@@ -144,14 +144,14 @@ class MonitorService(object):
                         nginx = sum([v[4] for v in group]) >= (len(group) / 2)
                         result.append({'time': hr_minute, 'hyperd': int(hyperd), 'moneyd': int(moneyd), 'codiusd': int(codiusd), 'nginx': int(nginx) })
                 elif body['days'] > 1:
-                    for hr, grp in itertools.groupby(services_status_log, lambda x: x[0].hour):
+                    for time, grp in itertools.groupby(services_status_log, lambda x: (x[0].month, x[0].day, x[0].hour)):
                         group = list(grp)
                         hyperd = sum([v[1] for v in group]) >= (len(group) / 2)
                         moneyd = sum([v[2] for v in group]) >= (len(group) / 2)
                         codiusd = sum([v[3] for v in group]) >= (len(group) / 2)
                         nginx = sum([v[4] for v in group]) >= (len(group) / 2)
-                        result.append({'hour': hr, 'hyperd': int(hyperd), 'moneyd': int(moneyd), 'codiusd': int(codiusd), 'nginx': int(nginx) })
-            return {'success': True, 'body': result}
+                        result.append({'time': time, 'hyperd': int(hyperd), 'moneyd': int(moneyd), 'codiusd': int(codiusd), 'nginx': int(nginx) })
+            return {'success': True, 'body': {'duration': body['days'], 'data': result} }
         except Exception as e:
             return {'success': False, 'body': e}
 

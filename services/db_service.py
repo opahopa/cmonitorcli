@@ -107,7 +107,7 @@ class DbService(object):
 
         systemd_statuses = {
             'hyperd': False,
-            'moneyd': False,
+            'moneyd-xrp': False,
             'codiusd': False,
             'nginx': False
         }
@@ -123,7 +123,7 @@ class DbService(object):
                                , (time, json.dumps(codius['pods']), int(codius['fee']), contracts_active,))
             self.c.execute("INSERT INTO system_log (record_time, status_hyperd, status_moneyd, status_codiusd, status_nginx)"
                            " VALUES (?, ?, ?, ?, ?)"
-                           , (time, systemd_statuses['hyperd'], systemd_statuses['moneyd'], systemd_statuses['codiusd'], systemd_statuses['nginx'],))
+                           , (time, systemd_statuses['hyperd'], systemd_statuses['moneyd-xrp'], systemd_statuses['codiusd'], systemd_statuses['nginx'],))
             self.conn.commit()
         except BaseException as error:
             logger.error('A BaseException occurred on writing pods history to sqllite: {}'.format(error))
