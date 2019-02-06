@@ -136,24 +136,25 @@ class MonitorService(object):
             with DbService() as db_service:
                 services_status_log = db_service.get_system_in_n_days(int(body['days']))
                 if body['days'] == 1:
-                    for hr_minute, grp in itertools.groupby(services_status_log, lambda x: (x[0].hour, x[0].minute)):
-                        group = list(grp)
-                        hyperd = sum([v[1] for v in group]) >= (len(group) / 2)
-                        moneyd = sum([v[2] for v in group]) >= (len(group) / 2)
-                        codiusd = sum([v[3] for v in group]) >= (len(group) / 2)
-                        nginx = sum([v[4] for v in group]) >= (len(group) / 2)
-                        result.append({'time': hr_minute, 'hyperd': int(hyperd), 'moneyd': int(moneyd), 'codiusd': int(codiusd), 'nginx': int(nginx) })
+                    for time, grp in itertools.groupby(services_status_log, lambda x: (x[0].hour, x[0].minute)):
+                        result.append(self.parse_stats(time, grp))
                 elif body['days'] > 1:
                     for time, grp in itertools.groupby(services_status_log, lambda x: (x[0].month, x[0].day, x[0].hour)):
-                        group = list(grp)
-                        hyperd = sum([v[1] for v in group]) >= (len(group) / 2)
-                        moneyd = sum([v[2] for v in group]) >= (len(group) / 2)
-                        codiusd = sum([v[3] for v in group]) >= (len(group) / 2)
-                        nginx = sum([v[4] for v in group]) >= (len(group) / 2)
-                        result.append({'time': time, 'hyperd': int(hyperd), 'moneyd': int(moneyd), 'codiusd': int(codiusd), 'nginx': int(nginx) })
+                        result.append(self.parse_stats(time, grp))
+
             return {'success': True, 'body': {'duration': body['days'], 'data': result} }
         except Exception as e:
             return {'success': False, 'body': e}
+
+
+    def parse_stats(self, time, grp):
+        group = list(grp)
+        hyperd = sum([v[1] for v in group]) >= (len(group) / 2)
+        moneyd = sum([v[2] for v in group]) >= (len(group) / 2)
+        codiusd = sum([v[3] for v in group]) >= (len(group) / 2)
+        nginx = sum([v[4] for v in group]) >= (len(group) / 2)
+        return {'time': time, 'hyperd': int(hyperd), 'moneyd': int(moneyd), 'codiusd': int(codiusd), 'nginx': int(nginx)}
+
 
     def run_systemctl_command(self, command, service_name, command_name):
         try:
